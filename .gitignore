@@ -1,0 +1,22 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# Pipeline working files
+data/interim/*
+!data/interim/.gitkeep
+
+# Raw source downloads, not committed; reproducible from gov.uk
+data/raw/yjb-2024-25/
+data/raw/*
+!data/raw/.gitkeep
+
+# OS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
