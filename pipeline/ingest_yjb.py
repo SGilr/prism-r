@@ -43,6 +43,7 @@ from __future__ import annotations
 import json
 import re
 import sys
+import unicodedata
 from pathlib import Path
 
 import openpyxl
@@ -89,6 +90,14 @@ ETHNICITY_COLUMNS = {
 SEX_COLUMNS = {"Girls": "female", "Boys": "male", "Unknown Sex": "unknown"}
 AGE_COLUMNS = {"Aged 10 to 14": "10-14", "Aged 15 to 17": "15-17"}
 
+# The YJB local-level tables spell one Welsh service two ways across their
+# three files. Both are canonicalised to the gov.uk youth justice services
+# directory spelling so the service appears once. See docs/methods.md.
+YJS_CANONICAL = {
+    "Gwynedd & Ynys Mon": "Gwynedd and Ynys Môn",
+    "Gwynedd Mon": "Gwynedd and Ynys Môn",
+}
+
 
 # --------------------------------------------------------------------------
 # Helpers
@@ -96,6 +105,7 @@ AGE_COLUMNS = {"Aged 10 to 14": "10-14", "Aged 15 to 17": "15-17"}
 def _slug(name: str) -> str:
     """Return a stable, url-safe slug for a geography name."""
     text = name.strip().lower().replace("&", " and ")
+    text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
     text = re.sub(r"[^a-z0-9]+", "-", text)
     return text.strip("-")
 
@@ -136,6 +146,7 @@ def build_geographies() -> list[dict]:
         frame = frame[frame["Financial_Year"].astype(str) == CURRENT_FY]
         for _, row in frame.iterrows():
             yjs = _clean(row["YJS"])
+            yjs = YJS_CANONICAL.get(yjs, yjs)
             region = _clean(row[region_col])
             pcc_raw = row["PCC"]
             pcc = _clean(pcc_raw) if not pd.isna(pcc_raw) else None

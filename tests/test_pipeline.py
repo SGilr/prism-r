@@ -143,8 +143,8 @@ def test_remand_record_schema(remand):
 # --------------------------------------------------------------------------
 def test_geography_counts(geographies):
     counts = geographies["meta"]["counts"]
-    assert counts == {"nation": 1, "region": 10, "police_force": 42, "yot": 156}
-    assert len(geographies["records"]) == 209
+    assert counts == {"nation": 1, "region": 10, "police_force": 42, "yot": 155}
+    assert len(geographies["records"]) == 208
 
 
 def test_geography_ids_unique(geographies):

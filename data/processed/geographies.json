@@ -4,7 +4,7 @@
       "nation": 1,
       "police_force": 42,
       "region": 10,
-      "yot": 156
+      "yot": 155
     },
     "dataset": "geographies",
     "financial_year": "2024-25",
@@ -1157,18 +1157,7 @@
       "centroid_lat": null,
       "centroid_lon": null,
       "geo_id": "yot-gwynedd-and-ynys-mon",
-      "geo_name": "Gwynedd & Ynys Mon",
-      "geo_type": "yot",
-      "ons_code": null,
-      "parent_force": null,
-      "parent_region": "rgn-wales"
-    },
-    {
-      "boundary_ref": null,
-      "centroid_lat": null,
-      "centroid_lon": null,
-      "geo_id": "yot-gwynedd-mon",
-      "geo_name": "Gwynedd Mon",
+      "geo_name": "Gwynedd and Ynys Môn",
       "geo_type": "yot",
       "ons_code": null,
       "parent_force": "pf-north-wales",

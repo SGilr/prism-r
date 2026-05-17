@@ -17,21 +17,25 @@ Every source feeding PRISM-R, with retrieval date and version. This file is the 
 - ONS child population by local authority and ethnicity, 2021 Census.
 - StatsWales equivalents for Welsh local authorities.
 
+## Geography reference
+
+- ONS lookup table for UK Authority Codes 2024 (FOI-2024-2008), published 20 May 2024. Provides the local authority register and the local authority to police force area mapping used by the crosswalk. https://www.ons.gov.uk/aboutus/transparencyandgovernance/freedomofinformationfoi/lookuptableforukauthoritycodes2024
+- gov.uk youth justice services contact directory, used to confirm youth justice service structure. https://www.gov.uk/government/collections/youth-offending-team-contact-details
+
 ## Retrieval log
 
-All files below were downloaded from gov.uk. The Youth Justice Statistics 2024 to 2025 release was published on 29 January 2026.
+| source | file | retrieved | licence | notes |
+|---|---|---|---|---|
+| YJS 2024-25 supplementary tables | Ch 1 - Gateway to the youth justice system.xlsx | 2026-05-16 | OGL v3.0 | chapter 1 |
+| YJS 2024-25 supplementary tables | Ch 3 - Children cautioned or sentenced.xlsx | 2026-05-16 | OGL v3.0 | chapter 3 |
+| YJS 2024-25 supplementary tables | Ch 6 - Use of remand for children.xlsx | 2026-05-16 | OGL v3.0 | chapter 6, remand spine |
+| YJS 2024-25 supplementary tables | Ch 7 - Children in youth custody.xlsx | 2026-05-16 | OGL v3.0 | chapter 7 |
+| YJS 2024-25 local level open data tables | Children_Table.ods | 2026-05-16 | OGL v3.0 | youth justice service level |
+| YJS 2024-25 local level open data tables | Offence_Table v2.ods | 2026-05-16 | OGL v3.0 | youth justice service level |
+| YJS 2024-25 local level open data tables | Outcome_Table.ods | 2026-05-16 | OGL v3.0 | youth justice service level |
+| ONS UK Authority Codes 2024 | uk_authority_codes_2024.xlsx | 2026-05-17 | OGL v3.0 | LA register and LA to police force lookup |
 
-| source | file | retrieved | notes |
-|---|---|---|---|
-| YJS 2024-25 supplementary tables | Ch 1 - Gateway to the youth justice system.xlsx | 2026-05-16 | chapter 1 |
-| YJS 2024-25 supplementary tables | Ch 3 - Children cautioned or sentenced.xlsx | 2026-05-16 | chapter 3 |
-| YJS 2024-25 supplementary tables | Ch 6 - Use of remand for children.xlsx | 2026-05-16 | chapter 6, remand spine |
-| YJS 2024-25 supplementary tables | Ch 7 - Children in youth custody.xlsx | 2026-05-16 | chapter 7 |
-| YJS 2024-25 local level open data tables | Children_Table.ods | 2026-05-16 | youth justice service level |
-| YJS 2024-25 local level open data tables | Offence_Table v2.ods | 2026-05-16 | youth justice service level |
-| YJS 2024-25 local level open data tables | Outcome_Table.ods | 2026-05-16 | youth justice service level |
-
-The original download archives (`supplementary_tables.zip`, `local_level_open_data_tables.zip`) are retained in `data/raw/yjb-2024-25/` as the canonical source.
+YJS files were downloaded from gov.uk. The Youth Justice Statistics 2024 to 2025 release was published on 29 January 2026. The original download archives (`supplementary_tables.zip`, `local_level_open_data_tables.zip`) are retained in `data/raw/yjb-2024-25/` as the canonical source.
 
 ### Known source issue
 
