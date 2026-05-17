@@ -40,7 +40,49 @@ Geography names use the English form, following YJB convention. The Welsh-langua
 
 ## Relative Rate Index
 
-The RRI calculation method is documented here in sprint 2.
+The Relative Rate Index (RRI) compares the rate at which an ethnic group experiences an outcome with the rate for the White baseline group:
+
+    RRI = (event rate for the group) / (event rate for the White group)
+
+A value of 1 is parity. Above 1, the group is more likely to experience the outcome; below 1, less likely. The method was recommended in the Lammy Review (2017) and is used by the Ministry of Justice in Statistics on Ethnicity and the Criminal Justice System. It is computed by `pipeline/compute_rri.py` and written to `data/processed/rri.json`.
+
+PRISM-R holds four RRI series, two decision points by two provenances:
+
+- Adult custodial sentencing and adult remand, `provenance: "moj_published"`. These are adopted verbatim from MoJ tables 9.01 and 5.17a. See "Reproducibility of MoJ-published RRIs" below.
+- Child custodial sentencing and child remand, `provenance: "prism_r_derived"`. These are computed by PRISM-R.
+
+PRISM-R is therefore producing a child-specific RRI that does not exist in published official statistics. It is computed transparently from open YJB data, applying the MoJ-recommended methodology to children specifically. Child custodial sentencing uses YJB Table 5.8, children sentenced for indictable offences by ethnicity and sentence type. Child remand uses YJB Table 6.1: the rate is the proportion of children subject to a remand decision who are remanded to youth detention accommodation, that is custodial remand.
+
+The adult rows are calendar year 2024, as MoJ publishes them. The child rows are the year ending March 2025, the latest YJB year and the basis used elsewhere in the pipeline. This period difference is recorded in the `rri.json` meta block.
+
+Spec section 4.6 will be revised after Task 3 to reflect what PRISM-R actually does: applying the MoJ-recommended methodology to youth-specific data and decision points, with explicit provenance labelling.
+
+## Confidence interval methodology
+
+PRISM-R reports a 95% confidence interval for every `prism_r_derived` RRI. The interval is the Wald interval on the log of the rate ratio:
+
+    SE(ln RRI) = sqrt(1/a + 1/b - 1/A - 1/B)
+    95% CI     = exp( ln(RRI) plus or minus 1.96 x SE(ln RRI) )
+
+where a and A are the event count and total for the group, and b and B those for the White baseline. This is the standard interval for a ratio of rates in epidemiology and public health. It is cited to Altman, Machin, Bryant and Gardner, Statistics with Confidence, 2nd ed., BMJ Books, 2000.
+
+Two points of method:
+
+1. MoJ uses p-value-based significance flags rather than confidence intervals. PRISM-R adopts confidence intervals because they convey magnitude and uncertainty together in a single visual, whereas a p-value flag is binary. Both are valid; confidence intervals are the more informative choice for a public-facing tool. MoJ's flag is still carried, on the `moj_published` rows, in the `significance_flag` field.
+
+2. The Wald log-ratio interval is unreliable when any underlying count is small, below about 5. PRISM-R suppresses cells below 6, so this is largely a non-issue, but it is flagged honestly: intervals computed near the suppression boundary will be wide and may extend implausibly. Exact methods, such as the Wilson or Fisher interval, are deferred to v2.
+
+TODO, methodology reviewer: the confidence interval method above is to be reviewed and signed off before launch.
+
+## Reproducibility of MoJ-published RRIs
+
+The Ministry of Justice publishes RRI values in tables 9.01 (custodial sentencing) and 5.17a (remand in custody) of Statistics on Ethnicity and the Criminal Justice System 2024. It does not publish the underlying counts: the numbers of defendants sentenced, and sentenced to immediate custody, by ethnic group and offence type.
+
+Those counts are derived from the Court Proceedings Database, which is not public. The published Criminal Justice Statistics outcomes tools hold the data only inside an embedded analytical model that is not machine-readable with an open toolchain, and the Ethnicity Facts and Figures service has not been refreshed past 2017.
+
+End-to-end reproduction of the MoJ RRIs from public sources is therefore not possible. PRISM-R adopts the published values as reference, cited verbatim, with `provenance: "moj_published"`.
+
+This is not a criticism of MoJ practice. It is a description of the disclosure environment: aggregate RRIs can be released where the underlying record-level data cannot. It explains why two of the four RRI series in `rri.json` carry `provenance: "moj_published"` rather than `prism_r_derived`, and why those two carry no confidence interval, since the interval needs the same withheld counts.
 
 ## Denominator basis
 

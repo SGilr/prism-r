@@ -34,6 +34,11 @@ Every source feeding PRISM-R, with retrieval date and version. This file is the 
 | YJS 2024-25 local level open data tables | Offence_Table v2.ods | 2026-05-16 | OGL v3.0 | youth justice service level |
 | YJS 2024-25 local level open data tables | Outcome_Table.ods | 2026-05-16 | OGL v3.0 | youth justice service level |
 | ONS UK Authority Codes 2024 | uk_authority_codes_2024.xlsx | 2026-05-17 | OGL v3.0 | LA register and LA to police force lookup |
+| MoJ Ethnicity and the CJS 2024 | A_Technical_Guide_to_Ethnicity_and_the_CJS_2024.pdf | 2026-05-17 | OGL v3.0 | RRI methodology reference |
+| MoJ Ethnicity and the CJS 2024 | A_User_Guide_to_Ethnicity_and_the_CJS_2024.pdf | 2026-05-17 | OGL v3.0 | publication user guide |
+| MoJ Ethnicity and the CJS 2024 | ch9_offence_analysis_2024.ods | 2026-05-17 | OGL v3.0 | Table 9.01, adult custodial sentencing RRI |
+| MoJ Ethnicity and the CJS 2024 | ch5_defendants_tables_2024.ods | 2026-05-17 | OGL v3.0 | Table 5.17a, adult remand RRI |
+| YJB Youth Justice Statistics 2024-25 | Ch 5 - Sentencing of children.xlsx | 2026-05-16 | OGL v3.0 | Table 5.8, child custodial sentencing RRI |
 
 YJS files were downloaded from gov.uk. The Youth Justice Statistics 2024 to 2025 release was published on 29 January 2026. The original download archives (`supplementary_tables.zip`, `local_level_open_data_tables.zip`) are retained in `data/raw/yjb-2024-25/` as the canonical source.
 
