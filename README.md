@@ -48,4 +48,9 @@ Oxon Advisory. Hosted on Prevention Works (howpreventionworks.com). Independent 
 
 ## Licence
 
-To be confirmed before the repository is made public.
+PRISM-R is dual-licensed.
+
+- Code, meaning the pipeline and the site source, is under the MIT licence. See [LICENSE](LICENSE).
+- Documentation and processed data, meaning the contents of `docs/` and `data/processed/`, are under the Creative Commons Attribution 4.0 International licence (CC BY 4.0). See [LICENSE-data](LICENSE-data).
+
+In short: MIT for code, CC BY 4.0 for documentation and processed data.
