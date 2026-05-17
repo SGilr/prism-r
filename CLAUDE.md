@@ -106,4 +106,8 @@ Editorial rules apply to code comments, error messages, placeholder text, commit
 
 ## Build order
 
-The front-end is not started until the pipeline reproduces published national totals and that is confirmed. Current sprint: 1, the data pipeline core.
+The front-end is not started until the pipeline reproduces published national totals and that is confirmed.
+
+`pipeline/build.py` is the canonical entry point for a data refresh. It runs every ingest and compute step in dependency order, validates each output, and writes `data/processed/manifest.json`, the provenance record. Run it with `make build`. For a full refresh use the orchestrator, not the ingest scripts ad hoc, so the manifest stays current. `make test`, `make test-fast` and `make clean-processed` are the other entry points.
+
+Sprints 1 and 2 are complete: the data pipeline is built, reproducible and manifest-backed. Current sprint: 3, the Astro site shell.

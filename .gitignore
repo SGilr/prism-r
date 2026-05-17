@@ -9,6 +9,10 @@ __pycache__/
 data/interim/*
 !data/interim/.gitkeep
 
+# Build log: a runtime artefact written by pipeline/build.py. The committed
+# provenance record is data/processed/manifest.json, not this log.
+data/processed/build.log
+
 # Raw source downloads, not committed; reproducible from the documented sources.
 data/raw/*
 !data/raw/.gitkeep

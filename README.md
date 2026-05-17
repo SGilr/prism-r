@@ -10,7 +10,7 @@ The tool shows co-occurrence, not causation.
 
 v1 build, started May 2026. The full specification, including scope, data model, disclosure control rules, and the sprint plan, is in [docs/prism-r-v1-spec.md](docs/prism-r-v1-spec.md). This repository currently holds the data pipeline; the Astro site is built in later sprints.
 
-Sprint 1 is complete: the YJB 2024-25 national remand data is ingested and the pipeline reproduces every published national total.
+Sprints 1 and 2 are complete. The data pipeline is built: YJB remand and sentencing, ONS child population, DfE and StatsWales exclusions and looked-after children, Home Office stop and search and arrests, and English and Welsh child deprivation are all ingested, with Relative Rate Index computation and disclosure-control logic. `python pipeline/build.py` reproduces every processed output and writes a provenance manifest.
 
 ## Repository layout
 
@@ -30,19 +30,33 @@ python3.14 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 ```
 
-Run the full pipeline:
+## Reproducing the pipeline
+
+`pipeline/build.py` is the canonical entry point. It runs every ingest and compute step in dependency order, validates each output, and writes the build manifest:
 
 ```
-.venv/bin/python pipeline/build.py
+make build              # or: .venv/bin/python pipeline/build.py
 ```
 
-`build.py` runs every ingest and compute step in dependency order and writes `data/processed/manifest.json`, a provenance record with a SHA-256 checksum, byte size and record count for each processed output. Individual steps can also be run on their own, for example `.venv/bin/python pipeline/ingest_yjb.py`. The pipeline needs the raw source files under `data/raw/`, which are not in the repository; see `docs/data-sources.md`.
+This regenerates the seven JSON files in `data/processed/` and writes `data/processed/manifest.json`, a provenance record carrying, for each output, a SHA-256 checksum, byte size, record count, and the source description, URL, reference period and publication date. The processed outputs are deterministic: a second build reproduces them byte for byte.
+
+`build.py` flags:
+
+- `--dry-run` print the planned step order and exit
+- `--only STEP` run a single step (`yjb`, `crosswalk`, `ons`, `dfe`, `home_office`, `imd`, `rri`)
+- `--from STEP` start at a step and run every step after it
+- `--skip-raw-fetch` use the local `data/raw/` files; this is the only v1 behaviour, as PRISM-R does not yet automate downloads
+
+The pipeline needs the raw source files under `data/raw/`, which are not in the repository. See `docs/data-sources.md` for every source with its retrieval date.
 
 Run the tests:
 
 ```
-.venv/bin/python -m pytest
+make test               # full suite, including the end-to-end smoke test
+make test-fast          # skips the slow smoke test
 ```
+
+`make clean-processed` removes every generated file in `data/processed/`; `make build` regenerates them.
 
 ## Owner
 

@@ -1,14 +1,15 @@
 {
   "meta": {
-    "build_timestamp": "2026-05-17T21:46:25+00:00",
+    "build_timestamp": "2026-05-17T22:07:56+00:00",
     "dataset": "build_manifest",
     "generated_by": "pipeline/build.py",
     "git": {
-      "commit": "a9adec172b722f8691d5cb8c6919ece669210fcc",
+      "commit": "ee75e6a0048367dc8df0b1671db47d03a2c10fe5",
       "working_tree": "dirty"
     },
     "python_version": "3.14.2",
-    "schema_note": "A provenance record of one pipeline build. steps lists each script run, in order, with its timing. outputs gives a SHA-256 checksum, byte size and record count for every processed JSON file. build_timestamp changes each run, so the manifest is not byte-identical between builds; the processed outputs themselves are deterministic."
+    "schema_note": "A provenance record of one pipeline build. steps lists each script run, in order, with its timing. outputs gives a SHA-256 checksum, byte size, record count and source provenance for every processed JSON file. build_timestamp changes each run, so the manifest is not byte-identical between builds; the processed outputs themselves are deterministic and reproduce byte-for-byte.",
+    "schema_version": "1.0.0"
   },
   "outputs": [
     {
@@ -16,113 +17,230 @@
       "file": "data/processed/geographies.json",
       "generated_by": "pipeline/ingest_yjb.py",
       "records": 208,
-      "sha256": "ca74cdc877053ed98c5109c95606d51846609e69739827a605794436448ccb78"
+      "schema_version": "1.0.0",
+      "sha256": "ca74cdc877053ed98c5109c95606d51846609e69739827a605794436448ccb78",
+      "sources": [
+        {
+          "description": "YJB Youth Justice Statistics 2024 to 2025; gov.uk youth justice services directory",
+          "publication_date": "2026-01-29",
+          "reference_period": "year ending March 2025",
+          "retrieval_date": "2026-05-16",
+          "url": "https://www.gov.uk/government/statistics/youth-justice-statistics-2024-to-2025"
+        }
+      ]
     },
     {
       "bytes": 147001,
       "file": "data/processed/geo_crosswalk.json",
       "generated_by": "pipeline/build_crosswalk.py",
       "records": 318,
-      "sha256": "c40f8d635ed1e96712da86eadee23797e3a79538c84b350af8d32abfd89cc082"
+      "schema_version": "1.0.0",
+      "sha256": "c40f8d635ed1e96712da86eadee23797e3a79538c84b350af8d32abfd89cc082",
+      "sources": [
+        {
+          "description": "ONS lookup table for UK Authority Codes 2024 (FOI-2024-2008)",
+          "publication_date": "2024-05-20",
+          "reference_period": "2024 local authority and police force geography",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.ons.gov.uk/aboutus/transparencyandgovernance/freedomofinformationfoi/lookuptableforukauthoritycodes2024"
+        }
+      ]
     },
     {
       "bytes": 17374,
       "file": "data/processed/remand_outcomes.json",
       "generated_by": "pipeline/ingest_yjb.py",
       "records": 64,
-      "sha256": "36fbe43a62d06a5b10e416825589a5db3f62a8804a8be75e7c128589a7c91ff2"
+      "schema_version": "1.0.0",
+      "sha256": "36fbe43a62d06a5b10e416825589a5db3f62a8804a8be75e7c128589a7c91ff2",
+      "sources": [
+        {
+          "description": "YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",
+          "publication_date": "2026-01-29",
+          "reference_period": "year ending March 2025",
+          "retrieval_date": "2026-05-16",
+          "url": "https://www.gov.uk/government/statistics/youth-justice-statistics-2024-to-2025"
+        }
+      ]
     },
     {
       "bytes": 2344028,
       "file": "data/processed/populations.json",
       "generated_by": "pipeline/ingest_ons.py",
       "records": 9452,
-      "sha256": "8fb20d9c558f03df6aa2cb11bd646a5ec1537b70a69903207bfe001953f23c1a"
+      "schema_version": "1.0.0",
+      "sha256": "8fb20d9c558f03df6aa2cb11bd646a5ec1537b70a69903207bfe001953f23c1a",
+      "sources": [
+        {
+          "description": "ONS Census 2021, dataset RM032, ethnic group by sex by age, via the ONS filter service",
+          "publication_date": "2023-03-28",
+          "reference_period": "Census day, 21 March 2021",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.ons.gov.uk/datasets/RM032"
+        }
+      ]
     },
     {
       "bytes": 6317,
       "file": "data/processed/ethnicity_crosswalk.json",
       "generated_by": "pipeline/ingest_dfe.py",
       "records": null,
-      "sha256": "0bf8d28a4d12f9c11ca723e171833a84d5dcb3f2e910e54dbaab3d8781a1fe9c"
+      "schema_version": "1.0.0",
+      "sha256": "0bf8d28a4d12f9c11ca723e171833a84d5dcb3f2e910e54dbaab3d8781a1fe9c",
+      "sources": [
+        {
+          "description": "ONS Census 2021 and DfE school census ethnicity classifications, rolled up to the YJB five groups",
+          "publication_date": null,
+          "reference_period": "classification crosswalk, not a dated dataset",
+          "retrieval_date": "2026-05-17",
+          "url": ""
+        }
+      ]
     },
     {
       "bytes": 2417829,
       "file": "data/processed/context_indicators.json",
       "generated_by": "pipeline/ingest_dfe.py, pipeline/ingest_home_office.py and pipeline/ingest_imd.py",
       "records": 3770,
-      "sha256": "662ea7633ec9b10fde8586f3e1ac75285eb152aaf1b92106431622126c908d37"
+      "schema_version": "1.0.0",
+      "sha256": "662ea7633ec9b10fde8586f3e1ac75285eb152aaf1b92106431622126c908d37",
+      "sources": [
+        {
+          "description": "DfE Suspensions and permanent exclusions in England",
+          "publication_date": "2025-07-10",
+          "reference_period": "academic year 2023/24",
+          "retrieval_date": "2026-05-17",
+          "url": "https://explore-education-statistics.service.gov.uk/find-statistics/suspensions-and-permanent-exclusions-in-england"
+        },
+        {
+          "description": "DfE Children looked after in England including adoptions",
+          "publication_date": "2025-11-26",
+          "reference_period": "year ending 31 March 2025",
+          "retrieval_date": "2026-05-17",
+          "url": "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions"
+        },
+        {
+          "description": "StatsWales, Welsh Government, permanent and fixed-term exclusions from schools",
+          "publication_date": "2025-11-01",
+          "reference_period": "academic year 2023/24",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.gov.wales/permanent-and-fixed-term-exclusions-schools"
+        },
+        {
+          "description": "StatsWales, Children looked after on 31 March by ethnicity",
+          "publication_date": "2026-01-30",
+          "reference_period": "year ending 31 March 2024",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.gov.wales/children-looked-after-local-authorities"
+        },
+        {
+          "description": "Home Office Police powers and procedures, stop and search open data tables",
+          "publication_date": "2025-11-06",
+          "reference_period": "year ending 31 March 2025",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.gov.uk/government/statistics/stop-and-search-arrests-and-mental-health-detentions-march-2025"
+        },
+        {
+          "description": "Home Office Police powers and procedures, arrests open data tables",
+          "publication_date": "2025-11-06",
+          "reference_period": "year ending 31 March 2025",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.gov.uk/government/statistics/stop-and-search-arrests-and-mental-health-detentions-march-2025"
+        },
+        {
+          "description": "MHCLG English Indices of Deprivation 2025, IDACI supplementary index",
+          "publication_date": "2025-10-30",
+          "reference_period": "income data financial year 2022/23",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.gov.uk/government/statistics/english-indices-of-deprivation-2025"
+        },
+        {
+          "description": "Welsh Index of Multiple Deprivation 2019, income deprivation for children indicator",
+          "publication_date": "2019-11-27",
+          "reference_period": "income data financial year 2016/17",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.gov.wales/welsh-index-multiple-deprivation-2025"
+        }
+      ]
     },
     {
       "bytes": 34283,
       "file": "data/processed/rri.json",
       "generated_by": "pipeline/compute_rri.py",
       "records": 45,
-      "sha256": "113ea1389834d62ecde66ad0b7b8695c1e19bde3310695545ff7c6f6c822e821"
+      "schema_version": "1.0.0",
+      "sha256": "113ea1389834d62ecde66ad0b7b8695c1e19bde3310695545ff7c6f6c822e821",
+      "sources": [
+        {
+          "description": "MoJ Statistics on Ethnicity and the Criminal Justice System 2024",
+          "publication_date": "2025-11-27",
+          "reference_period": "calendar year 2024",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.gov.uk/government/statistics/ethnicity-and-the-criminal-justice-system-2024"
+        },
+        {
+          "description": "YJB Youth Justice Statistics 2024 to 2025, sentencing and remand tables",
+          "publication_date": "2026-01-29",
+          "reference_period": "year ending March 2025",
+          "retrieval_date": "2026-05-16",
+          "url": "https://www.gov.uk/government/statistics/youth-justice-statistics-2024-to-2025"
+        },
+        {
+          "description": "Home Office Police powers and procedures, stop and search and arrests open data",
+          "publication_date": "2025-11-06",
+          "reference_period": "year ending 31 March 2025",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.gov.uk/government/statistics/stop-and-search-arrests-and-mental-health-detentions-march-2025"
+        }
+      ]
     }
   ],
   "steps": [
     {
-      "duration_seconds": 20.42,
-      "outputs": [
-        "data/processed/geographies.json",
-        "data/processed/remand_outcomes.json"
-      ],
+      "duration_seconds": 20.76,
+      "name": "yjb",
       "script": "pipeline/ingest_yjb.py",
       "status": "ok",
       "step": 1
     },
     {
-      "duration_seconds": 0.16,
-      "outputs": [
-        "data/processed/geo_crosswalk.json"
-      ],
+      "duration_seconds": 0.11,
+      "name": "crosswalk",
       "script": "pipeline/build_crosswalk.py",
       "status": "ok",
       "step": 2
     },
     {
-      "duration_seconds": 0.28,
-      "outputs": [
-        "data/processed/populations.json"
-      ],
+      "duration_seconds": 0.25,
+      "name": "ons",
       "script": "pipeline/ingest_ons.py",
       "status": "ok",
       "step": 3
     },
     {
-      "duration_seconds": 2.03,
-      "outputs": [
-        "data/processed/ethnicity_crosswalk.json",
-        "data/processed/context_indicators.json"
-      ],
+      "duration_seconds": 2.27,
+      "name": "dfe",
       "script": "pipeline/ingest_dfe.py",
       "status": "ok",
       "step": 4
     },
     {
-      "duration_seconds": 71.02,
-      "outputs": [
-        "data/processed/context_indicators.json"
-      ],
+      "duration_seconds": 73.8,
+      "name": "home_office",
       "script": "pipeline/ingest_home_office.py",
       "status": "ok",
       "step": 5
     },
     {
-      "duration_seconds": 0.2,
-      "outputs": [
-        "data/processed/context_indicators.json"
-      ],
+      "duration_seconds": 0.21,
+      "name": "imd",
       "script": "pipeline/ingest_imd.py",
       "status": "ok",
       "step": 6
     },
     {
-      "duration_seconds": 0.68,
-      "outputs": [
-        "data/processed/rri.json"
-      ],
+      "duration_seconds": 0.72,
+      "name": "rri",
       "script": "pipeline/compute_rri.py",
       "status": "ok",
       "step": 7
