@@ -10,7 +10,7 @@ Justice in Statistics on Ethnicity and the Criminal Justice System.
 A value of 1 is parity, above 1 means the group is more likely to
 experience the outcome, below 1 less likely.
 
-Four RRI series are produced, two decision points by two provenances:
+Four RRI series are produced:
 
   custodial_sentence  adult  moj_published    adopted from MoJ Table 9.01
   custodial_sentence  child  prism_r_derived  computed from YJB Table 5.8
@@ -19,25 +19,27 @@ Four RRI series are produced, two decision points by two provenances:
 
 The adult RRIs are adopted verbatim from MoJ's published tables. MoJ does
 not publish the underlying counts, the source Court Proceedings Database is
-not public, so these cannot be reproduced from public data and carry no
-confidence interval. MoJ's own p-value-based significance flag is retained.
-See docs/methods.md, section "Reproducibility of MoJ-published RRIs".
+not public, so they cannot be reproduced from public data and carry no
+confidence interval. MoJ's p-value-based significance flag is retained.
 
-The child RRIs are computed by PRISM-R from open YJB youth data, applying
-the same methodology to children specifically. No child-specific RRI exists
-in published official statistics. Confidence intervals use the Wald
-interval on the log of the rate ratio (Altman, Machin, Bryant and Gardner,
-Statistics with Confidence, 2nd ed., BMJ Books, 2000):
+The child RRIs are computed by PRISM-R from open YJB youth data. No
+child-specific RRI exists in published official statistics. Confidence
+intervals use the Wald interval on the log of the rate ratio (Altman,
+Machin, Bryant and Gardner, Statistics with Confidence, 2nd ed., BMJ Books,
+2000):
 
     SE(ln RRI) = sqrt(1/a + 1/b - 1/A - 1/B)
     95% CI     = exp( ln(RRI) +/- 1.96 * SE(ln RRI) )
 
-where a and A are the event count and total for the group, and b and B the
-event count and total for the White baseline.
+Child custodial sentencing counts are small enough that a single year is
+statistically fragile, so the primary figure is a three-year pooled
+estimate (years ending March 2023, 2024, 2025); single-year values are
+retained for inspection. Child remand counts are stable and are not pooled.
+See docs/methods.md.
 
-Period basis: the adult rows are calendar year 2024, as MoJ publishes them.
-The child rows are the year ending March 2025, the latest YJB year and the
-basis used elsewhere in the pipeline.
+Reporting periods differ: adult rows are calendar year 2024 (the MoJ basis),
+child rows are years ending March (the YJB basis). PRISM-R does not force
+one onto the other.
 """
 
 from __future__ import annotations
@@ -69,7 +71,9 @@ GROUPS = ["Asian", "Black", "Mixed", "Other"]
 ALL_ETHNICITIES = [BASELINE, *GROUPS]
 
 ADULT_YEAR = 2024
-CHILD_YEAR = 2025  # year ending March 2025
+CHILD_REMAND_YEAR = 2025  # year ending March 2025
+CHILD_SENTENCING_YEARS = [2023, 2024, 2025]  # years ending March; pooled
+POOLED_PERIOD = "pooled_3y_ending_march_2025"
 
 ADULT_SOURCE = {
     "source_publication": "Statistics on Ethnicity and the Criminal Justice System 2024",
@@ -103,11 +107,8 @@ def relative_rate_index(
 ) -> RRIResult:
     """RRI of a group versus the White baseline, with a 95% confidence interval.
 
-    events, total            the group's event count and population
-    baseline_events, baseline_total  the White baseline's event count and population
-
     The interval is the Wald interval on the log of the rate ratio. It is
-    unreliable when any count is very small; see docs/disclosure-control.md.
+    unreliable when any count is very small; see docs/methods.md.
     """
     if min(events, total, baseline_events, baseline_total) <= 0:
         raise ValueError("RRI requires positive event counts and totals")
@@ -143,6 +144,10 @@ def _as_year(value: object) -> int | None:
         return int(float(value))
     except (TypeError, ValueError):
         return None
+
+
+def _row(**fields) -> dict:
+    return fields
 
 
 # --------------------------------------------------------------------------
@@ -193,13 +198,14 @@ def read_moj_adult_rri(ods_path: Path, sheet: str) -> dict[str, dict]:
 
 
 # --------------------------------------------------------------------------
-# Child RRIs, computed by PRISM-R
+# Child counts, read from open YJB data
 # --------------------------------------------------------------------------
-def read_child_custodial_counts() -> dict[str, dict[str, int]]:
+def read_child_custodial_counts() -> dict[int, dict[str, dict[str, int]]]:
     """Read YJB Table 5.8: children sentenced for indictable offences.
 
-    Returns {ethnicity: {"events": immediate custody, "total": total sentenced}}
-    for the year ending March 2025.
+    Table 5.8 is a time series, so the single 2024-25 publication carries
+    every year ending March 2023, 2024 and 2025. Returns
+    {year: {ethnicity: {"events": immediate custody, "total": total sentenced}}}.
     """
     workbook = openpyxl.load_workbook(YJB_CH5, data_only=True)
     try:
@@ -209,19 +215,20 @@ def read_child_custodial_counts() -> dict[str, dict[str, int]]:
 
     header_idx = next(i for i, r in enumerate(rows) if _clean(r[0]) == "Ethnicity")
     header = [_clean(c) for c in rows[header_idx]]
-    year_col = next(j for j, h in enumerate(header) if h == str(CHILD_YEAR))
+    year_columns = {year: header.index(str(year)) for year in CHILD_SENTENCING_YEARS}
 
-    counts: dict[str, dict[str, int]] = {}
+    counts: dict[int, dict[str, dict[str, int]]] = {y: {} for y in CHILD_SENTENCING_YEARS}
     for row in rows[header_idx + 1:]:
         ethnicity = _clean(row[0])
         if ethnicity not in ALL_ETHNICITIES:
             continue
         sentence_type = _clean(row[1])
-        bucket = counts.setdefault(ethnicity, {})
-        if sentence_type == "Immediate Custody":
-            bucket["events"] = int(row[year_col])
-        elif sentence_type == "Total sentenced":
-            bucket["total"] = int(row[year_col])
+        for year, column in year_columns.items():
+            bucket = counts[year].setdefault(ethnicity, {})
+            if sentence_type == "Immediate Custody":
+                bucket["events"] = int(row[column])
+            elif sentence_type == "Total sentenced":
+                bucket["total"] = int(row[column])
     return counts
 
 
@@ -236,7 +243,7 @@ def read_child_remand_counts() -> dict[str, dict[str, int]]:
     data = json.loads(REMAND_OUTCOMES.read_text(encoding="utf-8"))
     counts = {e: {"events": 0, "total": 0} for e in ALL_ETHNICITIES}
     for record in data["records"]:
-        if record["breakdown"] != "ethnicity" or record["year"] != CHILD_YEAR:
+        if record["breakdown"] != "ethnicity" or record["year"] != CHILD_REMAND_YEAR:
             continue
         ethnicity = record["ethnicity"]
         if ethnicity not in counts:
@@ -248,38 +255,27 @@ def read_child_remand_counts() -> dict[str, dict[str, int]]:
 
 
 # --------------------------------------------------------------------------
-# Assembly
+# Row assembly
 # --------------------------------------------------------------------------
-def _adult_rows(decision_point: str, source_table: str, sheet_data: dict) -> list[dict]:
-    rows = [
-        _row(
-            year=ADULT_YEAR,
-            decision_point=decision_point,
-            ethnicity=BASELINE,
-            provenance="moj_published",
-            rri=1.0,
-            ci_lower=None,
-            ci_upper=None,
-            ci_method="not_published",
-            significance_flag=None,
-            events=None,
-            total=None,
-            source_table=source_table,
-            **ADULT_SOURCE,
-        )
-    ]
-    for group in GROUPS:
+def _adult_block(decision_point: str, source_table: str, rri_data: dict) -> list[dict]:
+    """Five rows adopted verbatim from a MoJ RRI table."""
+    rows = []
+    for ethnicity in ALL_ETHNICITIES:
+        is_baseline = ethnicity == BASELINE
         rows.append(
             _row(
+                geo_id="ew",
                 year=ADULT_YEAR,
+                period_basis="calendar_year_2024",
+                pooled=False,
                 decision_point=decision_point,
-                ethnicity=group,
+                ethnicity=ethnicity,
                 provenance="moj_published",
-                rri=sheet_data[group]["rri"],
+                rri=1.0 if is_baseline else rri_data[ethnicity]["rri"],
                 ci_lower=None,
                 ci_upper=None,
                 ci_method="not_published",
-                significance_flag=sheet_data[group]["significance_flag"],
+                significance_flag=None if is_baseline else rri_data[ethnicity]["significance_flag"],
                 events=None,
                 total=None,
                 source_table=source_table,
@@ -289,45 +285,44 @@ def _adult_rows(decision_point: str, source_table: str, sheet_data: dict) -> lis
     return rows
 
 
-def _child_rows(decision_point: str, source_table: str, counts: dict) -> list[dict]:
+def _child_block(
+    decision_point: str,
+    source_table: str,
+    counts: dict[str, dict[str, int]],
+    year: int,
+    period_basis: str,
+    pooled: bool,
+) -> list[dict]:
+    """Five rows computed by PRISM-R from youth counts, with Wald CIs."""
     baseline = counts[BASELINE]
-    rows = [
-        _row(
-            year=CHILD_YEAR,
-            decision_point=decision_point,
-            ethnicity=BASELINE,
-            provenance="prism_r_derived",
-            rri=1.0,
-            ci_lower=None,
-            ci_upper=None,
-            ci_method="wald_log_ratio",
-            significance_flag=None,
-            events=baseline["events"],
-            total=baseline["total"],
-            source_table=source_table,
-            **CHILD_SOURCE,
-        )
-    ]
-    for group in GROUPS:
-        result = relative_rate_index(
-            counts[group]["events"],
-            counts[group]["total"],
-            baseline["events"],
-            baseline["total"],
-        )
+    rows = []
+    for ethnicity in ALL_ETHNICITIES:
+        if ethnicity == BASELINE:
+            rri, ci_lower, ci_upper = 1.0, None, None
+        else:
+            result = relative_rate_index(
+                counts[ethnicity]["events"],
+                counts[ethnicity]["total"],
+                baseline["events"],
+                baseline["total"],
+            )
+            rri, ci_lower, ci_upper = result.rri, result.ci_lower, result.ci_upper
         rows.append(
             _row(
-                year=CHILD_YEAR,
+                geo_id="ew",
+                year=year,
+                period_basis=period_basis,
+                pooled=pooled,
                 decision_point=decision_point,
-                ethnicity=group,
+                ethnicity=ethnicity,
                 provenance="prism_r_derived",
-                rri=result.rri,
-                ci_lower=result.ci_lower,
-                ci_upper=result.ci_upper,
+                rri=rri,
+                ci_lower=ci_lower,
+                ci_upper=ci_upper,
                 ci_method="wald_log_ratio",
                 significance_flag=None,
-                events=counts[group]["events"],
-                total=counts[group]["total"],
+                events=counts[ethnicity]["events"],
+                total=counts[ethnicity]["total"],
                 source_table=source_table,
                 **CHILD_SOURCE,
             )
@@ -335,24 +330,52 @@ def _child_rows(decision_point: str, source_table: str, counts: dict) -> list[di
     return rows
 
 
-def _row(**fields) -> dict:
-    return fields
+def _pool_counts(by_year: dict[int, dict[str, dict[str, int]]]) -> dict[str, dict[str, int]]:
+    """Sum event and total counts across years, per ethnicity."""
+    return {
+        ethnicity: {
+            "events": sum(by_year[y][ethnicity]["events"] for y in by_year),
+            "total": sum(by_year[y][ethnicity]["total"] for y in by_year),
+        }
+        for ethnicity in ALL_ETHNICITIES
+    }
 
 
 def build_rri() -> list[dict]:
-    """Build the four RRI series. Returns the record list."""
+    """Build all RRI rows. Returns the record list."""
     rows: list[dict] = []
-    rows += _adult_rows(
-        "custodial_sentence", "9.01", read_moj_adult_rri(MOJ_CH9, "9_01")
+
+    # Adult, adopted from MoJ.
+    rows += _adult_block("custodial_sentence", "9.01", read_moj_adult_rri(MOJ_CH9, "9_01"))
+    rows += _adult_block("remand", "5.17a", read_moj_adult_rri(MOJ_CH5, "5_15"))
+
+    # Child custodial sentencing: single-year rows plus a three-year pooled row.
+    by_year = read_child_custodial_counts()
+    for year in CHILD_SENTENCING_YEARS:
+        rows += _child_block(
+            "custodial_sentence", "5.8", by_year[year], year,
+            period_basis=f"year_ending_march_{year}", pooled=False,
+        )
+    rows += _child_block(
+        "custodial_sentence", "5.8", _pool_counts(by_year),
+        year=CHILD_SENTENCING_YEARS[-1], period_basis=POOLED_PERIOD, pooled=True,
     )
-    rows += _adult_rows(
-        "remand", "5.17a", read_moj_adult_rri(MOJ_CH5, "5_15")
+
+    # Child remand: single year, not pooled (counts are stable).
+    rows += _child_block(
+        "remand", "6.1", read_child_remand_counts(), CHILD_REMAND_YEAR,
+        period_basis=f"year_ending_march_{CHILD_REMAND_YEAR}", pooled=False,
     )
-    rows += _child_rows(
-        "custodial_sentence", "5.8", read_child_custodial_counts()
+
+    rows.sort(
+        key=lambda r: (
+            r["decision_point"],
+            r["provenance"],
+            0 if r["pooled"] else 1,
+            r["year"],
+            r["ethnicity"],
+        )
     )
-    rows += _child_rows("remand", "6.1", read_child_remand_counts())
-    rows.sort(key=lambda r: (r["decision_point"], r["provenance"], r["year"], r["ethnicity"]))
     return rows
 
 
@@ -365,8 +388,8 @@ def write_rri() -> dict:
             "methodology": (
                 "Relative Rate Index, the event rate for an ethnic group "
                 "divided by the event rate for the White baseline group, "
-                "following the Ministry of Justice methodology recommended "
-                "in the Lammy Review (2017)."
+                "following the MoJ methodology recommended in the Lammy "
+                "Review (2017)."
             ),
             "confidence_interval": (
                 "95% Wald interval on the log of the rate ratio; "
@@ -375,9 +398,18 @@ def write_rri() -> dict:
                 "Confidence, 2nd ed., BMJ Books, 2000. Applied to "
                 "prism_r_derived rows only."
             ),
+            "pooling": (
+                "The child custodial sentencing RRI is presented as a "
+                "three-year pooled estimate (period_basis "
+                f"{POOLED_PERIOD!r}, pooled true) because single-year "
+                "immediate-custody counts for children are small and "
+                "unstable. Single-year rows are retained with pooled false. "
+                "Child remand is not pooled; its counts are stable."
+            ),
             "period_basis": (
-                "Adult moj_published rows are calendar year 2024. Child "
-                "prism_r_derived rows are the year ending March 2025."
+                "Adult rows are calendar year 2024, the MoJ basis. Child "
+                "rows are years ending March, the YJB basis. The two are "
+                "not forced onto a common calendar."
             ),
             "provenance": {
                 "moj_published": (
@@ -391,11 +423,11 @@ def write_rri() -> dict:
                 ),
             },
             "schema_note": (
-                "One record per decision_point, provenance, year and "
+                "One record per decision_point, provenance, period and "
                 "ethnicity. White is the baseline, rri 1.0 by definition. "
-                "ci_lower and ci_upper are null for moj_published rows. "
-                "events and total are the rate numerator and denominator, "
-                "given for prism_r_derived rows for transparency."
+                "ci_lower and ci_upper are null for moj_published rows and "
+                "for White baseline rows. events and total are the rate "
+                "numerator and denominator, given for prism_r_derived rows."
             ),
             "counts": {"records": len(rows)},
         },
@@ -419,9 +451,11 @@ def main() -> int:
             else f"  ({row['ci_method']})"
         )
         flag = f"  {row['significance_flag']}" if row["significance_flag"] else ""
+        tag = "  POOLED" if row["pooled"] else ""
         print(
             f"  {row['decision_point']:18s} {row['provenance']:16s} "
-            f"{row['ethnicity']:7s} {row['year']}  RRI {row['rri']:.4f}{ci}{flag}"
+            f"{row['ethnicity']:7s} {row['period_basis']:28s} "
+            f"RRI {row['rri']:.4f}{ci}{flag}{tag}"
         )
     return 0
 

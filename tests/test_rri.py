@@ -66,7 +66,9 @@ def test_rri_rejects_events_above_total():
 # --------------------------------------------------------------------------
 def test_build_rri_produces_four_series():
     rows = compute_rri.build_rri()
-    assert len(rows) == 20  # 4 series x 5 ethnicities (White baseline included)
+    # 5 ethnicities x: adult sentencing, adult remand, child remand,
+    # child sentencing (3 single years + 1 pooled) = 7 blocks = 35 rows.
+    assert len(rows) == 35
     series = {(r["decision_point"], r["provenance"]) for r in rows}
     assert series == {
         ("custodial_sentence", "moj_published"),
@@ -74,6 +76,58 @@ def test_build_rri_produces_four_series():
         ("remand", "moj_published"),
         ("remand", "prism_r_derived"),
     }
+
+
+# Pooled fixture: three years of counts, summed, then RRI computed.
+# Expected values computed independently of compute_rri.py, Z = 1.96.
+POOLED_FIXTURE_YEARS = [(10, 200, 40, 1000), (15, 250, 50, 1100), (20, 300, 60, 1200)]
+POOLED_FIXTURE_EXPECTED = (1.3200000000, 0.1650833888, 0.9551071886, 1.8242978597)
+
+
+def test_pooled_rri_fixture():
+    events = sum(y[0] for y in POOLED_FIXTURE_YEARS)
+    total = sum(y[1] for y in POOLED_FIXTURE_YEARS)
+    base_events = sum(y[2] for y in POOLED_FIXTURE_YEARS)
+    base_total = sum(y[3] for y in POOLED_FIXTURE_YEARS)
+    result = relative_rate_index(events, total, base_events, base_total)
+    exp_rri, exp_se, exp_lo, exp_hi = POOLED_FIXTURE_EXPECTED
+    assert result.rri == pytest.approx(exp_rri, abs=1e-4)
+    assert result.se_ln == pytest.approx(exp_se, abs=1e-4)
+    assert result.ci_lower == pytest.approx(exp_lo, abs=1e-4)
+    assert result.ci_upper == pytest.approx(exp_hi, abs=1e-4)
+
+
+def test_pool_counts_sums_across_years():
+    by_year = {
+        year: {e: {"events": n, "total": n * 10} for e in compute_rri.ALL_ETHNICITIES}
+        for year, n in [(2023, 1), (2024, 2), (2025, 3)]
+    }
+    pooled = compute_rri._pool_counts(by_year)
+    assert pooled["Black"] == {"events": 6, "total": 60}
+
+
+def test_child_sentencing_has_pooled_and_single_year_rows():
+    rows = [
+        r for r in compute_rri.build_rri()
+        if r["decision_point"] == "custodial_sentence" and r["provenance"] == "prism_r_derived"
+    ]
+    pooled = [r for r in rows if r["pooled"]]
+    single = [r for r in rows if not r["pooled"]]
+    assert len(pooled) == 5  # one pooled block of 5 ethnicities
+    assert {r["period_basis"] for r in pooled} == {"pooled_3y_ending_march_2025"}
+    assert {r["period_basis"] for r in single} == {
+        "year_ending_march_2023",
+        "year_ending_march_2024",
+        "year_ending_march_2025",
+    }
+    # The pooled row reproduces the RRI of the summed counts.
+    pooled_black = next(r for r in pooled if r["ethnicity"] == "Black")
+    pooled_white = next(r for r in pooled if r["ethnicity"] == "White")
+    recomputed = relative_rate_index(
+        pooled_black["events"], pooled_black["total"],
+        pooled_white["events"], pooled_white["total"],
+    )
+    assert pooled_black["rri"] == pytest.approx(recomputed.rri, abs=1e-9)
 
 
 def test_adult_rows_have_no_confidence_interval():
@@ -113,9 +167,9 @@ def test_adult_rri_matches_moj_published_values():
 # Sanity check (not a validation; warns rather than fails)
 # --------------------------------------------------------------------------
 def test_child_sentencing_rri_sanity_check():
-    """Child custodial sentencing RRIs should sit in a plausible range
-    relative to the adult MoJ values: same direction, within a factor of
-    three. A breach emits a warning for review and does not fail the suite.
+    """The pooled child custodial sentencing RRI should sit in a plausible
+    range relative to the adult MoJ values: same direction, within a factor
+    of three. A breach emits a warning for review and does not fail the suite.
     """
     rows = compute_rri.build_rri()
     adult = {
@@ -126,7 +180,9 @@ def test_child_sentencing_rri_sanity_check():
     child = {
         r["ethnicity"]: r["rri"]
         for r in rows
-        if r["decision_point"] == "custodial_sentence" and r["provenance"] == "prism_r_derived"
+        if r["decision_point"] == "custodial_sentence"
+        and r["provenance"] == "prism_r_derived"
+        and r["pooled"]
     }
     issues = []
     for group in compute_rri.GROUPS:
@@ -144,7 +200,7 @@ def test_child_sentencing_rri_sanity_check():
             )
     if issues:
         warnings.warn(
-            "child custodial sentencing RRI sanity check, review advised: "
+            "pooled child custodial sentencing RRI sanity check, review advised: "
             + "; ".join(issues),
             stacklevel=2,
         )

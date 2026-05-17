@@ -57,6 +57,18 @@ The adult rows are calendar year 2024, as MoJ publishes them. The child rows are
 
 Spec section 4.6 will be revised after Task 3 to reflect what PRISM-R actually does: applying the MoJ-recommended methodology to youth-specific data and decision points, with explicit provenance labelling.
 
+## Pooling for small-count stability
+
+The YJB immediate-custody counts for children by ethnicity are small enough that single-year RRIs are statistically fragile, with confidence intervals that typically cross 1 and point estimates that swing year to year. The Black single-year RRI, for example, runs 1.52, 2.57 and 0.91 across the years ending March 2023, 2024 and 2025, the last driven by a fall in the count from 86 to 38.
+
+PRISM-R therefore presents the child custodial sentencing RRI as a three-year pooled estimate, counts summed across the years ending March 2023, 2024 and 2025, as its primary figure. Single-year values are retained in `rri.json` for inspection, marked `pooled: false`. This follows standard practice for small-count disproportionality analysis. The child remand RRI is not pooled: those counts are stable and the single-year confidence intervals are tight.
+
+## Reporting periods
+
+MoJ and YJB use different reporting calendars. The Criminal Justice Statistics Quarterly, the source of the adult RRIs, reports by calendar year. Youth Justice Statistics, the source of the child RRIs, reports by financial year, the year ending March.
+
+PRISM-R does not force one calendar onto the other. The adult `moj_published` rows are calendar year 2024; the child `prism_r_derived` rows are years ending March. Each row records its `period_basis`. This difference should be borne in mind when comparing an adult value with a child value: they are close in time but not the same period.
+
 ## Confidence interval methodology
 
 PRISM-R reports a 95% confidence interval for every `prism_r_derived` RRI. The interval is the Wald interval on the log of the rate ratio:
