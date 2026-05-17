@@ -17,9 +17,14 @@ apply_suppression, and write the audit through write_audit. A group is a set
 of cells that sum to a meaningful total, for example one local authority's
 counts across the ethnicity categories.
 
-The literal specification suppresses any count below 6, which includes a
-true zero. Callers that wish to show zeros should exclude them before
-calling apply_suppression.
+A count of exactly 0 is a true zero, not a disclosure risk. It is not
+suppressed: it is shown as "0". Only counts of 1 to 5 are primarily
+suppressed.
+
+Each result cell carries a value_type, one of: observed, true_zero,
+suppressed_primary, suppressed_secondary, suppressed_inherited, rate_hidden.
+A suppressed count takes precedence in this classification; rate_hidden
+applies only where the count itself is shown but its rate is not.
 """
 
 from __future__ import annotations
@@ -103,11 +108,12 @@ def apply_suppression(cells: list[Cell]) -> SuppressionResult:
                 "value already suppressed in source data",
             )
 
-    # Rule 1: primary suppression.
+    # Rule 1: primary suppression. A count of 0 is a true zero, not a small
+    # cell, so only counts of 1 to 5 are suppressed here.
     for cell in ordered:
         if state[cell.cell_id]["suppressed"] or cell.count is None:
             continue
-        if cell.count < PRIMARY_THRESHOLD:
+        if 0 < cell.count < PRIMARY_THRESHOLD:
             _suppress(
                 cell.cell_id,
                 "primary",
@@ -168,19 +174,35 @@ def apply_suppression(cells: list[Cell]) -> SuppressionResult:
     result_cells = []
     for cell in ordered:
         cell_state = state[cell.cell_id]
+        rule = cell_state["rule"]
+        if rule == "inherited":
+            value_type = "suppressed_inherited"
+        elif rule == "secondary":
+            value_type = "suppressed_secondary"
+        elif rule == "primary":
+            value_type = "suppressed_primary"
+        elif cell_state["count"] == 0:
+            value_type = "true_zero"
+        elif cell_state["rate_suppressed"]:
+            value_type = "rate_hidden"
+        else:
+            value_type = "observed"
+
         if cell_state["suppressed"]:
             display = SUPPRESSED_LABEL
         elif cell_state["count"] is None:
             display = "n/a"
         else:
             display = str(cell_state["count"])
+
         result_cells.append(
             {
                 "cell_id": cell_state["cell_id"],
                 "group": cell_state["group"],
                 "count": cell_state["count"],
                 "suppressed": cell_state["suppressed"],
-                "rule": cell_state["rule"],
+                "rule": rule,
+                "value_type": value_type,
                 "display": display,
                 "rate_suppressed": cell_state["rate_suppressed"],
                 "rate_display": RATE_NOT_SHOWN_LABEL

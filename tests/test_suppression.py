@@ -1,7 +1,8 @@
 """Tests for disclosure control logic in pipeline/suppress.py.
 
 Each of the five rules in specification section 5 is exercised with
-synthetic inputs.
+synthetic inputs, together with the true-zero distinction and the
+back-calculation protection that secondary suppression provides.
 """
 
 import json
@@ -19,38 +20,73 @@ def _by_id(result):
     return {c["cell_id"]: c for c in result.cells}
 
 
+def _suppressed_per_group(result):
+    counts = {}
+    for cell in result.cells:
+        counts.setdefault(cell["group"], 0)
+        if cell["suppressed"]:
+            counts[cell["group"]] += 1
+    return counts
+
+
 # --------------------------------------------------------------------------
-# Rule 1: primary suppression
+# Rule 1: primary suppression (counts 1 to 5)
 # --------------------------------------------------------------------------
-def test_primary_suppresses_counts_below_six():
+def test_primary_suppresses_counts_one_to_five():
     # Two sub-threshold cells, so no single-cell secondary suppression fires.
     result = apply_suppression(
-        [
-            Cell("a", "g", 3),
-            Cell("b", "g", 4),
-            Cell("c", "g", 100),
-            Cell("d", "g", 200),
-        ]
+        [Cell("a", "g", 3), Cell("b", "g", 4), Cell("c", "g", 100), Cell("d", "g", 200)]
     )
     by = _by_id(result)
-    assert by["a"]["suppressed"] and by["a"]["rule"] == "primary"
-    assert by["b"]["suppressed"] and by["b"]["rule"] == "primary"
+    assert by["a"]["suppressed"] and by["a"]["value_type"] == "suppressed_primary"
+    assert by["b"]["suppressed"] and by["b"]["value_type"] == "suppressed_primary"
     assert by["a"]["count"] is None
     assert by["a"]["display"] == suppress.SUPPRESSED_LABEL
     assert not by["c"]["suppressed"] and by["c"]["count"] == 100
-    assert by["c"]["display"] == "100"
+    assert by["c"]["value_type"] == "observed" and by["c"]["display"] == "100"
 
 
 def test_primary_threshold_boundary():
-    # 0 and 5 are below 6 and suppressed; 6 and above are not.
+    # 5 is below 6 and suppressed; 6 and above are not. 0 is handled separately.
     result = apply_suppression(
-        [Cell("zero", "g", 0), Cell("five", "g", 5), Cell("six", "g", 6), Cell("hi", "g", 11)]
+        [Cell("five", "g", 5), Cell("small", "g", 2), Cell("six", "g", 6), Cell("hi", "g", 11)]
     )
     by = _by_id(result)
-    assert by["zero"]["suppressed"]
     assert by["five"]["suppressed"]
-    assert not by["six"]["suppressed"]
+    assert not by["six"]["suppressed"] and by["six"]["value_type"] == "observed"
     assert not by["hi"]["suppressed"]
+
+
+# --------------------------------------------------------------------------
+# True-zero distinction (Task 2 refinement)
+# --------------------------------------------------------------------------
+def test_true_zero_is_not_suppressed():
+    # A count of exactly 0 is a true zero: shown as "0", not suppressed.
+    result = apply_suppression([Cell("zero", "g", 0), Cell("obs", "g", 40), Cell("more", "g", 50)])
+    by = _by_id(result)
+    assert not by["zero"]["suppressed"]
+    assert by["zero"]["value_type"] == "true_zero"
+    assert by["zero"]["count"] == 0
+    assert by["zero"]["display"] == "0"
+    assert by["zero"]["rule"] is None
+
+
+def test_true_zero_distinct_from_small_cell():
+    # 0 stays visible; 1 to 5 are suppressed. The two are not conflated.
+    # Separate groups, and a paired small cell, so secondary suppression
+    # does not reclassify either cell under test.
+    result = apply_suppression(
+        [
+            Cell("zero", "gz", 0),
+            Cell("zero_partner", "gz", 80),
+            Cell("one", "go", 1),
+            Cell("one_partner", "go", 2),
+        ]
+    )
+    by = _by_id(result)
+    assert by["zero"]["value_type"] == "true_zero"
+    assert by["one"]["value_type"] == "suppressed_primary"
+    assert by["one"]["display"] == suppress.SUPPRESSED_LABEL
 
 
 # --------------------------------------------------------------------------
@@ -58,18 +94,15 @@ def test_primary_threshold_boundary():
 # --------------------------------------------------------------------------
 def test_inherited_suppression_is_flagged():
     result = apply_suppression(
-        [
-            Cell("a", "g", None, source_suppressed=True),
-            Cell("b", "g", 4),
-        ]
+        [Cell("a", "g", None, source_suppressed=True), Cell("b", "g", 4)]
     )
     by = _by_id(result)
-    assert by["a"]["suppressed"] and by["a"]["rule"] == "inherited"
-    assert by["b"]["suppressed"] and by["b"]["rule"] == "primary"
+    assert by["a"]["suppressed"] and by["a"]["value_type"] == "suppressed_inherited"
+    assert by["b"]["suppressed"] and by["b"]["value_type"] == "suppressed_primary"
 
 
 # --------------------------------------------------------------------------
-# Rule 2: secondary suppression
+# Rule 2: secondary suppression and back-calculation protection
 # --------------------------------------------------------------------------
 def test_secondary_suppresses_next_smallest():
     # One primary suppression in the group triggers a secondary one.
@@ -77,35 +110,65 @@ def test_secondary_suppresses_next_smallest():
         [Cell("a", "g", 3), Cell("b", "g", 8), Cell("c", "g", 50), Cell("d", "g", 100)]
     )
     by = _by_id(result)
-    assert by["a"]["rule"] == "primary"
-    assert by["b"]["rule"] == "secondary"  # 8 is the next-smallest
+    assert by["a"]["value_type"] == "suppressed_primary"
+    assert by["b"]["value_type"] == "suppressed_secondary"  # 8 is the next-smallest
     assert not by["c"]["suppressed"] and not by["d"]["suppressed"]
-    assert sum(c["suppressed"] for c in result.cells) == 2
+    assert _suppressed_per_group(result)["g"] == 2
 
 
 def test_secondary_picks_the_smallest_remaining_cell():
+    # Four cells, one below 6: secondary must pick the smallest of the rest.
     result = apply_suppression(
         [Cell("a", "g", 2), Cell("big", "g", 40), Cell("mid", "g", 9), Cell("hi", "g", 30)]
     )
     by = _by_id(result)
-    assert by["a"]["rule"] == "primary"
-    assert by["mid"]["rule"] == "secondary"  # 9 is smallest of 40, 9, 30
+    assert by["a"]["value_type"] == "suppressed_primary"
+    assert by["mid"]["value_type"] == "suppressed_secondary"  # 9, smallest of 40, 9, 30
     assert not by["big"]["suppressed"] and not by["hi"]["suppressed"]
 
 
-def test_secondary_not_triggered_when_two_already_suppressed():
-    result = apply_suppression([Cell("a", "g", 3), Cell("b", "g", 4), Cell("c", "g", 50)])
+def test_secondary_closes_the_single_suppression_back_calculation_hole():
+    # With one cell suppressed and a known group total, that cell would equal
+    # total minus the visible cells. Secondary suppression hides a second
+    # cell so the group never has exactly one suppressed cell.
+    result = apply_suppression([Cell("a", "g", 3), Cell("b", "g", 8), Cell("c", "g", 50)])
+    assert _suppressed_per_group(result)["g"] == 2
+
+
+def test_two_primary_suppressions_prevent_back_calculation():
+    # A small group where two cells are each below 6. Both are primary
+    # suppressed, so an observer who knows the group total learns only the
+    # hidden pair's sum (here 7); neither cell is individually recoverable.
+    # Secondary suppression does not fire: the hole is already closed.
+    result = apply_suppression([Cell("a", "g", 3), Cell("b", "g", 4), Cell("c", "g", 90)])
     by = _by_id(result)
+    assert by["a"]["suppressed"] and by["b"]["suppressed"]
+    assert by["a"]["count"] is None and by["b"]["count"] is None
     assert not by["c"]["suppressed"]
-    assert sum(c["suppressed"] for c in result.cells) == 2
+    assert _suppressed_per_group(result)["g"] == 2
+    assert not any(c["value_type"] == "suppressed_secondary" for c in result.cells)
+
+
+def test_four_cells_all_below_six_all_suppressed_no_secondary():
+    # All four cells are below 6, so all are primary suppressed. Secondary
+    # suppression does not fire: with every cell hidden, a known total
+    # reveals only the total, never an individual cell.
+    result = apply_suppression(
+        [Cell("a", "g", 2), Cell("b", "g", 3), Cell("c", "g", 4), Cell("d", "g", 5)]
+    )
+    assert all(c["suppressed"] for c in result.cells)
+    assert all(c["value_type"] == "suppressed_primary" for c in result.cells)
+    assert not any(c["value_type"] == "suppressed_secondary" for c in result.cells)
 
 
 def test_secondary_not_triggered_without_suppression():
     result = apply_suppression([Cell("a", "g", 10), Cell("b", "g", 20)])
-    assert sum(c["suppressed"] for c in result.cells) == 0
+    assert _suppressed_per_group(result)["g"] == 0
 
 
 def test_secondary_records_when_no_further_cell_exists():
+    # A single-cell group cannot be protected: the audit records that the
+    # secondary rule could not be applied, surfacing the residual risk.
     result = apply_suppression([Cell("only", "g", 3)])
     by = _by_id(result)
     assert by["only"]["suppressed"]
@@ -114,8 +177,17 @@ def test_secondary_records_when_no_further_cell_exists():
     assert not_applied[0]["group"] == "g"
 
 
+def test_secondary_can_select_a_true_zero():
+    # The next-smallest cell may be a true zero. Suppressing it still hides a
+    # second cell and so protects the primary cell from back-calculation.
+    result = apply_suppression([Cell("a", "g", 3), Cell("z", "g", 0), Cell("c", "g", 50)])
+    by = _by_id(result)
+    assert by["a"]["value_type"] == "suppressed_primary"
+    assert by["z"]["value_type"] == "suppressed_secondary"
+    assert not by["c"]["suppressed"]
+
+
 def test_secondary_is_per_group():
-    # Group g1 gets a secondary suppression; group g2 is untouched.
     result = apply_suppression(
         [
             Cell("g1a", "g1", 3),
@@ -132,18 +204,19 @@ def test_secondary_is_per_group():
 # --------------------------------------------------------------------------
 # Rule 3: rate threshold
 # --------------------------------------------------------------------------
-def test_rate_suppressed_below_denominator_threshold():
+def test_rate_hidden_below_denominator_threshold_with_moderate_numerator():
+    # The numerator is moderate (45) and not itself suppressed, but the
+    # denominator (70) is below 100, so the rate is not shown.
     result = apply_suppression(
-        [
-            Cell("small", "g", 60, denominator=80),
-            Cell("ok", "g", 60, denominator=500),
-        ]
+        [Cell("small", "g", 45, denominator=70), Cell("ok", "g", 45, denominator=600)]
     )
     by = _by_id(result)
+    assert not by["small"]["suppressed"]
     assert by["small"]["rate_suppressed"]
     assert by["small"]["rate_display"] == suppress.RATE_NOT_SHOWN_LABEL
+    assert by["small"]["value_type"] == "rate_hidden"
     assert not by["ok"]["rate_suppressed"]
-    assert by["ok"]["rate_display"] is None
+    assert by["ok"]["value_type"] == "observed"
 
 
 def test_rate_threshold_boundary():
@@ -156,12 +229,22 @@ def test_rate_threshold_boundary():
 
 
 def test_rate_and_count_suppression_are_independent():
-    # Count fine but denominator small: rate suppressed, count shown.
-    result = apply_suppression([Cell("a", "g", 80, denominator=40), Cell("b", "g", 90)])
+    # A count can be suppressed while its denominator is comfortably large,
+    # and a count can be shown while its rate is hidden. The two rules act
+    # independently. Separate groups keep secondary suppression out of it.
+    result = apply_suppression(
+        [
+            Cell("count_suppressed", "g1", 3, denominator=500),
+            Cell("count_suppressed_partner", "g1", 4, denominator=500),
+            Cell("rate_hidden", "g2", 50, denominator=40),
+        ]
+    )
     by = _by_id(result)
-    assert not by["a"]["suppressed"]
-    assert by["a"]["count"] == 80
-    assert by["a"]["rate_suppressed"]
+    assert by["count_suppressed"]["value_type"] == "suppressed_primary"
+    assert not by["count_suppressed"]["rate_suppressed"]  # denominator 500 is fine
+    assert by["rate_hidden"]["value_type"] == "rate_hidden"
+    assert by["rate_hidden"]["rate_suppressed"]
+    assert not by["rate_hidden"]["suppressed"]  # the count itself is shown
 
 
 # --------------------------------------------------------------------------
@@ -199,8 +282,31 @@ def test_write_audit_round_trip(tmp_path):
 
 
 # --------------------------------------------------------------------------
-# Determinism
+# value_type classification and determinism
 # --------------------------------------------------------------------------
+def test_value_type_covers_every_classification():
+    result = apply_suppression(
+        [
+            Cell("observed", "g1", 50, denominator=500),
+            Cell("zero", "g1", 0),
+            Cell("primary", "g2", 3),
+            Cell("primary_partner", "g2", 4),
+            Cell("secondary_trigger", "g3", 2),
+            Cell("secondary_target", "g3", 40),
+            Cell("inherited", "g4", None, source_suppressed=True),
+            Cell("inherited_partner", "g4", 70),
+            Cell("rate", "g5", 30, denominator=20),
+        ]
+    )
+    by = _by_id(result)
+    assert by["observed"]["value_type"] == "observed"
+    assert by["zero"]["value_type"] == "true_zero"
+    assert by["primary"]["value_type"] == "suppressed_primary"
+    assert by["secondary_target"]["value_type"] == "suppressed_secondary"
+    assert by["inherited"]["value_type"] == "suppressed_inherited"
+    assert by["rate"]["value_type"] == "rate_hidden"
+
+
 def test_apply_suppression_is_deterministic():
     cells = [Cell("a", "g", 3), Cell("b", "g", 8), Cell("c", "g", 50)]
     first = apply_suppression(cells)
