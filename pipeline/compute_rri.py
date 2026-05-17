@@ -10,23 +10,35 @@ Justice in Statistics on Ethnicity and the Criminal Justice System.
 A value of 1 is parity, above 1 means the group is more likely to
 experience the outcome, below 1 less likely.
 
-Four RRI series are produced:
+Six RRI series are produced:
 
+  stop_search         child  prism_r_derived  Home Office, child population
+  arrest              child  prism_r_derived  Home Office, child population
   custodial_sentence  adult  moj_published    adopted from MoJ Table 9.01
   custodial_sentence  child  prism_r_derived  computed from YJB Table 5.8
   remand              adult  moj_published    adopted from MoJ Table 5.17a
   remand              child  prism_r_derived  computed from YJB remand data
+
+Together with charge, which is not available from open data, these trace the
+spec's road-to-remand cascade: stop and search, arrest, charge, remand,
+custodial sentence. The cascade panel therefore shows four of the five
+stages.
 
 The adult RRIs are adopted verbatim from MoJ's published tables. MoJ does
 not publish the underlying counts, the source Court Proceedings Database is
 not public, so they cannot be reproduced from public data and carry no
 confidence interval. MoJ's p-value-based significance flag is retained.
 
-The child RRIs are computed by PRISM-R from open YJB youth data. No
-child-specific RRI exists in published official statistics. Confidence
-intervals use the Wald interval on the log of the rate ratio (Altman,
-Machin, Bryant and Gardner, Statistics with Confidence, 2nd ed., BMJ Books,
-2000):
+The stop and search and arrest RRIs are computed by PRISM-R from Home Office
+open data: the event rate is searches, or arrests, of children aged 10 to 17
+in the year ending March 2025 over the Census 2021 child population for the
+ethnic group. These national counts are summed from the by-ethnicity records
+in context_indicators.json, written by pipeline/ingest_home_office.py.
+
+The child RRIs are computed by PRISM-R from open data. No child-specific RRI
+exists in published official statistics. Confidence intervals use the Wald
+interval on the log of the rate ratio (Altman, Machin, Bryant and Gardner,
+Statistics with Confidence, 2nd ed., BMJ Books, 2000):
 
     SE(ln RRI) = sqrt(1/a + 1/b - 1/A - 1/B)
     95% CI     = exp( ln(RRI) +/- 1.96 * SE(ln RRI) )
@@ -61,6 +73,8 @@ MOJ_CH9 = REPO_ROOT / "data" / "raw" / "moj" / "ch9_offence_analysis_2024.ods"
 MOJ_CH5 = REPO_ROOT / "data" / "raw" / "moj" / "ch5_defendants_tables_2024.ods"
 YJB_CH5 = REPO_ROOT / "data" / "raw" / "yjb-2024-25" / "Ch 5 - Sentencing of children.xlsx"
 REMAND_OUTCOMES = PROCESSED_DIR / "remand_outcomes.json"
+CONTEXT_INDICATORS = PROCESSED_DIR / "context_indicators.json"
+POPULATIONS = PROCESSED_DIR / "populations.json"
 OUTPUT = PROCESSED_DIR / "rri.json"
 
 # 95% interval. The standard 1.96 multiplier, per the cited method.
@@ -73,6 +87,7 @@ ALL_ETHNICITIES = [BASELINE, *GROUPS]
 ADULT_YEAR = 2024
 CHILD_REMAND_YEAR = 2025  # year ending March 2025
 CHILD_SENTENCING_YEARS = [2023, 2024, 2025]  # years ending March; pooled
+HOME_OFFICE_YEAR = 2025  # year ending March 2025
 POOLED_PERIOD = "pooled_3y_ending_march_2025"
 
 ADULT_SOURCE = {
@@ -84,6 +99,14 @@ CHILD_SOURCE = {
     "source_publication": "Youth Justice Statistics 2024 to 2025",
     "publication_date": "2026-01-29",
     "url": "https://www.gov.uk/government/statistics/youth-justice-statistics-2024-to-2025",
+}
+HOME_OFFICE_SOURCE = {
+    "source_publication": (
+        "Police powers and procedures: stop and search, arrests and mental "
+        "health detentions, England and Wales, year ending 31 March 2025"
+    ),
+    "publication_date": "2025-11-06",
+    "url": "https://www.gov.uk/government/statistics/stop-and-search-arrests-and-mental-health-detentions-march-2025",
 }
 
 _NOTE_RE = re.compile(r"\[note[^\]]*\]", re.IGNORECASE)
@@ -255,6 +278,45 @@ def read_child_remand_counts() -> dict[str, dict[str, int]]:
 
 
 # --------------------------------------------------------------------------
+# Home Office stop and search and arrest counts, with the Census denominator
+# --------------------------------------------------------------------------
+def read_child_population() -> dict[str, int]:
+    """National child population aged 10 to 17 by ethnicity, from the Census.
+
+    Sums populations.json across local authority, age band and sex. The two
+    ethnicity-unavailable LAs carry no population and contribute nothing.
+    """
+    data = json.loads(POPULATIONS.read_text(encoding="utf-8"))
+    population = {ethnicity: 0 for ethnicity in ALL_ETHNICITIES}
+    for record in data["records"]:
+        if record["population"] is None or record["ethnicity"] not in population:
+            continue
+        population[record["ethnicity"]] += record["population"]
+    return population
+
+
+def read_home_office_counts(indicator: str) -> dict[str, dict[str, int]]:
+    """National event counts and the child-population denominator.
+
+    The events are summed from the by-ethnicity records of context_indicators.json
+    (written by pipeline/ingest_home_office.py); the denominator is the Census
+    child population. Returns {ethnicity: {"events": ..., "total": ...}}.
+    """
+    data = json.loads(CONTEXT_INDICATORS.read_text(encoding="utf-8"))
+    events = {ethnicity: 0 for ethnicity in ALL_ETHNICITIES}
+    for record in data["records"]:
+        if record["indicator"] != indicator or record["breakdown"] != "by_ethnicity":
+            continue
+        if record["ethnicity"] in events:
+            events[record["ethnicity"]] += record["value"]
+    population = read_child_population()
+    return {
+        ethnicity: {"events": events[ethnicity], "total": population[ethnicity]}
+        for ethnicity in ALL_ETHNICITIES
+    }
+
+
+# --------------------------------------------------------------------------
 # Row assembly
 # --------------------------------------------------------------------------
 def _adult_block(decision_point: str, source_table: str, rri_data: dict) -> list[dict]:
@@ -292,8 +354,15 @@ def _child_block(
     year: int,
     period_basis: str,
     pooled: bool,
+    source: dict = CHILD_SOURCE,
 ) -> list[dict]:
-    """Five rows computed by PRISM-R from youth counts, with Wald CIs."""
+    """Five rows computed by PRISM-R from child counts, with Wald CIs.
+
+    For custodial sentencing and remand the rate is events over a count of
+    children; for stop and search and arrests it is events over the Census
+    child population. events and total are the rate numerator and denominator
+    in either case.
+    """
     baseline = counts[BASELINE]
     rows = []
     for ethnicity in ALL_ETHNICITIES:
@@ -324,7 +393,7 @@ def _child_block(
                 events=counts[ethnicity]["events"],
                 total=counts[ethnicity]["total"],
                 source_table=source_table,
-                **CHILD_SOURCE,
+                **source,
             )
         )
     return rows
@@ -344,6 +413,21 @@ def _pool_counts(by_year: dict[int, dict[str, dict[str, int]]]) -> dict[str, dic
 def build_rri() -> list[dict]:
     """Build all RRI rows. Returns the record list."""
     rows: list[dict] = []
+
+    # Road-to-remand cascade, upstream stages: stop and search and arrests,
+    # computed by PRISM-R from Home Office counts over the Census denominator.
+    rows += _child_block(
+        "stop_search", "stop and search open data tables",
+        read_home_office_counts("stop_search_rate"), HOME_OFFICE_YEAR,
+        period_basis=f"year_ending_march_{HOME_OFFICE_YEAR}", pooled=False,
+        source=HOME_OFFICE_SOURCE,
+    )
+    rows += _child_block(
+        "arrest", "arrests open data tables",
+        read_home_office_counts("arrest_count"), HOME_OFFICE_YEAR,
+        period_basis=f"year_ending_march_{HOME_OFFICE_YEAR}", pooled=False,
+        source=HOME_OFFICE_SOURCE,
+    )
 
     # Adult, adopted from MoJ.
     rows += _adult_block("custodial_sentence", "9.01", read_moj_adult_rri(MOJ_CH9, "9_01"))
@@ -408,8 +492,18 @@ def write_rri() -> dict:
             ),
             "period_basis": (
                 "Adult rows are calendar year 2024, the MoJ basis. Child "
-                "rows are years ending March, the YJB basis. The two are "
-                "not forced onto a common calendar."
+                "rows are years ending March: youth justice on the YJB basis, "
+                "stop and search and arrests on the Home Office basis. The "
+                "calendars are not forced onto each other."
+            ),
+            "cascade": (
+                "The decision points trace the road-to-remand cascade of "
+                "spec section 6.2: stop_search, arrest, charge, remand, "
+                "custodial_sentence. charge is not available from open data, "
+                "so four of the five stages are populated. stop_search and "
+                "arrest rates use the Census child population as the "
+                "denominator; remand and custodial sentencing use a count of "
+                "children as the denominator."
             ),
             "provenance": {
                 "moj_published": (
@@ -418,8 +512,10 @@ def write_rri() -> dict:
                     "confidence interval."
                 ),
                 "prism_r_derived": (
-                    "Computed by PRISM-R from open YJB youth data using the "
-                    "MoJ-recommended RRI methodology."
+                    "Computed by PRISM-R using the MoJ-recommended RRI "
+                    "methodology: youth justice rows from open YJB data, stop "
+                    "and search and arrest rows from Home Office counts over "
+                    "the Census child population."
                 ),
             },
             "schema_note": (

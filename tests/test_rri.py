@@ -64,18 +64,41 @@ def test_rri_rejects_events_above_total():
 # --------------------------------------------------------------------------
 # Output structure
 # --------------------------------------------------------------------------
-def test_build_rri_produces_four_series():
+def test_build_rri_produces_six_series():
     rows = compute_rri.build_rri()
-    # 5 ethnicities x: adult sentencing, adult remand, child remand,
-    # child sentencing (3 single years + 1 pooled) = 7 blocks = 35 rows.
-    assert len(rows) == 35
+    # 5 ethnicities x: stop and search, arrest, adult sentencing, adult
+    # remand, child remand, child sentencing (3 single years + 1 pooled)
+    # = 9 blocks = 45 rows.
+    assert len(rows) == 45
     series = {(r["decision_point"], r["provenance"]) for r in rows}
     assert series == {
+        ("stop_search", "prism_r_derived"),
+        ("arrest", "prism_r_derived"),
         ("custodial_sentence", "moj_published"),
         ("custodial_sentence", "prism_r_derived"),
         ("remand", "moj_published"),
         ("remand", "prism_r_derived"),
     }
+
+
+def test_cascade_upstream_blocks_are_home_office_derived():
+    """stop_search and arrest rows are prism_r_derived from Home Office data,
+    carry Wald confidence intervals and use the Census child population as the
+    rate denominator (total far larger than the event count)."""
+    rows = [
+        r for r in compute_rri.build_rri()
+        if r["decision_point"] in ("stop_search", "arrest")
+    ]
+    assert len(rows) == 10
+    for row in rows:
+        assert row["provenance"] == "prism_r_derived"
+        assert row["geo_id"] == "ew"
+        assert row["period_basis"] == "year_ending_march_2025"
+        assert row["source_publication"].startswith("Police powers and procedures")
+        assert row["events"] < row["total"]  # events over a population base
+        if row["ethnicity"] != "White":
+            assert row["ci_method"] == "wald_log_ratio"
+            assert row["ci_lower"] <= row["rri"] <= row["ci_upper"]
 
 
 # Pooled fixture: three years of counts, summed, then RRI computed.

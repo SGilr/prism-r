@@ -46,14 +46,23 @@ The Relative Rate Index (RRI) compares the rate at which an ethnic group experie
 
 A value of 1 is parity. Above 1, the group is more likely to experience the outcome; below 1, less likely. The method was recommended in the Lammy Review (2017) and is used by the Ministry of Justice in Statistics on Ethnicity and the Criminal Justice System. It is computed by `pipeline/compute_rri.py` and written to `data/processed/rri.json`.
 
-PRISM-R holds four RRI series, two decision points by two provenances:
+PRISM-R holds six RRI series across four decision points:
 
 - Adult custodial sentencing and adult remand, `provenance: "moj_published"`. These are adopted verbatim from MoJ tables 9.01 and 5.17a. See "Reproducibility of MoJ-published RRIs" below.
 - Child custodial sentencing and child remand, `provenance: "prism_r_derived"`. These are computed by PRISM-R.
+- Child stop and search and child arrests, `provenance: "prism_r_derived"`. These are computed by PRISM-R from Home Office data. See "The road-to-remand cascade" below.
 
-PRISM-R is therefore producing a child-specific RRI that does not exist in published official statistics. It is computed transparently from open YJB data, applying the MoJ-recommended methodology to children specifically. Child custodial sentencing uses YJB Table 5.8, children sentenced for indictable offences by ethnicity and sentence type. Child remand uses YJB Table 6.1: the rate is the proportion of children subject to a remand decision who are remanded to youth detention accommodation, that is custodial remand.
+PRISM-R is therefore producing a child-specific RRI that does not exist in published official statistics. It is computed transparently from open data, applying the MoJ-recommended methodology to children specifically. Child custodial sentencing uses YJB Table 5.8, children sentenced for indictable offences by ethnicity and sentence type. Child remand uses YJB Table 6.1: the rate is the proportion of children subject to a remand decision who are remanded to youth detention accommodation, that is custodial remand.
 
-The adult rows are calendar year 2024, as MoJ publishes them. The child rows are the year ending March 2025, the latest YJB year and the basis used elsewhere in the pipeline. This period difference is recorded in the `rri.json` meta block.
+The adult rows are calendar year 2024, as MoJ publishes them. The child youth-justice rows are the year ending March 2025, the latest YJB year. The stop and search and arrest rows are also the year ending March 2025, the latest Home Office year. These period bases are recorded in the `rri.json` meta block.
+
+### The road-to-remand cascade
+
+Spec section 6.2 frames the national picture as a cascade: stop and search, then arrest, then charge, then remand, then custodial sentence. Each stage is a point at which disproportionality can enter or compound. PRISM-R populates four of the five stages. Charge is omitted: no open data gives child charges by ethnicity at a usable granularity.
+
+The stop and search and arrest RRIs differ from the youth-justice RRIs in their denominator. Custodial sentencing and remand are rates within the justice system: the denominator is a count of children already at that stage, for example children sentenced. Stop and search and arrests have no such prior stage, so the denominator is the resident child population aged 10 to 17 from the 2021 Census. The RRI is then the population-based event rate for an ethnic group divided by that for White children. This is the same denominator basis the Home Office itself uses for its published stop and search disparity figures.
+
+The national event counts are summed from the by-ethnicity records in `context_indicators.json`; the population denominator is summed from `populations.json`. Because these counts run to thousands, the Wald confidence intervals are tight, narrower than those on the small-count youth-justice RRIs.
 
 Spec section 4.6 will be revised after Task 3 to reflect what PRISM-R actually does: applying the MoJ-recommended methodology to youth-specific data and decision points, with explicit provenance labelling.
 
@@ -98,7 +107,7 @@ Those counts are derived from the Court Proceedings Database, which is not publi
 
 End-to-end reproduction of the MoJ RRIs from public sources is therefore not possible. PRISM-R adopts the published values as reference, cited verbatim, with `provenance: "moj_published"`.
 
-This is not a criticism of MoJ practice. It is a description of the disclosure environment: aggregate RRIs can be released where the underlying record-level data cannot. It explains why two of the four RRI series in `rri.json` carry `provenance: "moj_published"` rather than `prism_r_derived`, and why those two carry no confidence interval, since the interval needs the same withheld counts.
+This is not a criticism of MoJ practice. It is a description of the disclosure environment: aggregate RRIs can be released where the underlying record-level data cannot. It explains why two of the six RRI series in `rri.json` carry `provenance: "moj_published"` rather than `prism_r_derived`, and why those two carry no confidence interval, since the interval needs the same withheld counts.
 
 ## Denominator basis
 
@@ -144,6 +153,16 @@ English DfE exclusion rates are per 100 pupils; Welsh rates are per 1,000. Every
 `lac_count` is a count, not a rate. A true looked-after rate by ethnicity needs a 0 to 17 child population by ethnic group at local authority level. The Census denominator in `populations.json` covers ages 10 to 17, to match the youth justice age range, so it cannot serve as a 0-17 looked-after denominator. The indicator code is `lac_count`, not the spec's `lac_rate`, so the name does not misrepresent the figure. A v2 enhancement could re-ingest a 0-17 ethnic child population to support proper looked-after rate calculations.
 
 v1 visualisation requirement, for Sprint 3: when `lac_count` is shown in the geographic explorer, the count must be contextualised against the area's total child population, for example a two-axis chart, a proportional-area mark, or a rate per 1,000 against the general 10-17 population as a proxy with an explicit caveat. A raw count alone invites misleading comparison across authorities of very different sizes.
+
+### Stop and search and arrests
+
+`stop_search_rate` and `arrest_count` come from Home Office Police powers and procedures open data, year ending March 2025. They are published by police force area, so their records are keyed to the `pf-` geographies, not local authorities. The 43 territorial forces of England and Wales map to PRISM-R's 42 police force areas: the Metropolitan Police and the City of London Police both fold into `pf-london`. British Transport Police is excluded, as it polices the rail network and has no resident-population base; this is a documented gap.
+
+Both datasets are rolled up to the YJB 5 ethnic groups from self-defined ethnicity. The stop and search open data also carries a combined officer-and-self-defined ethnicity column, which has fewer "not stated" records, but it collapses Mixed and Other into one category. Self-defined ethnicity is used for both datasets so all five groups are distinguished and the two are consistent. Searches and arrests recorded with a "not stated" self-defined ethnicity are counted in the overall figure but cannot be assigned to a group; the national not-stated counts are recorded in the `context_indicators.json` meta block.
+
+Rate base differs from the exclusion indicators. `stop_search_rate` is carried as `rate_per_1000` (canonical), the Home Office and ONS convention for stop and search, with `rate_per_100` also provided so the file stays cross-comparable with the exclusion rates. The denominator is the 2021 Census child population aged 10 to 17 for the ethnic group in the force area, aggregated from local authorities via the geography crosswalk. This is a PRISM-R derived rate: the Home Office open data publishes counts, not rates.
+
+`arrest_count` is carried as a count, not a rate, by the same reasoning as `lac_count`. The arrests open data and the Census denominator do share the 10 to 17 age band exactly, so an arrest rate would be well founded; arrests nonetheless feed the RRI cascade as a rate, computed in `rri.json`. The count is the figure carried in the context layer for consistency with the v1 indicator set.
 
 ## Disclosure control
 

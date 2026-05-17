@@ -460,42 +460,72 @@ def build_context_indicators() -> list[dict]:
     return records
 
 
-def write_context_indicators(records: list[dict]) -> None:
-    indicators = sorted({r["indicator"] for r in records})
-    counts = {
+# Indicator codes owned by this script. context_indicators.json is co-written
+# with pipeline/ingest_home_office.py, which owns stop_search_rate and
+# arrest_count. Each writer preserves the other's records and coverage note,
+# so the two scripts are order-independent and each is idempotent on its own.
+OWNED_INDICATORS = {"permanent_exclusion_rate", "suspension_rate", "lac_count"}
+
+CONTEXT_SCHEMA_NOTE = (
+    "One record per geo_id, year, indicator and breakdown, per spec section "
+    "4.5. Exclusion rates carry rate_per_100 (canonical), source_rate and "
+    "source_rate_base. stop_search_rate carries rate_per_1000 (canonical) and "
+    "rate_per_100 (derived). lac_count and arrest_count carry value, a count, "
+    "not a rate."
+)
+CONTEXT_GENERATED_BY = (
+    "pipeline/ingest_dfe.py and pipeline/ingest_home_office.py"
+)
+DFE_COVERAGE_NOTE = (
+    "DfE exclusions and looked-after data are at upper-tier local authority "
+    "level (around 153 to 155 authorities), not the 318 districts in "
+    f"populations.json. Welsh exclusions by ethnicity are all-Wales only "
+    f"(geo_id {WALES_GEO_ID}); no Welsh LA-by-ethnicity exclusions "
+    "cross-tabulation is published."
+)
+
+
+def indicator_counts(records: list[dict]) -> dict:
+    """Per-indicator record, geography and source-suppression counts."""
+    return {
         ind: {
             "records": sum(1 for r in records if r["indicator"] == ind),
-            "las": len({r["geo_id"] for r in records if r["indicator"] == ind}),
+            "geographies": len({r["geo_id"] for r in records if r["indicator"] == ind}),
             "source_suppressed": sum(
                 1 for r in records
                 if r["indicator"] == ind and r["disclosure_status"] == "source_suppressed"
             ),
         }
-        for ind in indicators
+        for ind in sorted({r["indicator"] for r in records})
     }
+
+
+def write_context_indicators(records: list[dict]) -> None:
+    foreign: list[dict] = []
+    coverage: dict = {}
+    if CONTEXT_OUT.exists():
+        payload = json.loads(CONTEXT_OUT.read_text(encoding="utf-8"))
+        foreign = [
+            r for r in payload.get("records", [])
+            if r["indicator"] not in OWNED_INDICATORS
+        ]
+        coverage = dict(payload.get("meta", {}).get("coverage_notes", {}))
+    combined = sorted(
+        records + foreign,
+        key=lambda r: (r["indicator"], r["geo_id"], r["breakdown"], r["ethnicity"] or ""),
+    )
+    coverage["dfe_and_wales"] = DFE_COVERAGE_NOTE
     _write_json(
         CONTEXT_OUT,
         {
             "meta": {
                 "dataset": "context_indicators",
-                "generated_by": "pipeline/ingest_dfe.py",
-                "schema_note": (
-                    "One record per geo_id, year, indicator and breakdown, "
-                    "per spec section 4.5. Rate indicators carry rate_per_100 "
-                    "(canonical), source_rate and source_rate_base; lac_count "
-                    "carries value, a count, not a rate."
-                ),
-                "indicators": counts,
-                "coverage_note": (
-                    "DfE exclusions and looked-after data are at upper-tier "
-                    "local authority level (around 153 to 155 authorities), "
-                    "not the 318 districts in populations.json. Welsh "
-                    "exclusions by ethnicity are all-Wales only (geo_id "
-                    f"{WALES_GEO_ID}); no Welsh LA-by-ethnicity exclusions "
-                    "cross-tabulation is published."
-                ),
+                "generated_by": CONTEXT_GENERATED_BY,
+                "schema_note": CONTEXT_SCHEMA_NOTE,
+                "indicators": indicator_counts(combined),
+                "coverage_notes": coverage,
             },
-            "records": records,
+            "records": combined,
         },
     )
 

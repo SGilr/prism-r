@@ -7,7 +7,7 @@ Every source feeding PRISM-R, with retrieval date and version. This file is the 
 - YJB and MoJ Youth Justice Statistics 2024-25 supplementary tables, chapters 1, 3, 6, 7. https://www.gov.uk/government/statistics/youth-justice-statistics-2024-to-2025
 - YJB local-level data tables published alongside the annual statistics.
 - MoJ Ethnicity and the Criminal Justice System annual report, RRI tables.
-- Home Office stop and search data, force level.
+- Home Office Police powers and procedures: stop and search and arrests, police force area level. https://www.gov.uk/government/collections/police-powers-and-procedures-england-and-wales
 
 ## Tier 2: contextual overlays
 
@@ -44,6 +44,8 @@ Every source feeding PRISM-R, with retrieval date and version. This file is the 
 | DfE Children looked after in England including adoptions | cla_2025_alldata.zip (la_cla_on_31_march_by_characteristics.csv) | 2026-05-17 | OGL v3.0 | LA by ethnicity looked-after counts |
 | StatsWales Children looked after on 31 March by ethnicity | welsh_cla_by_la_ethnicity.json | 2026-05-17 | OGL v3.0 | exported from stats.gov.wales |
 | StatsWales Permanent and fixed-term exclusions from schools | welsh_exclusions_2023-24.ods | 2026-05-17 | OGL v3.0 | accompanying spreadsheet from the gov.wales release |
+| Home Office Police powers and procedures, year ending March 2025 | stop-search-open-data-tables-mar21-mar25.ods | 2026-05-17 | OGL v3.0 | stop and search by police force area, ethnicity and age band |
+| Home Office Police powers and procedures, year ending March 2025 | arrests-open-data-tables-mar25.ods | 2026-05-17 | OGL v3.0 | arrests by police force area, ethnicity and age band, sheet OD_5+1 |
 
 YJS files were downloaded from gov.uk. The Youth Justice Statistics 2024 to 2025 release was published on 29 January 2026. The original download archives (`supplementary_tables.zip`, `local_level_open_data_tables.zip`) are retained in `data/raw/yjb-2024-25/` as the canonical source.
 
@@ -57,6 +59,7 @@ Per the standing instruction, the most recent published release of each source i
 | DfE children looked after in England | Reporting year 2025 | 26 November 2025 | year ending 31 March 2025 | November 2026 |
 | StatsWales Welsh school exclusions | Sept 2023 to Aug 2024, provisional | November 2025 | academic year 2023/24 | revision or next year, to confirm |
 | StatsWales Welsh children looked after | data to 2023-24 | updated 30 January 2026 | year ending 31 March 2024 | June 2026 |
+| Home Office Police powers and procedures | Year ending March 2025 | 6 November 2025 | year ending 31 March 2025 | year ending March 2026, expected late 2026 |
 | ONS Census 2021, RM032 | Census 2021 | 2023 | Census day, 21 March 2021 | next census, around 2031 |
 
 Re-ingest flags: a termly DfE exclusions release (spring term 2024/25, published 30 April 2026) exists but is partial-year, so PRISM-R uses the latest full academic year; re-ingest when the full 2024/25 year is published. The Welsh children looked after update for the year ending March 2025 is expected in June 2026; re-ingest soon after.
