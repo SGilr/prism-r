@@ -30,11 +30,13 @@ python3.14 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 ```
 
-Run the YJB ingest:
+Run the full pipeline:
 
 ```
-.venv/bin/python pipeline/ingest_yjb.py
+.venv/bin/python pipeline/build.py
 ```
+
+`build.py` runs every ingest and compute step in dependency order and writes `data/processed/manifest.json`, a provenance record with a SHA-256 checksum, byte size and record count for each processed output. Individual steps can also be run on their own, for example `.venv/bin/python pipeline/ingest_yjb.py`. The pipeline needs the raw source files under `data/raw/`, which are not in the repository; see `docs/data-sources.md`.
 
 Run the tests:
 

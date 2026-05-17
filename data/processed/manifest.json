@@ -1,0 +1,131 @@
+{
+  "meta": {
+    "build_timestamp": "2026-05-17T21:46:25+00:00",
+    "dataset": "build_manifest",
+    "generated_by": "pipeline/build.py",
+    "git": {
+      "commit": "a9adec172b722f8691d5cb8c6919ece669210fcc",
+      "working_tree": "dirty"
+    },
+    "python_version": "3.14.2",
+    "schema_note": "A provenance record of one pipeline build. steps lists each script run, in order, with its timing. outputs gives a SHA-256 checksum, byte size and record count for every processed JSON file. build_timestamp changes each run, so the manifest is not byte-identical between builds; the processed outputs themselves are deterministic."
+  },
+  "outputs": [
+    {
+      "bytes": 60978,
+      "file": "data/processed/geographies.json",
+      "generated_by": "pipeline/ingest_yjb.py",
+      "records": 208,
+      "sha256": "ca74cdc877053ed98c5109c95606d51846609e69739827a605794436448ccb78"
+    },
+    {
+      "bytes": 147001,
+      "file": "data/processed/geo_crosswalk.json",
+      "generated_by": "pipeline/build_crosswalk.py",
+      "records": 318,
+      "sha256": "c40f8d635ed1e96712da86eadee23797e3a79538c84b350af8d32abfd89cc082"
+    },
+    {
+      "bytes": 17374,
+      "file": "data/processed/remand_outcomes.json",
+      "generated_by": "pipeline/ingest_yjb.py",
+      "records": 64,
+      "sha256": "36fbe43a62d06a5b10e416825589a5db3f62a8804a8be75e7c128589a7c91ff2"
+    },
+    {
+      "bytes": 2344028,
+      "file": "data/processed/populations.json",
+      "generated_by": "pipeline/ingest_ons.py",
+      "records": 9452,
+      "sha256": "8fb20d9c558f03df6aa2cb11bd646a5ec1537b70a69903207bfe001953f23c1a"
+    },
+    {
+      "bytes": 6317,
+      "file": "data/processed/ethnicity_crosswalk.json",
+      "generated_by": "pipeline/ingest_dfe.py",
+      "records": null,
+      "sha256": "0bf8d28a4d12f9c11ca723e171833a84d5dcb3f2e910e54dbaab3d8781a1fe9c"
+    },
+    {
+      "bytes": 2417829,
+      "file": "data/processed/context_indicators.json",
+      "generated_by": "pipeline/ingest_dfe.py, pipeline/ingest_home_office.py and pipeline/ingest_imd.py",
+      "records": 3770,
+      "sha256": "662ea7633ec9b10fde8586f3e1ac75285eb152aaf1b92106431622126c908d37"
+    },
+    {
+      "bytes": 34283,
+      "file": "data/processed/rri.json",
+      "generated_by": "pipeline/compute_rri.py",
+      "records": 45,
+      "sha256": "113ea1389834d62ecde66ad0b7b8695c1e19bde3310695545ff7c6f6c822e821"
+    }
+  ],
+  "steps": [
+    {
+      "duration_seconds": 20.42,
+      "outputs": [
+        "data/processed/geographies.json",
+        "data/processed/remand_outcomes.json"
+      ],
+      "script": "pipeline/ingest_yjb.py",
+      "status": "ok",
+      "step": 1
+    },
+    {
+      "duration_seconds": 0.16,
+      "outputs": [
+        "data/processed/geo_crosswalk.json"
+      ],
+      "script": "pipeline/build_crosswalk.py",
+      "status": "ok",
+      "step": 2
+    },
+    {
+      "duration_seconds": 0.28,
+      "outputs": [
+        "data/processed/populations.json"
+      ],
+      "script": "pipeline/ingest_ons.py",
+      "status": "ok",
+      "step": 3
+    },
+    {
+      "duration_seconds": 2.03,
+      "outputs": [
+        "data/processed/ethnicity_crosswalk.json",
+        "data/processed/context_indicators.json"
+      ],
+      "script": "pipeline/ingest_dfe.py",
+      "status": "ok",
+      "step": 4
+    },
+    {
+      "duration_seconds": 71.02,
+      "outputs": [
+        "data/processed/context_indicators.json"
+      ],
+      "script": "pipeline/ingest_home_office.py",
+      "status": "ok",
+      "step": 5
+    },
+    {
+      "duration_seconds": 0.2,
+      "outputs": [
+        "data/processed/context_indicators.json"
+      ],
+      "script": "pipeline/ingest_imd.py",
+      "status": "ok",
+      "step": 6
+    },
+    {
+      "duration_seconds": 0.68,
+      "outputs": [
+        "data/processed/rri.json"
+      ],
+      "script": "pipeline/compute_rri.py",
+      "status": "ok",
+      "step": 7
+    }
+  ]
+}
