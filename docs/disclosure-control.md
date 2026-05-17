@@ -17,3 +17,9 @@ Every decision is recorded in `data/processed/suppression_audit.json` by `pipeli
 The audit file will materialise when sub-national data lands in Sprint 2 tasks 5 and 6, the first data with cells small enough to suppress. Until then there is nothing to suppress and the file is not written.
 
 National YJB remand data is not put through suppression. It is published by the YJB at England and Wales level and is already disclosure-controlled at source; applying PRISM-R suppression to it would suppress figures the YJB has itself released.
+
+## Limitations of the suppression approach
+
+When every cell in a small group is primary-suppressed and the group total is published, an observer can derive the sum of the hidden cells by subtracting the visible cells from the total. This bounds each hidden cell to a range. It never reveals an exact figure, but on a small group the range can be narrow.
+
+This is accepted for v1. National remand data is published by the YJB and is not put through PRISM-R suppression. The sub-national context data, school exclusions, looked-after children, and child population, is already disclosure-controlled at source by the DfE and the ONS; the PRISM-R module applies as a belt-and-braces layer for cells derived in the pipeline. The risk of meaningful range disclosure on a derived cell at local authority level is low, because the underlying counts are typically large. This is to be revisited if sub-national remand data, which has much smaller cells, is ingested in v2.

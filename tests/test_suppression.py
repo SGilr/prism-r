@@ -177,14 +177,32 @@ def test_secondary_records_when_no_further_cell_exists():
     assert not_applied[0]["group"] == "g"
 
 
-def test_secondary_can_select_a_true_zero():
-    # The next-smallest cell may be a true zero. Suppressing it still hides a
-    # second cell and so protects the primary cell from back-calculation.
+def test_secondary_skips_true_zeros_when_a_nonzero_exists():
+    # Secondary suppression prefers the smallest non-zero cell. The true zero
+    # is left visible; the non-zero cell is suppressed instead.
     result = apply_suppression([Cell("a", "g", 3), Cell("z", "g", 0), Cell("c", "g", 50)])
     by = _by_id(result)
     assert by["a"]["value_type"] == "suppressed_primary"
-    assert by["z"]["value_type"] == "suppressed_secondary"
-    assert not by["c"]["suppressed"]
+    assert by["z"]["value_type"] == "true_zero"  # zero skipped, stays visible
+    assert by["c"]["value_type"] == "suppressed_secondary"  # non-zero suppressed instead
+
+
+def test_secondary_falls_back_to_zero_when_no_nonzero_available():
+    # Degenerate case: the only remaining candidates are true zeros. A zero
+    # is then suppressed to preserve the primary cell, and the audit records
+    # the choice with reason "secondary_skipped_zero".
+    result = apply_suppression([Cell("a", "g", 3), Cell("z1", "g", 0), Cell("z2", "g", 0)])
+    by = _by_id(result)
+    assert by["a"]["value_type"] == "suppressed_primary"
+    secondaries = [c for c in result.cells if c["value_type"] == "suppressed_secondary"]
+    true_zeros = [c for c in result.cells if c["value_type"] == "true_zero"]
+    assert len(secondaries) == 1 and len(true_zeros) == 1
+    assert _suppressed_per_group(result)["g"] == 2
+    fallback = [
+        a for a in result.audit
+        if a["rule"] == "secondary" and a["reason"] == "secondary_skipped_zero"
+    ]
+    assert len(fallback) == 1
 
 
 def test_secondary_is_per_group():

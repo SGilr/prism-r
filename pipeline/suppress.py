@@ -4,8 +4,9 @@ Five rules:
 
   1. Primary suppression: counts below 6 are suppressed.
   2. Secondary suppression: if a group holds exactly one suppressed cell, the
-     next-smallest cell in that group is suppressed too, so the single value
-     cannot be recovered by subtraction. Standard ONS practice.
+     next-smallest non-zero cell in that group is suppressed too, so the
+     single value cannot be recovered by subtraction. A true zero is
+     suppressed only as a fallback, when no non-zero cell remains.
   3. Rate threshold: a rate is not shown where its denominator is below 100.
   4. Audit: every decision is recorded, so the rule is visible and not just
      its effect. write_audit emits the audit trail as JSON.
@@ -82,7 +83,13 @@ def apply_suppression(cells: list[Cell]) -> SuppressionResult:
     }
     audit: list[dict] = []
 
-    def _suppress(cell_id: str, rule: str, original: int | None, detail: str) -> None:
+    def _suppress(
+        cell_id: str,
+        rule: str,
+        original: int | None,
+        detail: str,
+        reason: str | None = None,
+    ) -> None:
         cell_state = state[cell_id]
         cell_state["suppressed"] = True
         cell_state["rule"] = rule
@@ -92,6 +99,7 @@ def apply_suppression(cells: list[Cell]) -> SuppressionResult:
                 "cell_id": cell_id,
                 "group": cell_state["group"],
                 "rule": rule,
+                "reason": reason,
                 "original_count": original,
                 "resulting_state": "suppressed",
                 "detail": detail,
@@ -141,20 +149,32 @@ def apply_suppression(cells: list[Cell]) -> SuppressionResult:
                     "cell_id": None,
                     "group": group,
                     "rule": "secondary",
+                    "reason": None,
                     "original_count": None,
                     "resulting_state": "not applied",
                     "detail": "one cell suppressed but no further cell to suppress",
                 }
             )
             continue
-        target = min(candidates, key=lambda c: (c.count, c.cell_id))
-        _suppress(
-            target.cell_id,
-            "secondary",
-            target.count,
-            f"secondary suppression so the single suppressed cell in group "
-            f"{group!r} cannot be recovered by subtraction",
-        )
+        # The next-smallest rule prefers a non-zero cell: suppressing a true
+        # zero protects the primary cell but needlessly hides a zero. A zero
+        # is suppressed only as a fallback, when no non-zero cell remains.
+        non_zero = [c for c in candidates if c.count > 0]
+        if non_zero:
+            target = min(non_zero, key=lambda c: (c.count, c.cell_id))
+            reason = "next_smallest_nonzero"
+            detail = (
+                f"secondary suppression of the smallest non-zero cell so the "
+                f"single suppressed cell in group {group!r} cannot be recovered"
+            )
+        else:
+            target = min(candidates, key=lambda c: c.cell_id)
+            reason = "secondary_skipped_zero"
+            detail = (
+                f"every remaining cell in group {group!r} is a true zero; a "
+                f"zero is suppressed to preserve the primary suppressed cell"
+            )
+        _suppress(target.cell_id, "secondary", target.count, detail, reason=reason)
 
     # Rule 3: rate threshold.
     for cell in ordered:
@@ -165,6 +185,7 @@ def apply_suppression(cells: list[Cell]) -> SuppressionResult:
                     "cell_id": cell.cell_id,
                     "group": cell.group,
                     "rule": "rate-threshold",
+                    "reason": None,
                     "original_count": cell.count,
                     "resulting_state": "rate not shown",
                     "detail": f"denominator {cell.denominator} below {RATE_MIN_DENOMINATOR}",
