@@ -13,9 +13,9 @@ LA-level population data"):
   sex_aggregated   2 LAs    ethnicity x age band, sex suppressed by ONS
   unavailable      2 LAs    no ethnicity-disaggregated denominator at all
 
-Outputs:
-  data/processed/populations.json         per spec section 4.2
-  data/processed/ethnicity_crosswalk.json the ONS 19 to 5 ethnic rollup
+Output: data/processed/populations.json, per spec section 4.2. The ONS
+ethnic-group rollup is documented in data/processed/ethnicity_crosswalk.json,
+which is written by pipeline/ingest_dfe.py.
 
 The script also reconciles the national total against a separate
 national-level filter pull, which has no disclosure restriction.
@@ -39,7 +39,6 @@ CSV_NATIONAL = RAW_DIR / "census2021_5cat_national.csv"
 CSV_AGEONLY = RAW_DIR / "census2021_ageonly_2la.csv"
 
 POPULATIONS_OUT = PROCESSED_DIR / "populations.json"
-CROSSWALK_OUT = PROCESSED_DIR / "ethnicity_crosswalk.json"
 
 CENSUS_YEAR = 2021
 CENSUS_BASIS = "2021"
@@ -61,38 +60,6 @@ UNAVAILABLE_LAS = {
     "E06000053": "Isles of Scilly",
     "E09000001": "City of London",
 }
-
-# ONS detailed (20-category, tick-box) ethnic group classification mapped to
-# the 5 YJB high-level groups. This is the ONS standard rollup, identical to
-# the high-level categorisation ethnic_group_tb_6a; PRISM-R does not invent
-# it. Used as documentation; the pipeline ingests the 5-category pull direct.
-ETHNICITY_CROSSWALK = [
-    ("Asian, Asian British or Asian Welsh: Bangladeshi", "Asian", ""),
-    ("Asian, Asian British or Asian Welsh: Chinese", "Asian", ""),
-    ("Asian, Asian British or Asian Welsh: Indian", "Asian", ""),
-    ("Asian, Asian British or Asian Welsh: Pakistani", "Asian", ""),
-    ("Asian, Asian British or Asian Welsh: Other Asian", "Asian", ""),
-    ("Black, Black British, Black Welsh, Caribbean or African: African", "Black", ""),
-    ("Black, Black British, Black Welsh, Caribbean or African: Caribbean", "Black", ""),
-    ("Black, Black British, Black Welsh, Caribbean or African: Other Black", "Black", ""),
-    ("Mixed or Multiple ethnic groups: White and Asian", "Mixed", ""),
-    ("Mixed or Multiple ethnic groups: White and Black African", "Mixed", ""),
-    ("Mixed or Multiple ethnic groups: White and Black Caribbean", "Mixed", ""),
-    ("Mixed or Multiple ethnic groups: Other Mixed or Multiple ethnic groups", "Mixed", ""),
-    ("White: English, Welsh, Scottish, Northern Irish or British", "White", ""),
-    ("White: Irish", "White", ""),
-    ("White: Gypsy or Irish Traveller", "White", ""),
-    ("White: Roma", "White", ""),
-    ("White: Other White", "White", ""),
-    (
-        "Other ethnic group: Arab",
-        "Other",
-        "ONS places Arab within the high-level 'Other ethnic group' in its "
-        "standard ethnic_group_tb_6a rollup. PRISM-R follows that ONS rollup; "
-        "the placement of Arab is ONS's classification, not a PRISM-R judgement.",
-    ),
-    ("Other ethnic group: Any other ethnic group", "Other", ""),
-]
 
 YJB_GROUPS = ["Asian", "Black", "Mixed", "Other", "White"]
 
@@ -254,33 +221,6 @@ def _write_json(path: Path, payload: dict) -> None:
         handle.write("\n")
 
 
-def write_ethnicity_crosswalk() -> None:
-    records = [
-        {"source_category": label, "target_category": target, "note": note}
-        for label, target, note in ETHNICITY_CROSSWALK
-    ]
-    _write_json(
-        CROSSWALK_OUT,
-        {
-            "meta": {
-                "dataset": "ethnicity_crosswalk",
-                "generated_by": "pipeline/ingest_ons.py",
-                "source": "ONS Census 2021 ethnic group classification",
-                "schema_note": (
-                    "Maps the 19 substantive categories of the ONS detailed "
-                    "tick-box ethnic group classification (ethnic_group_tb_20b) "
-                    "to the 5 YJB high-level groups. This is the ONS standard "
-                    "rollup, identical to the ONS high-level categorisation "
-                    "ethnic_group_tb_6a; PRISM-R adopts it rather than "
-                    "defining its own. Provenance documentation; the pipeline "
-                    "ingests the 5-category Census pull directly."
-                ),
-            },
-            "records": records,
-        },
-    )
-
-
 def write_populations(records: list[dict], reconciliation: dict) -> None:
     counts = {
         status: len({r["geo_id"] for r in records if r["disclosure_status"] == status})
@@ -318,7 +258,6 @@ def write_populations(records: list[dict], reconciliation: dict) -> None:
 def main() -> int:
     records = build_populations()
     reconciliation = reconcile(records)
-    write_ethnicity_crosswalk()
     write_populations(records, reconciliation)
 
     counts = {

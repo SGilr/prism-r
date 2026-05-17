@@ -122,6 +122,29 @@ PRISM-R declines to model figures for the two unavailable LAs. A rate calculatio
 
 PRISM-R uses 2023 local authority boundaries throughout, via the ONS `ltla23` area type, aligned with the geography crosswalk built in Task 1. Census 2021 was collected on Census day, 21 March 2021; ONS re-publishes it through the filter service aggregated to several boundary vintages, including 2023. The population figures are therefore 2021 observations presented on 2023 boundaries. The two are distinct and should not be conflated: the count is from 2021, the geography is 2023.
 
+## Context indicators
+
+`data/processed/context_indicators.json` holds the upstream drivers for the sub-national explorer, built by `pipeline/ingest_dfe.py`: `permanent_exclusion_rate`, `suspension_rate` and `lac_count`. Exclusions and looked-after data are reported at upper-tier local authority level (around 153 authorities in England, 22 in Wales), not the 318 districts of `populations.json`; `geo_id` is the upper-tier authority.
+
+### Rate harmonisation
+
+English DfE exclusion rates are per 100 pupils; Welsh rates are per 1,000. Every rate record carries `rate_per_100` (the canonical, harmonised value used in all calculations and visualisations), `source_rate` (the original published value) and `source_rate_base` (100 for England, 1,000 for Wales). The original value is preserved alongside the harmonised one so any figure can be verified against its source.
+
+### England-Wales methodological differences in context indicators
+
+- **Rate base**: England per 100, Wales per 1,000, harmonised to per-100 as above.
+- **Terminology**: Welsh "fixed-term exclusions" are the equivalent of English "suspensions"; PRISM-R uses `suspension_rate` for both.
+- **No LA by ethnicity for Welsh exclusions**: DfE publishes English exclusions crossed by local authority and ethnicity. StatsWales publishes Welsh exclusions by local authority and by ethnicity in two separate tables, with no cross-tabulation. Welsh exclusion rows are therefore either local-authority level for all ethnicities (`breakdown: overall`) or all-Wales by ethnicity (`geo_id: rgn-wales`, `breakdown: by_ethnicity`). There is no Welsh LA by ethnicity exclusion figure. This is a documented gap, not an omission.
+- **Welsh "Chinese"**: Welsh exclusion statistics report Chinese separately from Asian. The ONS and YJB schemes place Chinese within Asian, but the Welsh exclusion table is a rate table with no pupil denominator, so the two cannot be exactly recombined. The Welsh all-Wales Asian exclusion rate is the Welsh "Asian" category alone; Chinese, a small group, is not folded in.
+- **Welsh looked-after rounding**: Welsh looked-after counts are rounded to the nearest 5, with counts below 5 suppressed. English counts are not rounded this way.
+- **Reference year**: Welsh looked-after data is a year behind England, year ending March 2024 against England's March 2025.
+
+### Children looked after: counts rather than rates
+
+`lac_count` is a count, not a rate. A true looked-after rate by ethnicity needs a 0 to 17 child population by ethnic group at local authority level. The Census denominator in `populations.json` covers ages 10 to 17, to match the youth justice age range, so it cannot serve as a 0-17 looked-after denominator. The indicator code is `lac_count`, not the spec's `lac_rate`, so the name does not misrepresent the figure. A v2 enhancement could re-ingest a 0-17 ethnic child population to support proper looked-after rate calculations.
+
+v1 visualisation requirement, for Sprint 3: when `lac_count` is shown in the geographic explorer, the count must be contextualised against the area's total child population, for example a two-axis chart, a proportional-area mark, or a rate per 1,000 against the general 10-17 population as a proxy with an explicit caveat. A raw count alone invites misleading comparison across authorities of very different sizes.
+
 ## Disclosure control
 
 See [disclosure-control.md](disclosure-control.md).

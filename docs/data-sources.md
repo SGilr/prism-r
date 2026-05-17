@@ -40,8 +40,26 @@ Every source feeding PRISM-R, with retrieval date and version. This file is the 
 | MoJ Ethnicity and the CJS 2024 | ch5_defendants_tables_2024.ods | 2026-05-17 | OGL v3.0 | Table 5.17a, adult remand RRI |
 | YJB Youth Justice Statistics 2024-25 | Ch 5 - Sentencing of children.xlsx | 2026-05-16 | OGL v3.0 | Table 5.8, child custodial sentencing RRI |
 | ONS Census 2021, dataset RM032 | census2021_5cat_age_sex.csv and four further filter pulls | 2026-05-17 | OGL v3.0 | child population denominator; pulled via the ONS filter service. Full request specs, filter IDs, URLs and checksums in data/raw/ons-census-2021/filter_manifest.json |
+| DfE Suspensions and permanent exclusions in England | exclusions_2023-24_alldata.zip (exc_characteristics.csv) | 2026-05-17 | OGL v3.0 | LA by ethnicity exclusion and suspension rates |
+| DfE Children looked after in England including adoptions | cla_2025_alldata.zip (la_cla_on_31_march_by_characteristics.csv) | 2026-05-17 | OGL v3.0 | LA by ethnicity looked-after counts |
+| StatsWales Children looked after on 31 March by ethnicity | welsh_cla_by_la_ethnicity.json | 2026-05-17 | OGL v3.0 | exported from stats.gov.wales |
+| StatsWales Permanent and fixed-term exclusions from schools | welsh_exclusions_2023-24.ods | 2026-05-17 | OGL v3.0 | accompanying spreadsheet from the gov.wales release |
 
 YJS files were downloaded from gov.uk. The Youth Justice Statistics 2024 to 2025 release was published on 29 January 2026. The original download archives (`supplementary_tables.zip`, `local_level_open_data_tables.zip`) are retained in `data/raw/yjb-2024-25/` as the canonical source.
+
+## Release currency
+
+Per the standing instruction, the most recent published release of each source is verified at source. Publication date, reference period and next expected release:
+
+| Source | Latest release | Published | Reference period | Next expected |
+|---|---|---|---|---|
+| DfE suspensions and permanent exclusions | Academic year 2023/24 | 10 July 2025 | academic year 2023/24, full year | full 2024/25 later in 2026 |
+| DfE children looked after in England | Reporting year 2025 | 26 November 2025 | year ending 31 March 2025 | November 2026 |
+| StatsWales Welsh school exclusions | Sept 2023 to Aug 2024, provisional | November 2025 | academic year 2023/24 | revision or next year, to confirm |
+| StatsWales Welsh children looked after | data to 2023-24 | updated 30 January 2026 | year ending 31 March 2024 | June 2026 |
+| ONS Census 2021, RM032 | Census 2021 | 2023 | Census day, 21 March 2021 | next census, around 2031 |
+
+Re-ingest flags: a termly DfE exclusions release (spring term 2024/25, published 30 April 2026) exists but is partial-year, so PRISM-R uses the latest full academic year; re-ingest when the full 2024/25 year is published. The Welsh children looked after update for the year ending March 2025 is expected in June 2026; re-ingest soon after.
 
 ### Known source issue
 
