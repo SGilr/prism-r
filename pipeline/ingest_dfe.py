@@ -461,20 +461,24 @@ def build_context_indicators() -> list[dict]:
 
 
 # Indicator codes owned by this script. context_indicators.json is co-written
-# with pipeline/ingest_home_office.py, which owns stop_search_rate and
-# arrest_count. Each writer preserves the other's records and coverage note,
-# so the two scripts are order-independent and each is idempotent on its own.
+# with pipeline/ingest_home_office.py (stop_search_rate, arrest_count) and
+# pipeline/ingest_imd.py (imd_score). Each writer preserves the others'
+# records and coverage notes, so the scripts are order-independent and each is
+# idempotent on its own.
 OWNED_INDICATORS = {"permanent_exclusion_rate", "suspension_rate", "lac_count"}
 
 CONTEXT_SCHEMA_NOTE = (
     "One record per geo_id, year, indicator and breakdown, per spec section "
     "4.5. Exclusion rates carry rate_per_100 (canonical), source_rate and "
     "source_rate_base. stop_search_rate carries rate_per_1000 (canonical) and "
-    "rate_per_100 (derived). lac_count and arrest_count carry value, a count, "
-    "not a rate."
+    "rate_per_100 (derived). lac_count and arrest_count carry value, a count. "
+    "imd_score carries value as a child income deprivation proportion, with "
+    "jurisdiction, measure and source_release; the English and Welsh measures "
+    "are parallel scales and are not cross-comparable."
 )
 CONTEXT_GENERATED_BY = (
-    "pipeline/ingest_dfe.py and pipeline/ingest_home_office.py"
+    "pipeline/ingest_dfe.py, pipeline/ingest_home_office.py and "
+    "pipeline/ingest_imd.py"
 )
 DFE_COVERAGE_NOTE = (
     "DfE exclusions and looked-after data are at upper-tier local authority "

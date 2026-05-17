@@ -78,10 +78,15 @@ CONTEXT_SCHEMA_NOTE = (
     "One record per geo_id, year, indicator and breakdown, per spec section "
     "4.5. Exclusion rates carry rate_per_100 (canonical), source_rate and "
     "source_rate_base. stop_search_rate carries rate_per_1000 (canonical) and "
-    "rate_per_100 (derived). lac_count and arrest_count carry value, a count, "
-    "not a rate."
+    "rate_per_100 (derived). lac_count and arrest_count carry value, a count. "
+    "imd_score carries value as a child income deprivation proportion, with "
+    "jurisdiction, measure and source_release; the English and Welsh measures "
+    "are parallel scales and are not cross-comparable."
 )
-CONTEXT_GENERATED_BY = "pipeline/ingest_dfe.py and pipeline/ingest_home_office.py"
+CONTEXT_GENERATED_BY = (
+    "pipeline/ingest_dfe.py, pipeline/ingest_home_office.py and "
+    "pipeline/ingest_imd.py"
+)
 
 # Self-defined ethnicity group to YJB 5. "Not Stated" / "Not stated" are
 # non-response; "N/A - vehicle search" carries no person.

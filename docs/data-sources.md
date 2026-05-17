@@ -13,7 +13,8 @@ Every source feeding PRISM-R, with retrieval date and version. This file is the 
 
 - DfE permanent and fixed-term exclusions by ethnicity and local authority.
 - DfE children looked after statistics by local authority.
-- DLUHC English Indices of Multiple Deprivation, latest release.
+- MHCLG English Indices of Deprivation, IDACI supplementary index, latest release. https://www.gov.uk/government/statistics/english-indices-of-deprivation-2025
+- Welsh Index of Multiple Deprivation, income deprivation for children indicator. https://www.gov.wales/welsh-index-multiple-deprivation-2025
 - ONS child population by local authority and ethnicity, 2021 Census.
 - StatsWales equivalents for Welsh local authorities.
 
@@ -46,6 +47,8 @@ Every source feeding PRISM-R, with retrieval date and version. This file is the 
 | StatsWales Permanent and fixed-term exclusions from schools | welsh_exclusions_2023-24.ods | 2026-05-17 | OGL v3.0 | accompanying spreadsheet from the gov.wales release |
 | Home Office Police powers and procedures, year ending March 2025 | stop-search-open-data-tables-mar21-mar25.ods | 2026-05-17 | OGL v3.0 | stop and search by police force area, ethnicity and age band |
 | Home Office Police powers and procedures, year ending March 2025 | arrests-open-data-tables-mar25.ods | 2026-05-17 | OGL v3.0 | arrests by police force area, ethnicity and age band, sheet OD_5+1 |
+| MHCLG English Indices of Deprivation 2025 | iod2025_file10_la_lower.xlsx | 2026-05-17 | OGL v3.0 | File 10, lower-tier LA summaries; IDACI average score per LA |
+| Welsh Index of Multiple Deprivation 2019 | wimd2019_income_deprivation_by_age.json | 2026-05-17 | OGL v3.0 | income deprivation by age, LSOA and LA; child (0-15) income deprivation by LA. WIMD 2019 used pending WIMD 2025 LA indicator data |
 
 YJS files were downloaded from gov.uk. The Youth Justice Statistics 2024 to 2025 release was published on 29 January 2026. The original download archives (`supplementary_tables.zip`, `local_level_open_data_tables.zip`) are retained in `data/raw/yjb-2024-25/` as the canonical source.
 
@@ -60,9 +63,13 @@ Per the standing instruction, the most recent published release of each source i
 | StatsWales Welsh school exclusions | Sept 2023 to Aug 2024, provisional | November 2025 | academic year 2023/24 | revision or next year, to confirm |
 | StatsWales Welsh children looked after | data to 2023-24 | updated 30 January 2026 | year ending 31 March 2024 | June 2026 |
 | Home Office Police powers and procedures | Year ending March 2025 | 6 November 2025 | year ending 31 March 2025 | year ending March 2026, expected late 2026 |
+| MHCLG English Indices of Deprivation, IDACI | IoD2025 | 30 October 2025 | income data financial year 2022/23 | next indices, no fixed cycle |
+| Welsh Index of Multiple Deprivation, child income | WIMD 2019 (indicator data) | 2019 | income data financial year 2016/17 | see re-ingest flag below |
 | ONS Census 2021, RM032 | Census 2021 | 2023 | Census day, 21 March 2021 | next census, around 2031 |
 
 Re-ingest flags: a termly DfE exclusions release (spring term 2024/25, published 30 April 2026) exists but is partial-year, so PRISM-R uses the latest full academic year; re-ingest when the full 2024/25 year is published. The Welsh children looked after update for the year ending March 2025 is expected in June 2026; re-ingest soon after.
+
+WIMD child income re-ingest flag: WIMD 2025 was published in November 2025 as an index with domain ranks and LSOA-level indicator data, but its income-by-age indicator data at local authority level was not yet available when PRISM-R ingested the deprivation layer. PRISM-R therefore uses WIMD 2019 income deprivation for children (aged 0 to 15) as the most recent figure obtainable by Welsh local authority. Re-ingest when the WIMD 2025 local-authority indicator aggregations are published. The English side already uses IoD2025.
 
 ### Known source issue
 

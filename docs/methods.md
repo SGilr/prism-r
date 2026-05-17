@@ -66,6 +66,12 @@ The national event counts are summed from the by-ethnicity records in `context_i
 
 Spec section 4.6 will be revised after Task 3 to reflect what PRISM-R actually does: applying the MoJ-recommended methodology to youth-specific data and decision points, with explicit provenance labelling.
 
+## What the cascade reveals
+
+The cascade shows that the ethnic groups do not follow a single pattern across the decision points. For Black children the relative rate index is highest at stop and search, 2.40, and is lower at the court stages, 1.92 at remand and 1.59 at pooled custodial sentencing: the measured disparity is largest at the first point of contact. For Asian children the pattern runs the other way, from 0.60 at stop and search and 0.52 at arrest, both below parity, to 1.51 at remand and 1.38 at custodial sentencing. These are distinct empirical findings and PRISM-R reports them as such; they should not be merged into a single account of disproportionality.
+
+Across the four populated stages, measurable disparity is present at stop and search and arrest for Black and Mixed children, before any court involvement. The disparity observed at remand is therefore not created wholly at the court stage; a substantial part of it is already present in the policing decisions upstream of the courts. On PRISM-R's figures the cascade locates a large share of the measured racial disparity upstream of remand, while also showing that the court stages are not themselves free of disparity.
+
 ## Pooling for small-count stability
 
 The YJB immediate-custody counts for children by ethnicity are small enough that single-year RRIs are statistically fragile, with confidence intervals that typically cross 1 and point estimates that swing year to year. The Black single-year RRI, for example, runs 1.52, 2.57 and 0.91 across the years ending March 2023, 2024 and 2025, the last driven by a fall in the count from 86 to 38.
@@ -163,6 +169,16 @@ Both datasets are rolled up to the YJB 5 ethnic groups from self-defined ethnici
 Rate base differs from the exclusion indicators. `stop_search_rate` is carried as `rate_per_1000` (canonical), the Home Office and ONS convention for stop and search, with `rate_per_100` also provided so the file stays cross-comparable with the exclusion rates. The denominator is the 2021 Census child population aged 10 to 17 for the ethnic group in the force area, aggregated from local authorities via the geography crosswalk. This is a PRISM-R derived rate: the Home Office open data publishes counts, not rates.
 
 `arrest_count` is carried as a count, not a rate, by the same reasoning as `lac_count`. The arrests open data and the Census denominator do share the 10 to 17 age band exactly, so an arrest rate would be well founded; arrests nonetheless feed the RRI cascade as a rate, computed in `rri.json`. The count is the figure carried in the context layer for consistency with the v1 indicator set.
+
+### Deprivation: child income, parallel English and Welsh scales
+
+The spec context layer carries an `imd_score` indicator. PRISM-R uses a child-focused income deprivation measure rather than the overall index, to match its youth focus. For England this is the Income Deprivation Affecting Children Index (IDACI) average score from the English Indices of Deprivation 2025: the proportion of children aged 0 to 15 in income-deprived families, averaged across each lower-tier local authority's small areas, with income data for the 2022/23 financial year. For Wales it is the WIMD income deprivation for children (aged 0 to 15) indicator, the percentage of children in income-deprived households, carried as a proportion, with income data for 2016/17.
+
+England and Wales are carried as parallel scales, deliberately not harmonised. They measure the same concept, child income deprivation among children aged 0 to 15, but the English measure is an index-transformed score and the Welsh is a direct rate; the two use different income definitions, benefit data and reference years. A figure from one jurisdiction cannot be compared with a figure from the other: the English values run to 0.713, the Welsh to 0.33, and the difference is method, not deprivation. Each record names its `jurisdiction`, `measure` and `source_release` so the scale it belongs to is explicit. Cross-jurisdiction deprivation harmonisation, including the ONS experimental work, is a v2 question; deprivation in PRISM-R is context, not a primary outcome, so a cross-border comparison is not analytically core.
+
+The IDACI average score and the Welsh child income measure are proportions, not rates per population, so the rate-base harmonisation applied to the exclusion and stop and search rates does not apply here; the rate fields are null.
+
+The Welsh figure is WIMD 2019, not WIMD 2025. WIMD 2025 was published in November 2025 as an index with domain ranks and LSOA-level indicator data, but the income-by-age indicator data at local authority level was not yet available when PRISM-R ingested it. WIMD 2019 is the most recent child income figure obtainable by Welsh local authority. This is recorded in `docs/data-sources.md` as a re-ingest flag. The gap means the Welsh income data, for 2016/17, is about six years older than the English, for 2022/23, a further reason the two are not compared.
 
 ## Disclosure control
 
