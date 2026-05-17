@@ -5,6 +5,7 @@
 **Host:** Prevention Works (howpreventionworks.com), as a top-level section at `/prism-r` or subdomain `prism-r.howpreventionworks.com` (final hosting decision pending).
 **Status:** Specification for v1 build, May 2026.
 **Revision:** 2026-05-16, sub-national remand rescoped. Remand data stays at England and Wales level for v1; the sub-national explorer is built around the upstream drivers of remand. See sections 2 and 6.3.
+**Reconciled:** 2026-05-17, at Sprint 2 close. Sections 4.5, 4.6 and 8 have been aligned with the realised implementation: the context-layer indicator codes, the rate-index decision points, and the pipeline file list now match what was built. See `docs/SPRINT_2_CLOSURE.md`.
 
 ---
 
@@ -159,10 +160,12 @@ One row per `geo_id` x `year` x `indicator` x `breakdown`:
 |---|---|---|
 | geo_id | string | |
 | year | int | |
-| indicator | enum | exclusion_rate, lac_rate, imd_score, child_poverty_rate, stop_search_rate |
+| indicator | enum | permanent_exclusion_rate, suspension_rate, lac_count, imd_score, stop_search_rate, arrest_count |
 | breakdown | enum | overall, by_ethnicity |
 | ethnicity | enum | null when breakdown = overall |
 | value | float | |
+
+Reconciled at Sprint 2 close. The realised indicator codes differ from the original draft. Permanent exclusions and suspensions are carried separately as `permanent_exclusion_rate` and `suspension_rate`, not a single `exclusion_rate`. Looked-after children and arrests are carried as counts, `lac_count` and `arrest_count`, not rates, because neither has a sound 0 to 17 ethnic denominator; the codes name what the figure is. `child_poverty_rate` from the original draft is not implemented in v1 and is deferred to v2. Rate indicators carry harmonised rate fields alongside `value`; `imd_score` carries a child income deprivation proportion. See `docs/methods.md` and `docs/SPRINT_2_CLOSURE.md`.
 
 ### 4.6 Rate index
 
@@ -173,10 +176,12 @@ Pre-calculated Relative Rate Index values per geography, year, ethnicity, decisi
 | geo_id | string |
 | year | int |
 | ethnicity | enum |
-| decision_point | enum (stop_search, arrest, charge, remand, custodial_sentence) |
+| decision_point | enum (stop_search, arrest, remand, custodial_sentence) |
 | rri | float |
 | rri_lower_ci | float |
 | rri_upper_ci | float |
+
+Reconciled at Sprint 2 close. The road-to-remand cascade has four decision points, not five. `charge` is out of scope for v1: no open data gives child charges by ethnicity at a usable granularity. It is a v2 candidate, dependent on a suitable charge dataset becoming available. The realised `rri.json` also carries `provenance`, `period_basis`, `ci_method`, `pooled` and `significance_flag` fields; see `docs/methods.md`.
 
 ## 5. Disclosure control rules
 
@@ -279,15 +284,16 @@ prism-r/
 │   ├── raw/
 │   ├── interim/
 │   └── processed/
-├── pipeline/
-│   ├── ingest_yjb.py
-│   ├── ingest_dfe.py
-│   ├── ingest_ons.py
-│   ├── ingest_home_office.py
-│   ├── build_crosswalk.py
-│   ├── compute_rri.py
-│   ├── suppress.py
-│   └── build.py
+├── pipeline/                  # listed in build order; build.py runs steps 1 to 7
+│   ├── ingest_yjb.py           # step 1: geographies, remand outcomes
+│   ├── build_crosswalk.py      # step 2: LA to YOT to police force crosswalk
+│   ├── ingest_ons.py           # step 3: Census child population
+│   ├── ingest_dfe.py           # step 4: English and Welsh exclusions and looked-after children
+│   ├── ingest_home_office.py   # step 5: stop and search, arrests
+│   ├── ingest_imd.py           # step 6: English IDACI and Welsh WIMD child deprivation
+│   ├── compute_rri.py          # step 7: Relative Rate Index
+│   ├── suppress.py             # disclosure control library
+│   └── build.py                # orchestrator and manifest
 ├── site/
 │   ├── astro.config.mjs
 │   ├── src/
@@ -299,10 +305,13 @@ prism-r/
 ├── docs/
 │   ├── methods.md
 │   ├── data-sources.md
-│   └── disclosure-control.md
+│   ├── disclosure-control.md
+│   └── SPRINT_2_CLOSURE.md
 └── tests/
     ├── test_pipeline.py
-    └── test_suppression.py
+    ├── test_rri.py
+    ├── test_suppression.py
+    └── test_build.py
 ```
 
 ## 9. Sprint plan
