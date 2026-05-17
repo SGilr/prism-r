@@ -39,6 +39,7 @@ Every source feeding PRISM-R, with retrieval date and version. This file is the 
 | MoJ Ethnicity and the CJS 2024 | ch9_offence_analysis_2024.ods | 2026-05-17 | OGL v3.0 | Table 9.01, adult custodial sentencing RRI |
 | MoJ Ethnicity and the CJS 2024 | ch5_defendants_tables_2024.ods | 2026-05-17 | OGL v3.0 | Table 5.17a, adult remand RRI |
 | YJB Youth Justice Statistics 2024-25 | Ch 5 - Sentencing of children.xlsx | 2026-05-16 | OGL v3.0 | Table 5.8, child custodial sentencing RRI |
+| ONS Census 2021, dataset RM032 | census2021_5cat_age_sex.csv and four further filter pulls | 2026-05-17 | OGL v3.0 | child population denominator; pulled via the ONS filter service. Full request specs, filter IDs, URLs and checksums in data/raw/ons-census-2021/filter_manifest.json |
 
 YJS files were downloaded from gov.uk. The Youth Justice Statistics 2024 to 2025 release was published on 29 January 2026. The original download archives (`supplementary_tables.zip`, `local_level_open_data_tables.zip`) are retained in `data/raw/yjb-2024-25/` as the canonical source.
 

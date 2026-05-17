@@ -9,10 +9,14 @@ __pycache__/
 data/interim/*
 !data/interim/.gitkeep
 
-# Raw source downloads, not committed; reproducible from gov.uk
-data/raw/yjb-2024-25/
+# Raw source downloads, not committed; reproducible from the documented sources.
 data/raw/*
 !data/raw/.gitkeep
+# The ONS filter manifest is tracked, so the Census downloads are reproducible
+# by anyone with a copy of it; the bulk CSVs themselves stay untracked.
+!data/raw/ons-census-2021/
+data/raw/ons-census-2021/*
+!data/raw/ons-census-2021/filter_manifest.json
 
 # OS
 .DS_Store

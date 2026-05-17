@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "dataset": "ethnicity_crosswalk",
+    "generated_by": "pipeline/ingest_ons.py",
+    "schema_note": "Maps the 19 substantive categories of the ONS detailed tick-box ethnic group classification (ethnic_group_tb_20b) to the 5 YJB high-level groups. This is the ONS standard rollup, identical to the ONS high-level categorisation ethnic_group_tb_6a; PRISM-R adopts it rather than defining its own. Provenance documentation; the pipeline ingests the 5-category Census pull directly.",
+    "source": "ONS Census 2021 ethnic group classification"
+  },
+  "records": [
+    {
+      "note": "",
+      "source_category": "Asian, Asian British or Asian Welsh: Bangladeshi",
+      "target_category": "Asian"
+    },
+    {
+      "note": "",
+      "source_category": "Asian, Asian British or Asian Welsh: Chinese",
+      "target_category": "Asian"
+    },
+    {
+      "note": "",
+      "source_category": "Asian, Asian British or Asian Welsh: Indian",
+      "target_category": "Asian"
+    },
+    {
+      "note": "",
+      "source_category": "Asian, Asian British or Asian Welsh: Pakistani",
+      "target_category": "Asian"
+    },
+    {
+      "note": "",
+      "source_category": "Asian, Asian British or Asian Welsh: Other Asian",
+      "target_category": "Asian"
+    },
+    {
+      "note": "",
+      "source_category": "Black, Black British, Black Welsh, Caribbean or African: African",
+      "target_category": "Black"
+    },
+    {
+      "note": "",
+      "source_category": "Black, Black British, Black Welsh, Caribbean or African: Caribbean",
+      "target_category": "Black"
+    },
+    {
+      "note": "",
+      "source_category": "Black, Black British, Black Welsh, Caribbean or African: Other Black",
+      "target_category": "Black"
+    },
+    {
+      "note": "",
+      "source_category": "Mixed or Multiple ethnic groups: White and Asian",
+      "target_category": "Mixed"
+    },
+    {
+      "note": "",
+      "source_category": "Mixed or Multiple ethnic groups: White and Black African",
+      "target_category": "Mixed"
+    },
+    {
+      "note": "",
+      "source_category": "Mixed or Multiple ethnic groups: White and Black Caribbean",
+      "target_category": "Mixed"
+    },
+    {
+      "note": "",
+      "source_category": "Mixed or Multiple ethnic groups: Other Mixed or Multiple ethnic groups",
+      "target_category": "Mixed"
+    },
+    {
+      "note": "",
+      "source_category": "White: English, Welsh, Scottish, Northern Irish or British",
+      "target_category": "White"
+    },
+    {
+      "note": "",
+      "source_category": "White: Irish",
+      "target_category": "White"
+    },
+    {
+      "note": "",
+      "source_category": "White: Gypsy or Irish Traveller",
+      "target_category": "White"
+    },
+    {
+      "note": "",
+      "source_category": "White: Roma",
+      "target_category": "White"
+    },
+    {
+      "note": "",
+      "source_category": "White: Other White",
+      "target_category": "White"
+    },
+    {
+      "note": "ONS places Arab within the high-level 'Other ethnic group' in its standard ethnic_group_tb_6a rollup. PRISM-R follows that ONS rollup; the placement of Arab is ONS's classification, not a PRISM-R judgement.",
+      "source_category": "Other ethnic group: Arab",
+      "target_category": "Other"
+    },
+    {
+      "note": "",
+      "source_category": "Other ethnic group: Any other ethnic group",
+      "target_category": "Other"
+    }
+  ]
+}

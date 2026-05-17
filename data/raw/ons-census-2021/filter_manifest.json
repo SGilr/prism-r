@@ -1,0 +1,115 @@
+{
+  "meta": {
+    "description": "Reproducibility record for the ONS Census 2021 population denominator artefacts. Each pull below can be reproduced by POSTing request_body to the ONS filter service, submitting, and downloading the result; the SHA256 verifies the file.",
+    "filter_service": "https://api.beta.ons.gov.uk/v1/filters",
+    "dataset": "RM032 (Ethnic group by sex by age), edition 2021, version 1, population type UR",
+    "retrieval_date": "2026-05-17",
+    "pulls_used_in_pipeline": ["canonical", "sex_aggregated_topup"],
+    "pulls_for_validation": ["national_reconciliation", "ageonly_2la_crosscheck"],
+    "pulls_for_audit": ["detailed_20cat_audit"]
+  },
+  "pulls": [
+    {
+      "role": "canonical",
+      "file": "census2021_5cat_age_sex.csv",
+      "description": "5-category ethnic group by sex by single-year age 10-17, all 2023 lower tier local authorities. 314 LAs released; the rest dropped by ONS disclosure control.",
+      "request_body": {
+        "dataset": {"id": "RM032", "edition": "2021", "version": 1},
+        "population_type": "UR",
+        "dimensions": [
+          {"name": "ltla23", "is_area_type": true},
+          {"name": "ethnic_group_tb_6a"},
+          {"name": "sex"},
+          {"name": "resident_age_101a", "options": ["10", "11", "12", "13", "14", "15", "16", "17"]}
+        ]
+      },
+      "filter_id": "b599fbfb-ef62-4bb0-937c-f9cbf77aa716",
+      "filter_output_id": "a0952c55-762a-4849-94fd-705184b969ca",
+      "status_url": "https://api.beta.ons.gov.uk/v1/filter-outputs/a0952c55-762a-4849-94fd-705184b969ca",
+      "csv_download_url": "https://static.ons.gov.uk/datasets/a0952c55-762a-4849-94fd-705184b969ca/RM032-2021-1-filtered-2026-05-17T16:39:43Z.csv",
+      "sha256": "3c255178fa372959161b9f01f62bb3a44f1af5f59a4d6f75d427140845b0ec5c",
+      "rows": 30144
+    },
+    {
+      "role": "sex_aggregated_topup",
+      "file": "census2021_5cat_sex_aggregated.csv",
+      "description": "5-category ethnic group by single-year age 10-17, no sex dimension, requested for the four LAs missing from the canonical pull. Released two of them: Melton and Merthyr Tydfil.",
+      "request_body": {
+        "dataset": {"id": "RM032", "edition": "2021", "version": 1},
+        "population_type": "UR",
+        "dimensions": [
+          {"name": "ltla23", "is_area_type": true, "options": ["E06000053", "E07000133", "E09000001", "W06000024"]},
+          {"name": "ethnic_group_tb_6a"},
+          {"name": "resident_age_101a", "options": ["10", "11", "12", "13", "14", "15", "16", "17"]}
+        ]
+      },
+      "filter_id": "96f2780c-17de-4c56-9cbd-009f9a9ae1b8",
+      "filter_output_id": "66ef7667-a05f-4f78-b843-1c127abcb068",
+      "status_url": "https://api.beta.ons.gov.uk/v1/filter-outputs/66ef7667-a05f-4f78-b843-1c127abcb068",
+      "csv_download_url": "https://static.ons.gov.uk/datasets/66ef7667-a05f-4f78-b843-1c127abcb068/RM032-2021-1-filtered-2026-05-17T16:44:19Z.csv",
+      "sha256": "35d348def98c946e19a7ed4a10f234188b88857b9a8de3221f5aa9b3dba33343",
+      "rows": 96
+    },
+    {
+      "role": "detailed_20cat_audit",
+      "file": "census2021_20cat_audit.csv",
+      "description": "20-category detailed ethnic group by sex by single-year age 10-17, all LAs. Disclosure control released only 305 LAs at this granularity, so it is not used in the pipeline; retained as an audit trail and for any future analysis wanting finer ethnic detail.",
+      "request_body": {
+        "dataset": {"id": "RM032", "edition": "2021", "version": 1},
+        "population_type": "UR",
+        "dimensions": [
+          {"name": "ltla23", "is_area_type": true},
+          {"name": "ethnic_group_tb_20b"},
+          {"name": "sex"},
+          {"name": "resident_age_101a", "options": ["10", "11", "12", "13", "14", "15", "16", "17"]}
+        ]
+      },
+      "filter_id": "625a4af2-e27c-43d3-a0d6-59e9e5ab2fdd",
+      "filter_output_id": "193c4494-deca-4e96-987d-425f0e4e07be",
+      "status_url": "https://api.beta.ons.gov.uk/v1/filter-outputs/193c4494-deca-4e96-987d-425f0e4e07be",
+      "csv_download_url": "https://static.ons.gov.uk/datasets/193c4494-deca-4e96-987d-425f0e4e07be/RM032-2021-1-filtered-2026-05-17T16:36:47Z.csv",
+      "sha256": "c4930ecf5a250c1cbf6f2edfabafadd2410901165a7f070b01ccc884953c5fe4",
+      "rows": 97600
+    },
+    {
+      "role": "national_reconciliation",
+      "file": "census2021_5cat_national.csv",
+      "description": "5-category ethnic group by sex by single-year age 10-17, England and Wales as a single area. No disclosure restriction at national scale; used to validate the national total.",
+      "request_body": {
+        "dataset": {"id": "RM032", "edition": "2021", "version": 1},
+        "population_type": "UR",
+        "dimensions": [
+          {"name": "nat", "is_area_type": true},
+          {"name": "ethnic_group_tb_6a"},
+          {"name": "sex"},
+          {"name": "resident_age_101a", "options": ["10", "11", "12", "13", "14", "15", "16", "17"]}
+        ]
+      },
+      "filter_id": "5fa02d42-1a6e-4af6-87db-6bfdbcf0ec40",
+      "filter_output_id": "4d3f34d4-6159-483a-a4cc-2443962a1768",
+      "status_url": "https://api.beta.ons.gov.uk/v1/filter-outputs/4d3f34d4-6159-483a-a4cc-2443962a1768",
+      "csv_download_url": "https://static.ons.gov.uk/datasets/4d3f34d4-6159-483a-a4cc-2443962a1768/RM032-2021-1-filtered-2026-05-17T16:51:01Z.csv",
+      "sha256": "377424597b3ffce9b1263a50cd8ea29c6a1a7fbde1382d72a4fa0f3b53fd5636",
+      "rows": 96
+    },
+    {
+      "role": "ageonly_2la_crosscheck",
+      "file": "census2021_ageonly_2la.csv",
+      "description": "Single-year age 10-17 with no ethnicity or sex, for Isles of Scilly and City of London. Used to cross-check the implied population gap for the two unavailable LAs.",
+      "request_body": {
+        "dataset": {"id": "RM032", "edition": "2021", "version": 1},
+        "population_type": "UR",
+        "dimensions": [
+          {"name": "ltla23", "is_area_type": true, "options": ["E06000053", "E09000001"]},
+          {"name": "resident_age_101a", "options": ["10", "11", "12", "13", "14", "15", "16", "17"]}
+        ]
+      },
+      "filter_id": "3ea9ea64-411f-41df-a08b-357eea7b9e44",
+      "filter_output_id": "bea189d1-7520-4ca8-81bd-b8466c51d28c",
+      "status_url": "https://api.beta.ons.gov.uk/v1/filter-outputs/bea189d1-7520-4ca8-81bd-b8466c51d28c",
+      "csv_download_url": "https://static.ons.gov.uk/datasets/bea189d1-7520-4ca8-81bd-b8466c51d28c/RM032-2021-1-filtered-2026-05-17T16:51:06Z.csv",
+      "sha256": "5365777081986d53c87574fa3503215d08175554b8a54eb1c08cc1ad1b25da88",
+      "rows": 16
+    }
+  ]
+}

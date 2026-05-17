@@ -63,6 +63,8 @@ The YJB immediate-custody counts for children by ethnicity are small enough that
 
 PRISM-R therefore presents the child custodial sentencing RRI as a three-year pooled estimate, counts summed across the years ending March 2023, 2024 and 2025, as its primary figure. Single-year values are retained in `rri.json` for inspection, marked `pooled: false`. This follows standard practice for small-count disproportionality analysis. The child remand RRI is not pooled: those counts are stable and the single-year confidence intervals are tight.
 
+v1 visualisation requirement, for Sprint 3: the chart of the pooled child custodial sentencing RRI must show the pooled estimate together with the three single-year points overlaid, so a reader sees the underlying instability rather than a smoothed-over headline.
+
 ## Reporting periods
 
 MoJ and YJB use different reporting calendars. The Criminal Justice Statistics Quarterly, the source of the adult RRIs, reports by calendar year. Youth Justice Statistics, the source of the child RRIs, reports by financial year, the year ending March.
@@ -84,6 +86,8 @@ Two points of method:
 
 2. The Wald log-ratio interval is unreliable when any underlying count is small, below about 5. PRISM-R suppresses cells below 6, so this is largely a non-issue, but it is flagged honestly: intervals computed near the suppression boundary will be wide and may extend implausibly. Exact methods, such as the Wilson or Fisher interval, are deferred to v2.
 
+3. Ethnic groups with small underlying populations, the "Other" group in particular and at times "Mixed", carry wider confidence intervals as a structural feature of disaggregation, not a flaw in the analysis: a smaller denominator gives a larger standard error. Such results should be read as less precise, not less real. The pooled "Other" child custodial sentencing RRI is a case in point: 1.47 with a 95% interval of 1.01 to 2.14. Its lower bound sits just above 1, so it is significant but only marginally; it should be presented as such, not treated as equivalent to a tighter finding.
+
 TODO, methodology reviewer: the confidence interval method above is to be reviewed and signed off before launch.
 
 ## Reproducibility of MoJ-published RRIs
@@ -98,7 +102,25 @@ This is not a criticism of MoJ practice. It is a description of the disclosure e
 
 ## Denominator basis
 
-Population denominators use the 2011 or 2021 Census basis. The basis is flagged per indicator, because the change between censuses affects comparability.
+Population denominators use the 2021 Census basis, recorded per record in the `census_basis` field. The change from the 2011 Census affects comparability and is flagged where any 2011-based figure is used.
+
+## Disclosure-aware coverage of LA-level population data
+
+`data/processed/populations.json` is the child population denominator, built by `pipeline/ingest_ons.py` from ONS Census 2021 dataset RM032, pulled through the ONS filter service. Three filter requests produced the data: a 5-category ethnic group by sex by single-year age cube for all local authorities; a sex-aggregated top-up for authorities the first cube did not release; and a 20-category detailed cube retained as a raw audit artefact, not used in the pipeline. The exact requests, filter IDs, download URLs and checksums are recorded in `data/raw/ons-census-2021/filter_manifest.json`, so the artefacts are reproducible by anyone holding that manifest.
+
+ONS disclosure control will not release a fine ethnicity-by-age cross-tabulation for the smallest authorities. Coverage therefore comes in three tiers, recorded per LA in a `disclosure_status` field:
+
+- `full`, 314 LAs: ethnicity by age band by sex.
+- `sex_aggregated`, 2 LAs (Melton and Merthyr Tydfil): ethnicity by age band, with the sex dimension suppressed by ONS.
+- `unavailable`, 2 LAs (Isles of Scilly and City of London): ONS released no ethnicity-by-age cross-tabulation at any granularity attempted.
+
+The national total reconciles against a separate national-level filter pull, which carries no disclosure restriction. The national figure is 5,635,559; the sum across the 316 covered LAs is 5,635,156; the gap of 403 is consistent, within cell-key perturbation noise, with the 409 children the two unavailable LAs hold according to an age-only ONS table. Those two LAs together are under 0.05% of the England and Wales population aged 10 to 17.
+
+PRISM-R declines to model figures for the two unavailable LAs. A rate calculation for them returns null, with a documented reason, rather than a manufactured value. This is not a shortcoming to apologise for: ONS disclosure control is doing what it should, and PRISM-R's task is to respect that boundary visibly rather than paper over it.
+
+## Geographic vintages
+
+PRISM-R uses 2023 local authority boundaries throughout, via the ONS `ltla23` area type, aligned with the geography crosswalk built in Task 1. Census 2021 was collected on Census day, 21 March 2021; ONS re-publishes it through the filter service aggregated to several boundary vintages, including 2023. The population figures are therefore 2021 observations presented on 2023 boundaries. The two are distinct and should not be conflated: the count is from 2021, the geography is 2023.
 
 ## Disclosure control
 
