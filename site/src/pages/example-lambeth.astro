@@ -1,0 +1,193 @@
+---
+import Base from '../layouts/Base.astro';
+import Wordmark from '../components/Wordmark.astro';
+import { renderLambeth } from '../lib/lambeth.mjs';
+
+const p = renderLambeth();
+---
+
+<Base title="PRISM-R in Lambeth: a worked example">
+  <article>
+    <h1 class="font-sans text-2xl font-semibold tracking-tight text-ink">
+      <Wordmark /> in Lambeth: a worked example
+    </h1>
+    <p class="mt-3 font-sans text-sm leading-relaxed text-neutral-600">
+      Preview of Sprint 3 capability. This page shows how PRISM-R will present
+      local-level analysis once the geographic explorer is built. Updated
+      annually.
+    </p>
+
+    <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <!-- Panel 1: child population -->
+      <section class="panel">
+        <h2 class="panel-heading">Child population aged 10 to 17</h2>
+        <div class="panel-chart" set:html={p.population} />
+        <p class="panel-caption">
+          Lambeth's child population is more ethnically diverse than the
+          national average. This is the denominator against which the
+          upstream-driver rates are computed. Source: ONS Census 2021.
+        </p>
+      </section>
+
+      <!-- Panel 2: stop and search -->
+      <section class="panel">
+        <h2 class="panel-heading">Stop and search, Metropolitan Police</h2>
+        <div class="panel-chart" set:html={p.stopSearch} />
+        <p class="panel-caption">
+          Rate per 1,000 children, year ending March 2025. Stop and search is
+          published at police force level, not local authority: these figures
+          apply to the Metropolitan Police as a whole, the force covering
+          Lambeth. Source: Home Office Police powers and procedures.
+        </p>
+      </section>
+
+      <!-- Panel 3: permanent exclusions -->
+      <section class="panel">
+        <h2 class="panel-heading">Permanent exclusions in Lambeth</h2>
+        <div class="panel-chart" set:html={p.exclusions} />
+        <p class="panel-caption">
+          Rate per 100 pupils, academic year 2023/24. Local authority level.
+          Source: DfE suspensions and permanent exclusions in England.
+        </p>
+      </section>
+
+      <!-- Panel 4: suspensions -->
+      <section class="panel">
+        <h2 class="panel-heading">Suspensions in Lambeth</h2>
+        <div class="panel-chart" set:html={p.suspensions} />
+        <p class="panel-caption">
+          Rate per 100 pupils, academic year 2023/24. Local authority level.
+          Source: DfE suspensions and permanent exclusions in England.
+        </p>
+      </section>
+
+      <!-- Panel 5: children looked after -->
+      <section class="panel">
+        <h2 class="panel-heading">Children looked after in Lambeth</h2>
+        <div class="panel-chart" set:html={p.lookedAfter} />
+        <p class="panel-caption">
+          Counts shown rather than rates. A true ethnicity-specific
+          looked-after rate requires a 0 to 17 ethnic denominator, which is out
+          of scope for v1. Source: DfE children looked after in England.
+        </p>
+        <p class="panel-note">
+          Looked-after counts for Black, Mixed Heritage and White children in
+          Lambeth are shown. Counts for Asian children and children in the
+          Other category are below the disclosure-control threshold and are
+          not shown. The Asian cell was suppressed at source by the Department
+          for Education; the Other cell is suppressed by PRISM-R to prevent
+          back-calculation of the Asian figure from the group total. This is
+          standard practice in disclosure-aware analytics.
+        </p>
+      </section>
+
+      <!-- Panel 6: IDACI -->
+      <section class="panel">
+        <h2 class="panel-heading">Income deprivation affecting children</h2>
+        <p class="idaci-number">{p.idaci.score}</p>
+        <p class="idaci-context">
+          Lambeth's IDACI score, against an England average of
+          {' '}{p.idaci.englandMean}.
+        </p>
+        <p class="panel-caption">
+          Lambeth ranks {p.idaci.rank}th most deprived of {p.idaci.rankMax}
+          {' '}English local authorities on child income deprivation, more
+          deprived than {p.idaci.percentile}% of them. Source: MHCLG English
+          Indices of Deprivation 2025, IDACI.
+        </p>
+      </section>
+    </div>
+
+    <section class="mt-10 space-y-4 leading-relaxed">
+      <p>
+        Lambeth illustrates the geographic patterns PRISM-R will surface once
+        the geographic explorer is built in Sprint 3. The pattern visible here,
+        that Black children in Lambeth are disproportionately exposed to
+        upstream system contacts, stop and search and exclusion, even before
+        any decision about remand is made, is the prevention informatics
+        question PRISM-R exists to make visible. Sprint 3 will allow this
+        pattern to be examined for any of the 318 local authorities in England
+        and Wales, with appropriate disclosure controls applied.
+      </p>
+      <p class="font-sans text-xs leading-relaxed text-neutral-500">
+        Every figure on this page passes through PRISM-R's disclosure control.
+        Full provenance, including reference periods and retrieval dates, is on
+        the <a href="/methods" class="text-accent underline underline-offset-2">methods page</a>.
+      </p>
+    </section>
+  </article>
+
+  <style>
+    .panel {
+      border: 1px solid #e5e5e5;
+      border-radius: 4px;
+      padding: 1.1rem 1.2rem 1.2rem;
+      background: #ffffff;
+    }
+    .panel-heading {
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 0;
+    }
+    .panel-chart {
+      margin-top: 0.7rem;
+    }
+    .panel-chart :global(svg) {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+    .panel-caption {
+      margin-top: 0.7rem;
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 0.74rem;
+      line-height: 1.5;
+      color: #6a6a6a;
+    }
+    .panel-note {
+      margin-top: 0.7rem;
+      padding-top: 0.7rem;
+      border-top: 1px solid #ededed;
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: #1a1a1a;
+    }
+    .paired-legend {
+      display: flex;
+      gap: 1rem;
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 0.72rem;
+      color: #6a6a6a;
+      margin-bottom: 0.4rem;
+    }
+    .paired-legend span {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .sw {
+      width: 0.7rem;
+      height: 0.7rem;
+      border-radius: 2px;
+      display: inline-block;
+    }
+    .idaci-number {
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 3rem;
+      font-weight: 600;
+      line-height: 1;
+      color: #1f3a5f;
+      margin: 1rem 0 0;
+    }
+    .idaci-context {
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+      color: #1a1a1a;
+    }
+    article a {
+      color: #1f3a5f;
+    }
+  </style>
+</Base>
