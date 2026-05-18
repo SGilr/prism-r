@@ -1,7 +1,16 @@
 ---
 /**
- * The PRISM-R wordmark. The R is italic and in a lighter, muted tint;
- * styling is applied via the .wordmark-r class, defined globally in Base.astro.
+ * The PRISM-R wordmark, in EB Garamond, with the I and R italicised as
+ * family-identity accent letters: the I is the shared PRISM-family accent
+ * (the AI / OXAi hint), the R is the variant marker (Remand). Styling lives
+ * in the global .wordmark classes defined in Base.astro.
+ *
+ * nav: when true, renders the quiet single-tone navigation treatment, used
+ * in the navigation bar and footer. Default is the full-colour display mode.
  */
+interface Props {
+  nav?: boolean;
+}
+const { nav = false } = Astro.props;
 ---
-<span class="wordmark">PRISM-<span class="wordmark-r">R</span></span>
+<span class:list={['wordmark', { 'wordmark--nav': nav }]}>PR<span class="wordmark-i">I</span>SM-<span class="wordmark-r">R</span></span>
