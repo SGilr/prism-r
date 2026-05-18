@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import Wordmark from '../components/Wordmark.astro';
 
 const yjsUrl =
   'https://www.gov.uk/government/statistics/youth-justice-statistics-2024-to-2025';
@@ -8,8 +9,8 @@ const yjsCitation =
 
 const headline = [
   { value: '28%', label: 'Black children as a share of children remanded' },
-  { value: '18%', label: 'Mixed children as a share of children remanded' },
-  { value: '16%', label: 'Asian and Other children as a share of children remanded' },
+  { value: '18%', label: 'Mixed Heritage children as a share of children remanded' },
+  { value: '16%', label: 'Asian children and children in the Other category, as a share of children remanded' },
   { value: '62%', label: 'Remanded children who did not receive a custodial sentence' },
 ];
 ---
@@ -17,7 +18,7 @@ const headline = [
 <Base title="PRISM-R: Remand Disparity Intelligence">
   <article>
     <h1 class="font-sans text-2xl font-semibold tracking-tight text-ink">
-      PRISM-R: Remand Disparity Intelligence
+      <Wordmark />: Remand Disparity Intelligence
     </h1>
     <p class="mt-2 font-sans text-sm text-neutral-500">
       An open analysis of youth remand disproportionality in England and Wales
@@ -25,7 +26,7 @@ const headline = [
 
     <section class="mt-8 space-y-4 leading-relaxed">
       <p>
-        PRISM-R examines the over-representation of Black, Mixed and
+        PRISM-R examines the over-representation of Black, Mixed Heritage and
         minority-ethnic children among those remanded in the youth justice
         system of England and Wales. It treats that over-representation as a
         prevention question: a pattern that is set well before a child reaches
