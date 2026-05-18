@@ -1,0 +1,118 @@
+---
+import Base from '../layouts/Base.astro';
+
+const yjsUrl =
+  'https://www.gov.uk/government/statistics/youth-justice-statistics-2024-to-2025';
+const yjsCitation =
+  'Youth Justice Statistics 2024 to 2025, Ministry of Justice and Youth Justice Board, January 2026';
+
+const headline = [
+  { value: '28%', label: 'Black children as a share of children remanded' },
+  { value: '18%', label: 'Mixed children as a share of children remanded' },
+  { value: '16%', label: 'Asian and Other children as a share of children remanded' },
+  { value: '62%', label: 'Remanded children who did not receive a custodial sentence' },
+];
+---
+
+<Base title="PRISM-R: Remand Disparity Intelligence">
+  <article>
+    <h1 class="font-sans text-2xl font-semibold tracking-tight text-ink">
+      PRISM-R: Remand Disparity Intelligence
+    </h1>
+    <p class="mt-2 font-sans text-sm text-neutral-500">
+      An open analysis of youth remand disproportionality in England and Wales
+    </p>
+
+    <section class="mt-8 space-y-4 leading-relaxed">
+      <p>
+        PRISM-R examines the over-representation of Black, Mixed and
+        minority-ethnic children among those remanded in the youth justice
+        system of England and Wales. It treats that over-representation as a
+        prevention question: a pattern that is set well before a child reaches
+        a courtroom, and that is visible in earlier decisions, in policing and
+        in the circumstances children grow up in.
+      </p>
+      <p>
+        The tool follows children through the decisions that lead to remand and
+        shows where disparity enters and where it compounds. It reports
+        co-occurrence, not causation, and it draws only on publicly available
+        data.
+      </p>
+    </section>
+
+    <section class="mt-10">
+      <p class="font-sans text-sm font-medium text-neutral-600">
+        The headline picture, from Youth Justice Statistics 2024 to 2025:
+      </p>
+      <div class="mt-4 grid grid-cols-1 gap-px overflow-hidden rounded border border-neutral-200 bg-neutral-200 sm:grid-cols-2">
+        {
+          headline.map((item) => (
+            <div class="bg-white p-5">
+              <p class="font-sans text-4xl font-semibold tracking-tight text-accent">
+                {item.value}
+              </p>
+              <p class="mt-2 leading-snug">{item.label}</p>
+              <p class="mt-3 font-sans text-xs leading-snug text-neutral-500">
+                Source:{' '}
+                <a
+                  href={yjsUrl}
+                  class="underline underline-offset-2 hover:text-accent"
+                >
+                  {yjsCitation}
+                </a>
+              </p>
+            </div>
+          ))
+        }
+      </div>
+      <p class="mt-4 font-sans text-xs leading-relaxed text-neutral-500">
+        These four figures are published statistics, cited as the Youth Justice
+        Board and Ministry of Justice report them. The charts on the national
+        picture page are PRISM-R's own analysis and are labelled as such.
+      </p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="font-sans text-lg font-semibold tracking-tight text-ink">
+        Where to go next
+      </h2>
+      <ul class="mt-4 space-y-3">
+        <li>
+          <a
+            href="/national"
+            class="font-sans font-medium text-accent underline underline-offset-2"
+          >
+            National picture
+          </a>
+          <span class="block leading-relaxed">
+            The road-to-remand cascade, and what it reveals about where
+            disparity is generated.
+          </span>
+        </li>
+        <li>
+          <a
+            href="/methods"
+            class="font-sans font-medium text-accent underline underline-offset-2"
+          >
+            Methods
+          </a>
+          <span class="block leading-relaxed">
+            Every source, every methodological decision, the disclosure
+            controls, and how to reproduce the pipeline.
+          </span>
+        </li>
+        <li>
+          <a
+            href="/about"
+            class="font-sans font-medium text-accent underline underline-offset-2"
+          >
+            About
+          </a>
+          <span class="block leading-relaxed">
+            What PRISM-R is for, who produces it, and its independence.
+          </span>
+        </li>
+      </ul>
+    </section>
+  </article>
+</Base>

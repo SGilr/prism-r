@@ -1,0 +1,153 @@
+---
+import Base from '../layouts/Base.astro';
+import { renderCascade, renderDisproportion, renderRemandMix } from '../lib/charts.mjs';
+
+const cascade = renderCascade();
+const disproportion = renderDisproportion();
+const remandMix = renderRemandMix();
+---
+
+<Base title="National picture — PRISM-R">
+  <article>
+    <h1 class="font-sans text-2xl font-semibold tracking-tight text-ink">
+      National picture
+    </h1>
+
+    <section class="mt-6 space-y-4 leading-relaxed">
+      <p>
+        This page traces youth remand disproportionality in England and Wales
+        through the decisions that lead to it. It works at England and Wales
+        level. The three charts are PRISM-R's own analysis of open data; they
+        are distinct from the published headline statistics on the home page,
+        and each is captioned with its source.
+      </p>
+    </section>
+
+    <!-- CHART A: cascade -->
+    <section class="mt-12">
+      <h2 class="font-sans text-lg font-semibold tracking-tight text-ink">
+        The road to remand
+      </h2>
+      <div class="mt-3 space-y-4 leading-relaxed">
+        <p>
+          The Relative Rate Index compares the rate at which an ethnic group
+          experiences a decision with the rate for White children. A value of
+          one is parity; above one, the group is more likely to experience the
+          decision. The cascade follows children through four decision points,
+          from the first police contact to the court.
+        </p>
+      </div>
+      <div class="chart mt-6" set:html={cascade} />
+      <p class="caption font-sans">
+        PRISM-R analysis. Stop and search and arrest computed from Home Office
+        Police powers and procedures, year ending March 2025. Remand and the
+        pooled custodial sentencing estimate computed from YJB Youth Justice
+        Statistics 2024-25. Retrieved May 2026.
+        <a href="/data/manifest.json">See the build manifest</a>.
+      </p>
+    </section>
+
+    <section class="mt-10 space-y-4 leading-relaxed">
+      <h3 class="font-sans text-base font-semibold text-ink">
+        The groups do not follow one pattern
+      </h3>
+      <p>
+        The four ethnic groups diverge across the cascade. For Black children
+        the disparity is widest at the first point of contact: a stop and
+        search rate 2.40 times the White rate. It is lower at each court stage,
+        1.92 at remand and 1.59 at pooled custodial sentencing. For Asian
+        children the pattern runs the other way, rising from 0.60 at stop and
+        search and 0.52 at arrest, both below parity, to 1.51 at remand and
+        1.38 at custodial sentencing.
+      </p>
+      <p>
+        These are distinct findings. PRISM-R reports them separately rather
+        than as a single account of disproportionality.
+      </p>
+    </section>
+
+    <section class="mt-10 space-y-4 leading-relaxed">
+      <h3 class="font-sans text-base font-semibold text-ink">
+        Disparity appears before the court
+      </h3>
+      <p>
+        Measurable disparity is present at stop and search and at arrest, for
+        Black and Mixed children, before any court involvement. The
+        disproportionality visible at remand is therefore not created at the
+        court stage alone: a substantial part of it is already present in the
+        policing decisions upstream. On these figures, much of the measured
+        racial disparity is generated before a child reaches the court.
+      </p>
+    </section>
+
+    <!-- CHART B: headline disproportion -->
+    <section class="mt-12">
+      <h2 class="font-sans text-lg font-semibold tracking-tight text-ink">
+        Child population and custodial remand
+      </h2>
+      <div class="mt-3 space-y-4 leading-relaxed">
+        <p>
+          Black children are about 6% of the 10 to 17 population of England and
+          Wales, and about 26% of children remanded to youth detention
+          accommodation in the year ending March 2025. The bars below set each
+          ethnic group's share of the child population against its share of
+          custodial remand.
+        </p>
+      </div>
+      <div class="chart mt-6" set:html={disproportion} />
+      <p class="caption font-sans">
+        PRISM-R analysis. Child population: ONS Census 2021. Custodial remand,
+        remand to youth detention accommodation: YJB Youth Justice Statistics
+        2024-25, year ending March 2025. Retrieved May 2026.
+        <a href="/data/manifest.json">See the build manifest</a>.
+      </p>
+    </section>
+
+    <!-- CHART C: remand decision mix -->
+    <section class="mt-12">
+      <h2 class="font-sans text-lg font-semibold tracking-tight text-ink">
+        How remand decisions divide
+      </h2>
+      <div class="mt-3 space-y-4 leading-relaxed">
+        <p>
+          Not every child subject to a remand decision is held. Most are
+          bailed; the rest are placed on community remand, remanded to local
+          authority accommodation, or remanded to custody. The bars below show
+          how remand decisions divided for each ethnic group in the year ending
+          March 2025. The custodial remand share, the darkest segment, is
+          larger for Black and Mixed children than for White children.
+        </p>
+      </div>
+      <div class="chart mt-6" set:html={remandMix} />
+      <p class="caption font-sans">
+        PRISM-R analysis of YJB Youth Justice Statistics 2024-25, year ending
+        March 2025. Children of Other and Unknown ethnicity are not shown: one
+        cell for the Other group is suppressed under disclosure control, and
+        Unknown is not a defined ethnic group. Retrieved May 2026.
+        <a href="/data/manifest.json">See the build manifest</a>.
+      </p>
+    </section>
+  </article>
+
+  <style>
+    .chart :global(svg),
+    .chart :global(figure) {
+      max-width: 100%;
+      height: auto;
+    }
+    .chart :global(figure) {
+      margin: 0;
+    }
+    .caption {
+      margin-top: 0.6rem;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      color: #6a6a6a;
+    }
+    .caption a {
+      color: #1f3a5f;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+  </style>
+</Base>

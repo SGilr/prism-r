@@ -1,0 +1,166 @@
+---
+import Base from '../layouts/Base.astro';
+
+const repoUrl = 'https://github.com/SGilr/prism-r';
+---
+
+<Base title="Methods — PRISM-R">
+  <article class="methods">
+    <h1 class="font-sans text-2xl font-semibold tracking-tight text-ink">
+      Methods
+    </h1>
+
+    <section class="mt-6 space-y-4 leading-relaxed">
+      <p>
+        PRISM-R is built from a reproducible data pipeline. Every figure on
+        this site is produced by Python scripts that read publicly available
+        source files and emit flat JSON. The pipeline, the source list and the
+        processed data are open. This page records how PRISM-R works and the
+        decisions behind it.
+      </p>
+    </section>
+
+    <section class="mt-10 space-y-4 leading-relaxed">
+      <h2 class="font-sans text-lg font-semibold tracking-tight text-ink">
+        Published figures versus PRISM-R analysis
+      </h2>
+      <p>
+        PRISM-R draws a clear line between two kinds of number. Where an
+        authoritative body publishes a headline statistic, PRISM-R cites the
+        published figure with explicit provenance rather than substituting its
+        own. The four headline numbers on the home page are cited this way,
+        from Youth Justice Statistics 2024 to 2025. The adult Relative Rate
+        Indices that PRISM-R holds for reference are cited from the Ministry of
+        Justice in the same way: they are derived from data that is not public,
+        so they cannot be reproduced and carry no confidence interval.
+      </p>
+      <p>
+        Where no published figure exists, PRISM-R produces its own analysis and
+        labels it as such. The road-to-remand cascade, the child-specific
+        Relative Rate Indices, and the remand decision mix by ethnicity are
+        PRISM-R analysis, computed transparently from open data. Every chart on
+        the national picture page is captioned with its source so the
+        distinction is immediate.
+      </p>
+    </section>
+
+    <section class="mt-10 space-y-4 leading-relaxed">
+      <h2 class="font-sans text-lg font-semibold tracking-tight text-ink">
+        The Relative Rate Index
+      </h2>
+      <p>
+        The Relative Rate Index compares the rate at which an ethnic group
+        experiences an outcome with the rate for the White baseline group. A
+        value of one is parity. The method was recommended in the Lammy Review
+        and is used by the Ministry of Justice. PRISM-R applies it to children
+        specifically, which published official statistics do not.
+      </p>
+      <p>
+        Each PRISM-R-derived index carries a 95% confidence interval, the Wald
+        interval on the log of the rate ratio. Child custodial sentencing
+        counts are small and unstable year to year, so that index is presented
+        as a three-year pooled estimate; the single-year values are retained
+        for inspection. Confidence intervals are wider for groups with smaller
+        populations, which is a property of disaggregation, not a flaw.
+      </p>
+    </section>
+
+    <section class="mt-10 space-y-4 leading-relaxed">
+      <h2 class="font-sans text-lg font-semibold tracking-tight text-ink">
+        The road-to-remand cascade
+      </h2>
+      <p>
+        The cascade follows children through four decision points: stop and
+        search, arrest, remand, and custodial sentence. Stop and search and
+        arrest rates use the 2021 Census child population as the denominator;
+        remand and custodial sentencing use a count of children already at that
+        stage. A fifth stage, charge, is out of scope for this version: no open
+        data gives child charges by ethnicity at a usable granularity. It is a
+        candidate for a later version.
+      </p>
+    </section>
+
+    <section class="mt-10 space-y-4 leading-relaxed">
+      <h2 class="font-sans text-lg font-semibold tracking-tight text-ink">
+        Disclosure control
+      </h2>
+      <p>
+        PRISM-R applies five disclosure control rules: counts below six are
+        suppressed; secondary suppression protects a single suppressed cell
+        from back-calculation; rates are not shown where the denominator is
+        below 100; suppression already applied in a source is carried through
+        and flagged as inherited; and every suppression decision is logged.
+        National figures rarely trigger suppression because the counts are
+        large; sub-national cells do, and they pass through the same rules.
+      </p>
+      <p>
+        The full audit trail is published, one record per decision, so a reader
+        can see the rule applied and not only its effect:
+        <a href="/data/suppression_audit.json">suppression audit</a>.
+      </p>
+    </section>
+
+    <section class="mt-10 space-y-4 leading-relaxed">
+      <h2 class="font-sans text-lg font-semibold tracking-tight text-ink">
+        Data sources
+      </h2>
+      <p>
+        The headline statistics and the youth justice analysis draw on Youth
+        Justice Statistics 2024 to 2025 (YJB and MoJ). The cascade also uses
+        Home Office Police powers and procedures, year ending March 2025, and
+        the Ministry of Justice statistics on ethnicity and the criminal
+        justice system. Child population is from the 2021 Census. The build
+        manifest records every source with its reference period, publication
+        date, retrieval date and a checksum for each output:
+        <a href="/data/manifest.json">build manifest</a>.
+      </p>
+    </section>
+
+    <section class="mt-10 space-y-4 leading-relaxed">
+      <h2 class="font-sans text-lg font-semibold tracking-tight text-ink">
+        What PRISM-R does not yet show
+      </h2>
+      <p>
+        This version works at England and Wales level. It does not yet show
+        remand at local authority level, a geographic map, or post-remand
+        court outcomes by ethnicity. Those require data that is not yet
+        ingested and are planned for later work. The home page figure of 62%
+        of remanded children not receiving a custodial sentence is cited from
+        the published statistics for that reason.
+      </p>
+    </section>
+
+    <section class="mt-10 space-y-4 leading-relaxed">
+      <h2 class="font-sans text-lg font-semibold tracking-tight text-ink">
+        Reproducibility
+      </h2>
+      <p>
+        The pipeline is one command. It runs every ingest and computation step
+        in dependency order, applies disclosure control, and writes the
+        manifest. The processed outputs are deterministic and reproduce byte
+        for byte. The code and the processed data are public:
+        <a href={repoUrl}>github.com/SGilr/prism-r</a>.
+      </p>
+    </section>
+
+    <section class="mt-10 space-y-4 leading-relaxed">
+      <h2 class="font-sans text-lg font-semibold tracking-tight text-ink">
+        Methodology review
+      </h2>
+      <p>
+        The confidence interval method and the wider analytical approach are to
+        be reviewed by an independent methodologist before launch. A reviewer
+        is being approached. This note will be updated, and signed, once that
+        review is complete.
+      </p>
+    </section>
+  </article>
+
+  <style>
+    .methods a {
+      color: #1f3a5f;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+  </style>
+</Base>

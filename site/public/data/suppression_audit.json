@@ -1,0 +1,3092 @@
+{
+  "meta": {
+    "counts": {
+      "by_rule": {
+        "inherited": 157,
+        "primary": 55,
+        "secondary": 95
+      },
+      "cells_suppressed_by_dataset": {
+        "context_indicators.json": 298,
+        "remand_outcomes.json": 6,
+        "rri.json": 0
+      },
+      "decisions": 307
+    },
+    "dataset": "suppression_audit",
+    "generated_by": "pipeline/build.py",
+    "schema_note": "One record per disclosure control decision, across every count-bearing output. rule is inherited, primary, secondary or rate-threshold; dataset names the output. The trail lets a reader see the rule applied, not just its effect. National figures rarely trigger suppression; sub-national cells do."
+  },
+  "records": [
+    {
+      "cell_id": "E06000001|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000001|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000001|2025|lac_count|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000001|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000003|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000003|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000003|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000003|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000003|2025|lac_count|by_ethnicity",
+      "original_count": 7,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000005|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000005|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000005|2025|lac_count|by_ethnicity",
+      "original_count": 8,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000005|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000005|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000006|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000006|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000006|2025|lac_count|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000006|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000008|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000008|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000008|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000008|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000008|2025|lac_count|by_ethnicity",
+      "original_count": 22,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000009|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000009|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000009|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000009|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000011|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000011|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000011|2025|lac_count|by_ethnicity",
+      "original_count": 6,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000011|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000011|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000012|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000012|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000012|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000012|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000013|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000013|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000013|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000013|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000013|2025|lac_count|by_ethnicity",
+      "original_count": 6,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000014|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000014|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000014|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000014|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000015|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000015|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000015|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000015|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000017|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000017|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000017|2025|lac_count|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000017|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000018|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000018|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000018|2025|lac_count|by_ethnicity",
+      "original_count": 41,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000018|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000018|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000019|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000019|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000019|2025|lac_count|by_ethnicity",
+      "original_count": 8,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000019|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000019|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000022|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000022|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000022|2025|lac_count|by_ethnicity",
+      "original_count": 8,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000022|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000022|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000024|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000024|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000024|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000024|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000025|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000025|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000025|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000025|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000025|2025|lac_count|by_ethnicity",
+      "original_count": 11,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000026|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000026|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000026|2025|lac_count|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000026|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000026|2025|lac_count|by_ethnicity",
+      "original_count": 6,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000027|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000027|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000027|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000027|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000031|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000031|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000031|2025|lac_count|by_ethnicity",
+      "original_count": 27,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000031|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000031|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000033|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000033|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000033|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000033|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000033|2025|lac_count|by_ethnicity",
+      "original_count": 8,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000034|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000034|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000034|2025|lac_count|by_ethnicity",
+      "original_count": 14,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000034|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000034|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000035|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000035|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000035|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000035|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000035|2025|lac_count|by_ethnicity",
+      "original_count": 21,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000036|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000036|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000036|2025|lac_count|by_ethnicity",
+      "original_count": 11,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000036|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000036|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000037|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000037|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000037|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000037|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000038|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000038|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000038|2025|lac_count|by_ethnicity",
+      "original_count": 22,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000038|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000038|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000040|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000040|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000040|2025|lac_count|by_ethnicity",
+      "original_count": 15,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000040|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000040|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000042|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000042|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000042|2025|lac_count|by_ethnicity",
+      "original_count": 40,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000042|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000042|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000046|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000046|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000046|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000046|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000046|2025|lac_count|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000046|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000049|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000049|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000049|2025|lac_count|by_ethnicity",
+      "original_count": 15,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000049|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000049|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000050|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000050|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000050|2025|lac_count|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000050|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000050|2025|lac_count|by_ethnicity",
+      "original_count": 19,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000051|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000051|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000051|2025|lac_count|by_ethnicity",
+      "original_count": 10,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000051|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000051|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000052|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000052|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000052|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000052|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000052|2025|lac_count|by_ethnicity",
+      "original_count": 19,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000053|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000053|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000053|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000053|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000053|2025|lac_count|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000053|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000053|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000053|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000053|2025|lac_count|by_ethnicity|White",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000053|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000054|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000054|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000054|2025|lac_count|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000054|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000055|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000055|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000055|2025|lac_count|by_ethnicity",
+      "original_count": 19,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000055|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000055|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000057|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000057|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000057|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000057|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000059|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000059|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000059|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000059|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000059|2025|lac_count|by_ethnicity",
+      "original_count": 16,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000061|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000061|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000061|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000061|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000061|2025|lac_count|by_ethnicity",
+      "original_count": 20,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E06000063|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000063|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000063|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000063|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000064|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000064|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000064|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000064|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000066|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E06000066|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E06000066|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E06000066|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E06000066|2025|lac_count|by_ethnicity",
+      "original_count": 14,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E08000010|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E08000010|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E08000010|2025|lac_count|by_ethnicity",
+      "original_count": 15,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E08000010|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E08000010|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E08000011|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E08000011|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E08000011|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E08000011|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E08000012|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E08000012|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E08000012|2025|lac_count|by_ethnicity",
+      "original_count": 77,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E08000012|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E08000012|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E08000013|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E08000013|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E08000013|2025|lac_count|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E08000013|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E08000013|2025|lac_count|by_ethnicity",
+      "original_count": 9,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E08000016|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E08000016|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E08000016|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E08000016|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E08000016|2025|lac_count|by_ethnicity",
+      "original_count": 7,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E08000017|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E08000017|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E08000017|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E08000017|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E08000019|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E08000019|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E08000019|2025|lac_count|by_ethnicity",
+      "original_count": 54,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E08000019|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E08000019|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E08000023|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E08000023|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E08000023|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E08000023|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E08000023|2025|lac_count|by_ethnicity",
+      "original_count": 11,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E08000024|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E08000024|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E08000024|2025|lac_count|by_ethnicity",
+      "original_count": 23,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E08000024|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E08000024|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E08000027|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E08000027|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E08000027|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E08000027|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E08000027|2025|lac_count|by_ethnicity",
+      "original_count": 20,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E08000029|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E08000029|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E08000029|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E08000029|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E08000029|2025|lac_count|by_ethnicity",
+      "original_count": 23,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E08000030|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E08000030|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E08000030|2025|lac_count|by_ethnicity",
+      "original_count": 27,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E08000030|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E08000030|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E08000033|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E08000033|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E08000033|2025|lac_count|by_ethnicity",
+      "original_count": 12,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E08000033|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E08000033|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E08000035|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E08000035|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E08000035|2025|lac_count|by_ethnicity",
+      "original_count": 70,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E08000035|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E08000035|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E08000036|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E08000036|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E08000036|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E08000036|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E08000036|2025|lac_count|by_ethnicity",
+      "original_count": 20,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E08000037|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E08000037|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E08000037|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E08000037|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E08000037|2025|lac_count|by_ethnicity",
+      "original_count": 18,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E09000001|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E09000001|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E09000001|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E09000001|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": null,
+      "dataset": "context_indicators.json",
+      "detail": "one cell suppressed but no further cell to suppress",
+      "group": "E09000001|2025|lac_count|overall",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "not applied",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E09000001|2025|lac_count|overall|None",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E09000001|2025|lac_count|overall",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E09000002|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E09000002|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E09000002|2025|lac_count|by_ethnicity",
+      "original_count": 50,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E09000002|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E09000002|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E09000003|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E09000003|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E09000003|2025|lac_count|by_ethnicity",
+      "original_count": 52,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E09000003|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E09000003|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E09000004|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E09000004|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E09000004|2025|lac_count|by_ethnicity",
+      "original_count": 13,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E09000004|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E09000004|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E09000010|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E09000010|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E09000010|2025|lac_count|by_ethnicity",
+      "original_count": 22,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E09000010|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E09000010|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E09000013|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E09000013|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E09000013|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E09000013|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E09000013|2025|lac_count|by_ethnicity",
+      "original_count": 16,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E09000014|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E09000014|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E09000014|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E09000014|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E09000014|2025|lac_count|by_ethnicity",
+      "original_count": 23,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E09000017|2025|lac_count|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E09000017|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E09000017|2025|lac_count|by_ethnicity",
+      "original_count": 35,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E09000017|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E09000017|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E09000019|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E09000019|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E09000019|2025|lac_count|by_ethnicity",
+      "original_count": 14,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E09000019|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E09000019|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E09000020|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E09000020|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E09000020|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E09000020|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E09000020|2025|lac_count|by_ethnicity",
+      "original_count": 11,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E09000021|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E09000021|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E09000021|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E09000021|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E09000021|2025|lac_count|by_ethnicity",
+      "original_count": 12,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E09000022|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E09000022|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E09000022|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E09000022|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E09000022|2025|lac_count|by_ethnicity",
+      "original_count": 20,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E09000024|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E09000024|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E09000024|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E09000024|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E09000024|2025|lac_count|by_ethnicity",
+      "original_count": 14,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E09000025|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E09000025|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E09000025|2025|lac_count|by_ethnicity",
+      "original_count": 87,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E09000025|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E09000025|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E09000027|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E09000027|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E09000027|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E09000027|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E09000030|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E09000030|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E09000030|2025|lac_count|by_ethnicity",
+      "original_count": 39,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E09000030|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E09000030|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E09000031|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E09000031|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E09000031|2025|lac_count|by_ethnicity",
+      "original_count": 36,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E09000031|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E09000031|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E09000033|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E09000033|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E09000033|2025|lac_count|by_ethnicity|White",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E09000033|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E09000033|2025|lac_count|by_ethnicity",
+      "original_count": 21,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E10000003|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000003|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E10000003|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E10000003|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E10000003|2025|lac_count|by_ethnicity",
+      "original_count": 50,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E10000006|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000006|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E10000006|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000006|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E10000006|2025|lac_count|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000006|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E10000006|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000006|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E10000006|2025|lac_count|by_ethnicity|White",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000006|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": null,
+      "dataset": "context_indicators.json",
+      "detail": "one cell suppressed but no further cell to suppress",
+      "group": "E10000006|2025|lac_count|overall",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "not applied",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E10000006|2025|lac_count|overall|None",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000006|2025|lac_count|overall",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E10000007|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E10000007|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E10000007|2025|lac_count|by_ethnicity",
+      "original_count": 38,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E10000007|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000007|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E10000008|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E10000008|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E10000008|2025|lac_count|by_ethnicity",
+      "original_count": 25,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E10000008|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000008|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E10000017|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000017|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E10000017|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E10000017|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E10000017|2025|lac_count|by_ethnicity",
+      "original_count": 31,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E10000018|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E10000018|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E10000018|2025|lac_count|by_ethnicity",
+      "original_count": 40,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E10000018|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000018|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E10000019|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000019|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E10000019|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000019|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E10000021|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000021|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E10000021|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000021|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E10000021|2025|lac_count|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000021|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E10000021|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000021|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E10000021|2025|lac_count|by_ethnicity|White",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000021|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": null,
+      "dataset": "context_indicators.json",
+      "detail": "one cell suppressed but no further cell to suppress",
+      "group": "E10000021|2025|lac_count|overall",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "not applied",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E10000021|2025|lac_count|overall|None",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000021|2025|lac_count|overall",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E10000024|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000024|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E10000024|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E10000024|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E10000024|2025|lac_count|by_ethnicity",
+      "original_count": 37,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E10000025|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E10000025|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E10000025|2025|lac_count|by_ethnicity",
+      "original_count": 51,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E10000025|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000025|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E10000029|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E10000029|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E10000029|2025|lac_count|by_ethnicity",
+      "original_count": 36,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E10000029|2025|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000029|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "E10000034|2025|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'E10000034|2025|lac_count|by_ethnicity' cannot be recovered",
+      "group": "E10000034|2025|lac_count|by_ethnicity",
+      "original_count": 34,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "E10000034|2025|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "E10000034|2025|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000001|2024|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000001|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000001|2024|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000001|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000001|2024|lac_count|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000001|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000002|2024|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'W06000002|2024|lac_count|by_ethnicity' cannot be recovered",
+      "group": "W06000002|2024|lac_count|by_ethnicity",
+      "original_count": 10,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "W06000002|2024|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "W06000002|2024|lac_count|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "W06000003|2024|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "W06000003|2024|lac_count|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "W06000003|2024|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000003|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000003|2024|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "W06000003|2024|lac_count|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "W06000004|2024|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "W06000004|2024|lac_count|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "W06000004|2024|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000004|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000004|2024|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "W06000004|2024|lac_count|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "W06000005|2024|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'W06000005|2024|lac_count|by_ethnicity' cannot be recovered",
+      "group": "W06000005|2024|lac_count|by_ethnicity",
+      "original_count": 10,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "W06000005|2024|lac_count|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000005|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000006|2024|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000006|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000006|2024|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000006|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000006|2024|lac_count|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000006|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000008|2024|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000008|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000008|2024|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000008|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000008|2024|lac_count|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "W06000008|2024|lac_count|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "W06000009|2024|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000009|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000009|2024|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000009|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000009|2024|lac_count|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000009|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000010|2024|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'W06000010|2024|lac_count|by_ethnicity' cannot be recovered",
+      "group": "W06000010|2024|lac_count|by_ethnicity",
+      "original_count": 10,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "W06000010|2024|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000010|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000012|2024|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000012|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000012|2024|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000012|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000012|2024|lac_count|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000012|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000013|2024|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "W06000013|2024|lac_count|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "W06000013|2024|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "W06000013|2024|lac_count|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "W06000013|2024|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000013|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000014|2024|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'W06000014|2024|lac_count|by_ethnicity' cannot be recovered",
+      "group": "W06000014|2024|lac_count|by_ethnicity",
+      "original_count": 10,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "W06000014|2024|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000014|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000016|2024|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "W06000016|2024|lac_count|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "W06000016|2024|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "W06000016|2024|lac_count|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "W06000018|2024|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000018|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000018|2024|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "W06000018|2024|lac_count|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "W06000018|2024|lac_count|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000018|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000019|2024|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000019|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000019|2024|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000019|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000019|2024|lac_count|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000019|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000019|2024|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "W06000019|2024|lac_count|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "W06000020|2024|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000020|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000020|2024|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000020|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000021|2024|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'W06000021|2024|lac_count|by_ethnicity' cannot be recovered",
+      "group": "W06000021|2024|lac_count|by_ethnicity",
+      "original_count": 10,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "W06000021|2024|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000021|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000022|2024|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'W06000022|2024|lac_count|by_ethnicity' cannot be recovered",
+      "group": "W06000022|2024|lac_count|by_ethnicity",
+      "original_count": 15,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "W06000022|2024|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000022|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000023|2024|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000023|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000023|2024|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000023|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000024|2024|lac_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000024|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000024|2024|lac_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "value already suppressed in source data",
+      "group": "W06000024|2024|lac_count|by_ethnicity",
+      "original_count": null,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "inherited"
+    },
+    {
+      "cell_id": "W06000024|2024|lac_count|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "W06000024|2024|lac_count|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "W06000024|2024|lac_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "W06000024|2024|lac_count|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-cambridgeshire|2025|stop_search_rate|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'pf-cambridgeshire|2025|stop_search_rate|by_ethnicity' cannot be recovered",
+      "group": "pf-cambridgeshire|2025|stop_search_rate|by_ethnicity",
+      "original_count": 18,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "pf-cambridgeshire|2025|stop_search_rate|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 3 below threshold 6",
+      "group": "pf-cambridgeshire|2025|stop_search_rate|by_ethnicity",
+      "original_count": 3,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-cheshire|2025|arrest_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'pf-cheshire|2025|arrest_count|by_ethnicity' cannot be recovered",
+      "group": "pf-cheshire|2025|arrest_count|by_ethnicity",
+      "original_count": 9,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "pf-cheshire|2025|arrest_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "pf-cheshire|2025|arrest_count|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-cumbria|2025|arrest_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'pf-cumbria|2025|arrest_count|by_ethnicity' cannot be recovered",
+      "group": "pf-cumbria|2025|arrest_count|by_ethnicity",
+      "original_count": 11,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "pf-cumbria|2025|arrest_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 1 below threshold 6",
+      "group": "pf-cumbria|2025|arrest_count|by_ethnicity",
+      "original_count": 1,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-devon-and-cornwall|2025|arrest_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'pf-devon-and-cornwall|2025|arrest_count|by_ethnicity' cannot be recovered",
+      "group": "pf-devon-and-cornwall|2025|arrest_count|by_ethnicity",
+      "original_count": 8,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "pf-devon-and-cornwall|2025|arrest_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 2 below threshold 6",
+      "group": "pf-devon-and-cornwall|2025|arrest_count|by_ethnicity",
+      "original_count": 2,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-devon-and-cornwall|2025|stop_search_rate|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "count 3 below threshold 6",
+      "group": "pf-devon-and-cornwall|2025|stop_search_rate|by_ethnicity",
+      "original_count": 3,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-devon-and-cornwall|2025|stop_search_rate|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 2 below threshold 6",
+      "group": "pf-devon-and-cornwall|2025|stop_search_rate|by_ethnicity",
+      "original_count": 2,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-dorset|2025|arrest_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "count 3 below threshold 6",
+      "group": "pf-dorset|2025|arrest_count|by_ethnicity",
+      "original_count": 3,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-dorset|2025|arrest_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "pf-dorset|2025|arrest_count|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-dorset|2025|stop_search_rate|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "count 2 below threshold 6",
+      "group": "pf-dorset|2025|stop_search_rate|by_ethnicity",
+      "original_count": 2,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-dorset|2025|stop_search_rate|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'pf-dorset|2025|stop_search_rate|by_ethnicity' cannot be recovered",
+      "group": "pf-dorset|2025|stop_search_rate|by_ethnicity",
+      "original_count": 6,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "pf-durham|2025|arrest_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "count 4 below threshold 6",
+      "group": "pf-durham|2025|arrest_count|by_ethnicity",
+      "original_count": 4,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-durham|2025|arrest_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'pf-durham|2025|arrest_count|by_ethnicity' cannot be recovered",
+      "group": "pf-durham|2025|arrest_count|by_ethnicity",
+      "original_count": 7,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "pf-durham|2025|stop_search_rate|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "count 1 below threshold 6",
+      "group": "pf-durham|2025|stop_search_rate|by_ethnicity",
+      "original_count": 1,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-durham|2025|stop_search_rate|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "count 4 below threshold 6",
+      "group": "pf-durham|2025|stop_search_rate|by_ethnicity",
+      "original_count": 4,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-dyfed-powys|2025|arrest_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "count 2 below threshold 6",
+      "group": "pf-dyfed-powys|2025|arrest_count|by_ethnicity",
+      "original_count": 2,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-dyfed-powys|2025|arrest_count|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "pf-dyfed-powys|2025|arrest_count|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-dyfed-powys|2025|stop_search_rate|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "count 1 below threshold 6",
+      "group": "pf-dyfed-powys|2025|stop_search_rate|by_ethnicity",
+      "original_count": 1,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-dyfed-powys|2025|stop_search_rate|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 4 below threshold 6",
+      "group": "pf-dyfed-powys|2025|stop_search_rate|by_ethnicity",
+      "original_count": 4,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-gloucestershire|2025|arrest_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'pf-gloucestershire|2025|arrest_count|by_ethnicity' cannot be recovered",
+      "group": "pf-gloucestershire|2025|arrest_count|by_ethnicity",
+      "original_count": 11,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "pf-gloucestershire|2025|arrest_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 2 below threshold 6",
+      "group": "pf-gloucestershire|2025|arrest_count|by_ethnicity",
+      "original_count": 2,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-gloucestershire|2025|stop_search_rate|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'pf-gloucestershire|2025|stop_search_rate|by_ethnicity' cannot be recovered",
+      "group": "pf-gloucestershire|2025|stop_search_rate|by_ethnicity",
+      "original_count": 13,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "pf-gloucestershire|2025|stop_search_rate|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "pf-gloucestershire|2025|stop_search_rate|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-gwent|2025|stop_search_rate|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'pf-gwent|2025|stop_search_rate|by_ethnicity' cannot be recovered",
+      "group": "pf-gwent|2025|stop_search_rate|by_ethnicity",
+      "original_count": 14,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "pf-gwent|2025|stop_search_rate|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 3 below threshold 6",
+      "group": "pf-gwent|2025|stop_search_rate|by_ethnicity",
+      "original_count": 3,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-humberside|2025|stop_search_rate|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "count 3 below threshold 6",
+      "group": "pf-humberside|2025|stop_search_rate|by_ethnicity",
+      "original_count": 3,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-humberside|2025|stop_search_rate|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'pf-humberside|2025|stop_search_rate|by_ethnicity' cannot be recovered",
+      "group": "pf-humberside|2025|stop_search_rate|by_ethnicity",
+      "original_count": 6,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "pf-lincolnshire|2025|arrest_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "count 4 below threshold 6",
+      "group": "pf-lincolnshire|2025|arrest_count|by_ethnicity",
+      "original_count": 4,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-lincolnshire|2025|arrest_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "pf-lincolnshire|2025|arrest_count|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-norfolk|2025|stop_search_rate|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "count 4 below threshold 6",
+      "group": "pf-norfolk|2025|stop_search_rate|by_ethnicity",
+      "original_count": 4,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-norfolk|2025|stop_search_rate|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'pf-norfolk|2025|stop_search_rate|by_ethnicity' cannot be recovered",
+      "group": "pf-norfolk|2025|stop_search_rate|by_ethnicity",
+      "original_count": 6,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "pf-north-wales|2025|arrest_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "count 3 below threshold 6",
+      "group": "pf-north-wales|2025|arrest_count|by_ethnicity",
+      "original_count": 3,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-north-wales|2025|arrest_count|by_ethnicity|Black",
+      "dataset": "context_indicators.json",
+      "detail": "count 2 below threshold 6",
+      "group": "pf-north-wales|2025|arrest_count|by_ethnicity",
+      "original_count": 2,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-north-wales|2025|stop_search_rate|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "count 3 below threshold 6",
+      "group": "pf-north-wales|2025|stop_search_rate|by_ethnicity",
+      "original_count": 3,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-north-wales|2025|stop_search_rate|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 2 below threshold 6",
+      "group": "pf-north-wales|2025|stop_search_rate|by_ethnicity",
+      "original_count": 2,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-north-yorkshire|2025|stop_search_rate|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "pf-north-yorkshire|2025|stop_search_rate|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-north-yorkshire|2025|stop_search_rate|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 4 below threshold 6",
+      "group": "pf-north-yorkshire|2025|stop_search_rate|by_ethnicity",
+      "original_count": 4,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-surrey|2025|arrest_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'pf-surrey|2025|arrest_count|by_ethnicity' cannot be recovered",
+      "group": "pf-surrey|2025|arrest_count|by_ethnicity",
+      "original_count": 31,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "pf-surrey|2025|arrest_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "pf-surrey|2025|arrest_count|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-warwickshire|2025|arrest_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'pf-warwickshire|2025|arrest_count|by_ethnicity' cannot be recovered",
+      "group": "pf-warwickshire|2025|arrest_count|by_ethnicity",
+      "original_count": 10,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "pf-warwickshire|2025|arrest_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 3 below threshold 6",
+      "group": "pf-warwickshire|2025|arrest_count|by_ethnicity",
+      "original_count": 3,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-warwickshire|2025|stop_search_rate|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'pf-warwickshire|2025|stop_search_rate|by_ethnicity' cannot be recovered",
+      "group": "pf-warwickshire|2025|stop_search_rate|by_ethnicity",
+      "original_count": 9,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "pf-warwickshire|2025|stop_search_rate|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 1 below threshold 6",
+      "group": "pf-warwickshire|2025|stop_search_rate|by_ethnicity",
+      "original_count": 1,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-west-mercia|2025|arrest_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'pf-west-mercia|2025|arrest_count|by_ethnicity' cannot be recovered",
+      "group": "pf-west-mercia|2025|arrest_count|by_ethnicity",
+      "original_count": 13,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "pf-west-mercia|2025|arrest_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 3 below threshold 6",
+      "group": "pf-west-mercia|2025|arrest_count|by_ethnicity",
+      "original_count": 3,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-west-mercia|2025|stop_search_rate|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'pf-west-mercia|2025|stop_search_rate|by_ethnicity' cannot be recovered",
+      "group": "pf-west-mercia|2025|stop_search_rate|by_ethnicity",
+      "original_count": 7,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "pf-west-mercia|2025|stop_search_rate|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 1 below threshold 6",
+      "group": "pf-west-mercia|2025|stop_search_rate|by_ethnicity",
+      "original_count": 1,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-west-midlands|2025|stop_search_rate|by_ethnicity|Mixed",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'pf-west-midlands|2025|stop_search_rate|by_ethnicity' cannot be recovered",
+      "group": "pf-west-midlands|2025|stop_search_rate|by_ethnicity",
+      "original_count": 660,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "pf-west-midlands|2025|stop_search_rate|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "pf-west-midlands|2025|stop_search_rate|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-wiltshire|2025|arrest_count|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "count 5 below threshold 6",
+      "group": "pf-wiltshire|2025|arrest_count|by_ethnicity",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-wiltshire|2025|arrest_count|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 4 below threshold 6",
+      "group": "pf-wiltshire|2025|arrest_count|by_ethnicity",
+      "original_count": 4,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "pf-wiltshire|2025|stop_search_rate|by_ethnicity|Asian",
+      "dataset": "context_indicators.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'pf-wiltshire|2025|stop_search_rate|by_ethnicity' cannot be recovered",
+      "group": "pf-wiltshire|2025|stop_search_rate|by_ethnicity",
+      "original_count": 12,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "pf-wiltshire|2025|stop_search_rate|by_ethnicity|Other",
+      "dataset": "context_indicators.json",
+      "detail": "count 2 below threshold 6",
+      "group": "pf-wiltshire|2025|stop_search_rate|by_ethnicity",
+      "original_count": 2,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "ew|2025|ethnicity|rlaa|Other|None|None",
+      "dataset": "remand_outcomes.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'ew|2025|ethnicity|rlaa' cannot be recovered",
+      "group": "ew|2025|ethnicity|rlaa",
+      "original_count": 19,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "ew|2025|ethnicity|rlaa|Unknown|None|None",
+      "dataset": "remand_outcomes.json",
+      "detail": "count 5 below threshold 6",
+      "group": "ew|2025|ethnicity|rlaa",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "ew|2025|sex|rlaa|None|female|None",
+      "dataset": "remand_outcomes.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'ew|2025|sex|rlaa' cannot be recovered",
+      "group": "ew|2025|sex|rlaa",
+      "original_count": 25,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "ew|2025|sex|rlaa|None|unknown|None",
+      "dataset": "remand_outcomes.json",
+      "detail": "count 1 below threshold 6",
+      "group": "ew|2025|sex|rlaa",
+      "original_count": 1,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "ew|2025|sex|ydp|None|female|None",
+      "dataset": "remand_outcomes.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group 'ew|2025|sex|ydp' cannot be recovered",
+      "group": "ew|2025|sex|ydp",
+      "original_count": 27,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "ew|2025|sex|ydp|None|unknown|None",
+      "dataset": "remand_outcomes.json",
+      "detail": "count 3 below threshold 6",
+      "group": "ew|2025|sex|ydp",
+      "original_count": 3,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    }
+  ]
+}

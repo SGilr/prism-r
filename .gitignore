@@ -22,6 +22,9 @@ data/raw/*
 data/raw/ons-census-2021/*
 !data/raw/ons-census-2021/filter_manifest.json
 
+# Cloudflare Wrangler local cache
+.wrangler/
+
 # OS
 .DS_Store
 
