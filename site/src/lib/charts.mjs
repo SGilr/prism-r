@@ -27,111 +27,128 @@ function render(spec) {
   return node.outerHTML;
 }
 
-// Restrained editorial palette: muted, distinct, not a government dashboard.
-const ETHNICITY_COLOUR = {
-  Black: "#b3242b",
-  Asian: "#2a6f4e",
-  Mixed: "#9a6a2f",
-  Other: "#5a4e7c",
-};
-const CASCADE_GROUPS = ["Black", "Asian", "Mixed", "Other"];
-const STAGES = ["Stop and search", "Arrest", "Remand", "Custodial sentence"];
-
 const FONT = "'Source Serif 4', Georgia, serif";
+const UI_FONT = "Inter, system-ui, sans-serif";
+
+// Cascade design. The plot area is 560 x 260; an RRI of 0.5 sits at y 260 and
+// 2.5 at y 0. Colours and emphasis tints follow the agreed reference design.
+const CASCADE_STAGES = ["Stop and search", "Arrest", "Remand", "Custodial sentence"];
+const CASCADE_DECISIONS = ["stop_search", "arrest", "remand", "custodial_sentence"];
+const CASCADE_X = [0, 187, 374, 560];
+const CASCADE_LINE = {
+  Black: { colour: "#534AB7", emphasis: "#3C3489", width: 2.5, radius: 4 },
+  Mixed: { colour: "#D85A30", emphasis: "#D85A30", width: 2.5, radius: 4 },
+  Asian: { colour: "#1D9E75", emphasis: "#0F6E56", width: 2.5, radius: 4 },
+  Other: { colour: "#888780", emphasis: "#888780", width: 2, radius: 3.5 },
+};
+const CASCADE_DRAW_ORDER = ["Black", "Mixed", "Asian", "Other"];
+const CASCADE_LABELLED = ["Black", "Asian"];
+
+const cascadeY = (rri) => 260 - (rri - 0.5) * 130;
 
 
 // --------------------------------------------------------------------------
 // Chart A: the road-to-remand cascade
+//
+// An opinionated, hand-built inline SVG, rather than an Observable Plot
+// chart, generated at build time from rri.json. The plot geometry follows
+// the agreed reference design.
 // --------------------------------------------------------------------------
 export function renderCascade() {
   const rri = load("rri.json").records;
 
-  const stageOf = {
-    stop_search: "Stop and search",
-    arrest: "Arrest",
-    remand: "Remand",
-    custodial_sentence: "Custodial sentence",
-  };
-  const rows = [];
+  // value[ethnicity][stageIndex] = RRI. Custodial sentencing uses the
+  // three-year pooled estimate.
+  const value = {};
   for (const record of rri) {
     if (record.provenance !== "prism_r_derived") continue;
-    const stage = stageOf[record.decision_point];
-    if (!stage) continue;
-    // Custodial sentencing uses the three-year pooled estimate.
+    const stage = CASCADE_DECISIONS.indexOf(record.decision_point);
+    if (stage < 0) continue;
     if (record.decision_point === "custodial_sentence" && !record.pooled) continue;
-    if (!CASCADE_GROUPS.includes(record.ethnicity)) continue;
-    rows.push({ stage, ethnicity: record.ethnicity, rri: record.rri });
+    if (!CASCADE_LINE[record.ethnicity]) continue;
+    (value[record.ethnicity] ??= {})[stage] = record.rri;
   }
-  const maxRri = Math.max(...rows.map((r) => r.rri));
 
-  return render({
-    width: 680,
-    height: 440,
-    marginTop: 28,
-    marginLeft: 58,
-    marginRight: 96,
-    marginBottom: 64,
-    style: { fontFamily: FONT, fontSize: "13px", background: "transparent" },
-    x: {
-      domain: STAGES,
-      label: null,
-      tickSize: 0,
-    },
-    y: {
-      domain: [0, Math.ceil(maxRri * 10) / 10 + 0.2],
-      label: "Relative Rate Index",
-      grid: true,
-      ticks: 6,
-    },
-    color: { domain: CASCADE_GROUPS, range: CASCADE_GROUPS.map((g) => ETHNICITY_COLOUR[g]) },
-    marks: [
-      Plot.ruleY([1], { stroke: "#9a9a9a", strokeDasharray: "5 4" }),
-      Plot.text([{ stage: "Stop and search", rri: 1 }], {
-        x: "stage",
-        y: "rri",
-        text: ["White baseline, 1.0"],
-        dy: 14,
-        dx: 2,
-        textAnchor: "start",
-        fill: "#6a6a6a",
-        fontSize: 11,
-      }),
-      Plot.line(rows, {
-        x: "stage",
-        y: "rri",
-        z: "ethnicity",
-        stroke: "ethnicity",
-        strokeWidth: 2.4,
-      }),
-      Plot.dot(rows, {
-        x: "stage",
-        y: "rri",
-        z: "ethnicity",
-        fill: "ethnicity",
-        r: 4.5,
-      }),
-      Plot.text(rows, {
-        x: "stage",
-        y: "rri",
-        text: (d) => d.rri.toFixed(2),
-        fill: "ethnicity",
-        dy: -11,
-        fontSize: 11.5,
-        fontWeight: 600,
-      }),
-      // Ethnicity name at the end of each line, in the right margin.
-      Plot.text(rows.filter((r) => r.stage === "Custodial sentence"), {
-        x: "stage",
-        y: "rri",
-        text: "ethnicity",
-        fill: "ethnicity",
-        dx: 14,
-        textAnchor: "start",
-        fontSize: 12,
-        fontWeight: 600,
-      }),
-    ],
-  });
+  // Data-driven lines and markers.
+  let lines = "";
+  for (const ethnicity of CASCADE_DRAW_ORDER) {
+    const cfg = CASCADE_LINE[ethnicity];
+    const points = CASCADE_X
+      .map((x, i) => `${x},${cascadeY(value[ethnicity][i]).toFixed(1)}`)
+      .join(" ");
+    const dots = CASCADE_X
+      .map(
+        (x, i) =>
+          `<circle cx="${x}" cy="${cascadeY(value[ethnicity][i]).toFixed(1)}" ` +
+          `r="${cfg.radius}" fill="${cfg.colour}"/>`,
+      )
+      .join("");
+    lines +=
+      `<polyline points="${points}" fill="none" stroke="${cfg.colour}" ` +
+      `stroke-width="${cfg.width}" stroke-linecap="round" stroke-linejoin="round"/>` +
+      dots;
+  }
+
+  // Emphasised endpoint labels for Black and Asian, in a darker line tint.
+  let endLabels = "";
+  for (const ethnicity of CASCADE_LABELLED) {
+    const cfg = CASCADE_LINE[ethnicity];
+    const left = value[ethnicity][0];
+    const right = value[ethnicity][3];
+    endLabels +=
+      `<text x="-9" y="${cascadeY(left).toFixed(1)}" text-anchor="end" ` +
+      `dominant-baseline="middle" fill="${cfg.emphasis}">${left.toFixed(2)}</text>` +
+      `<text x="569" y="${cascadeY(right).toFixed(1)}" text-anchor="start" ` +
+      `dominant-baseline="middle" fill="${cfg.emphasis}">${right.toFixed(2)}</text>`;
+  }
+
+  const yTicks = [
+    [0.5, 260], [1.0, 195], [1.5, 130], [2.0, 65], [2.5, 0],
+  ]
+    .map(
+      ([v, y]) =>
+        `<text x="-10" y="${y}" text-anchor="end" dominant-baseline="middle">` +
+        `${v.toFixed(1)}</text>`,
+    )
+    .join("");
+  const xLabels = CASCADE_STAGES.map(
+    (stage, i) => `<text x="${CASCADE_X[i]}" y="285">${stage}</text>`,
+  ).join("");
+
+  const svg = `<svg viewBox="0 0 680 360" width="100%" role="img" aria-labelledby="cascade-title-svg" style="font-family:${UI_FONT}">
+<title id="cascade-title-svg">Road-to-remand cascade: Relative Rate Index by ethnicity across four decision points</title>
+<g transform="translate(70,30)">
+<line x1="0" y1="0" x2="0" y2="260" stroke="#D3D1C7" stroke-width="0.5"/>
+<line x1="0" y1="260" x2="560" y2="260" stroke="#D3D1C7" stroke-width="0.5"/>
+<g stroke="#F1EFE8" stroke-width="0.5">
+<line x1="0" y1="0" x2="560" y2="0"/>
+<line x1="0" y1="65" x2="560" y2="65"/>
+<line x1="0" y1="130" x2="560" y2="130"/>
+<line x1="0" y1="260" x2="560" y2="260"/>
+</g>
+<g font-size="11" fill="#888780">${yTicks}</g>
+<line x1="0" y1="195" x2="560" y2="195" stroke="#888780" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="555" y="190" text-anchor="end" font-size="10.5" fill="#5F5E5A">White baseline (1.0)</text>
+<g font-size="12" fill="#444441" text-anchor="middle">${xLabels}</g>
+<g>${lines}</g>
+<g font-size="11.5" font-weight="500">${endLabels}</g>
+</g>
+</svg>`;
+
+  return `<figure class="cascade">
+<p class="cascade-title">The road to remand: relative rate by ethnicity, four decision points</p>
+<p class="cascade-subtitle">Children aged 10 to 17, England and Wales, year ending March 2025. An RRI of 1.0 represents parity with White children.</p>
+<ul class="cascade-legend">
+<li><span class="sw" style="background:#534AB7"></span>Black</li>
+<li><span class="sw" style="background:#D85A30"></span>Mixed</li>
+<li><span class="sw" style="background:#1D9E75"></span>Asian</li>
+<li><span class="sw" style="background:#888780"></span>Other</li>
+<li><span class="sw sw-baseline"></span>White baseline</li>
+</ul>
+${svg}
+<p class="cascade-finding">The four groups do not follow one pattern. For Black children the disparity is widest at the first point of contact, a stop and search rate 2.40 times the White rate, and is lower at each later stage. For Asian children it runs the other way, from below parity at the policing stages to above it at the court. On these figures, much of the measured disparity is present before a child reaches the court.</p>
+<p class="caption">PRISM-R analysis. Stop and search and arrest computed from Home Office Police powers and procedures, year ending March 2025. Remand and the pooled custodial sentencing estimate computed from YJB Youth Justice Statistics 2024-25. Retrieved May 2026. <a href="/data/manifest.json">See the build manifest</a>.</p>
+</figure>`;
 }
 
 
