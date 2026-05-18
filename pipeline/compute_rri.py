@@ -271,9 +271,15 @@ def read_child_remand_counts() -> dict[str, dict[str, int]]:
         ethnicity = record["ethnicity"]
         if ethnicity not in counts:
             continue
-        counts[ethnicity]["total"] += record["count"]
-        if record["remand_type"] == "ydp":
-            counts[ethnicity]["events"] = record["count"]
+        count = record["count"]
+        # A null count is a disclosure-suppressed cell. compute_rri is run
+        # before the build's suppression stage, so it normally sees complete
+        # data; if run afterwards, a suppressed cell is below 6 and skipping
+        # it shifts a national total by less than the suppression threshold.
+        if count is not None:
+            counts[ethnicity]["total"] += count
+            if record["remand_type"] == "ydp":
+                counts[ethnicity]["events"] = count
     return counts
 
 
@@ -307,7 +313,8 @@ def read_home_office_counts(indicator: str) -> dict[str, dict[str, int]]:
     for record in data["records"]:
         if record["indicator"] != indicator or record["breakdown"] != "by_ethnicity":
             continue
-        if record["ethnicity"] in events:
+        # A null value is a disclosure-suppressed cell; see read_child_remand_counts.
+        if record["ethnicity"] in events and record["value"] is not None:
             events[record["ethnicity"]] += record["value"]
     population = read_child_population()
     return {

@@ -558,25 +558,27 @@
     {
       "age_band": null,
       "breakdown": "ethnicity",
-      "count": 19,
+      "count": null,
       "ethnicity": "Other",
       "geo_id": "ew",
       "offence_band": null,
       "remand_type": "rlaa",
       "sex": null,
-      "suppressed": false,
+      "suppressed": true,
+      "suppression_rule": "secondary",
       "year": 2025
     },
     {
       "age_band": null,
       "breakdown": "ethnicity",
-      "count": 5,
+      "count": null,
       "ethnicity": "Unknown",
       "geo_id": "ew",
       "offence_band": null,
       "remand_type": "rlaa",
       "sex": null,
-      "suppressed": false,
+      "suppressed": true,
+      "suppression_rule": "primary",
       "year": 2025
     },
     {
@@ -594,13 +596,14 @@
     {
       "age_band": null,
       "breakdown": "sex",
-      "count": 25,
+      "count": null,
       "ethnicity": null,
       "geo_id": "ew",
       "offence_band": null,
       "remand_type": "rlaa",
       "sex": "female",
-      "suppressed": false,
+      "suppressed": true,
+      "suppression_rule": "secondary",
       "year": 2025
     },
     {
@@ -618,13 +621,14 @@
     {
       "age_band": null,
       "breakdown": "sex",
-      "count": 1,
+      "count": null,
       "ethnicity": null,
       "geo_id": "ew",
       "offence_band": null,
       "remand_type": "rlaa",
       "sex": "unknown",
-      "suppressed": false,
+      "suppressed": true,
+      "suppression_rule": "primary",
       "year": 2025
     },
     {
@@ -738,13 +742,14 @@
     {
       "age_band": null,
       "breakdown": "sex",
-      "count": 27,
+      "count": null,
       "ethnicity": null,
       "geo_id": "ew",
       "offence_band": null,
       "remand_type": "ydp",
       "sex": "female",
-      "suppressed": false,
+      "suppressed": true,
+      "suppression_rule": "secondary",
       "year": 2025
     },
     {
@@ -762,13 +767,14 @@
     {
       "age_band": null,
       "breakdown": "sex",
-      "count": 3,
+      "count": null,
       "ethnicity": null,
       "geo_id": "ew",
       "offence_band": null,
       "remand_type": "ydp",
       "sex": "unknown",
-      "suppressed": false,
+      "suppressed": true,
+      "suppression_rule": "primary",
       "year": 2025
     },
     {
