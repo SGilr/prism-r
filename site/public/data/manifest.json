@@ -1,10 +1,10 @@
 {
   "meta": {
-    "build_timestamp": "2026-05-18T11:10:30+00:00",
+    "build_timestamp": "2026-07-14T18:36:47+00:00",
     "dataset": "build_manifest",
     "generated_by": "pipeline/build.py",
     "git": {
-      "commit": "860f5876100d547318ecc163090fd135f00e4f31",
+      "commit": "116064a677b78248968ecf5e9adaad7c5183179f",
       "working_tree": "dirty"
     },
     "python_version": "3.14.2",
@@ -43,6 +43,23 @@
           "reference_period": "2024 local authority and police force geography",
           "retrieval_date": "2026-05-17",
           "url": "https://www.ons.gov.uk/aboutus/transparencyandgovernance/freedomofinformationfoi/lookuptableforukauthoritycodes2024"
+        }
+      ]
+    },
+    {
+      "bytes": 238386,
+      "file": "data/processed/force_boundaries.json",
+      "generated_by": "pipeline/build_force_boundaries.py",
+      "records": 42,
+      "schema_version": "1.0.0",
+      "sha256": "e894629f28190be36a0ec108b9a33f6c01b7900e6ba9c618f9152cc97f98158e",
+      "sources": [
+        {
+          "description": "ONS Open Geography portal, Police Force Areas (December 2023), generalised clipped boundaries (BGC)",
+          "publication_date": "2024",
+          "reference_period": "December 2023 police force geography, unchanged since",
+          "retrieval_date": "2026-05-18",
+          "url": "https://geoportal.statistics.gov.uk/"
         }
       ]
     },
@@ -214,7 +231,7 @@
   ],
   "steps": [
     {
-      "duration_seconds": 20.82,
+      "duration_seconds": 20.22,
       "name": "yjb",
       "script": "pipeline/ingest_yjb.py",
       "status": "ok",
@@ -228,39 +245,46 @@
       "step": 2
     },
     {
-      "duration_seconds": 0.3,
-      "name": "ons",
-      "script": "pipeline/ingest_ons.py",
+      "duration_seconds": 0.21,
+      "name": "boundaries",
+      "script": "pipeline/build_force_boundaries.py",
       "status": "ok",
       "step": 3
     },
     {
-      "duration_seconds": 2.31,
-      "name": "dfe",
-      "script": "pipeline/ingest_dfe.py",
+      "duration_seconds": 0.29,
+      "name": "ons",
+      "script": "pipeline/ingest_ons.py",
       "status": "ok",
       "step": 4
     },
     {
-      "duration_seconds": 73.14,
-      "name": "home_office",
-      "script": "pipeline/ingest_home_office.py",
+      "duration_seconds": 2.03,
+      "name": "dfe",
+      "script": "pipeline/ingest_dfe.py",
       "status": "ok",
       "step": 5
     },
     {
-      "duration_seconds": 0.21,
-      "name": "imd",
-      "script": "pipeline/ingest_imd.py",
+      "duration_seconds": 72.3,
+      "name": "home_office",
+      "script": "pipeline/ingest_home_office.py",
       "status": "ok",
       "step": 6
     },
     {
-      "duration_seconds": 0.73,
+      "duration_seconds": 0.2,
+      "name": "imd",
+      "script": "pipeline/ingest_imd.py",
+      "status": "ok",
+      "step": 7
+    },
+    {
+      "duration_seconds": 0.69,
       "name": "rri",
       "script": "pipeline/compute_rri.py",
       "status": "ok",
-      "step": 7
+      "step": 8
     }
   ]
 }

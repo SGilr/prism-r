@@ -18,7 +18,7 @@ sys.path.insert(0, str(REPO_ROOT))
 
 from pipeline import build  # noqa: E402
 
-EXPECTED_ORDER = ["yjb", "crosswalk", "ons", "dfe", "home_office", "imd", "rri"]
+EXPECTED_ORDER = ["yjb", "crosswalk", "boundaries", "ons", "dfe", "home_office", "imd", "rri"]
 
 
 # --------------------------------------------------------------------------

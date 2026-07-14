@@ -1,10 +1,16 @@
 ---
 import Base from '../layouts/Base.astro';
-import { renderCascade, renderDisproportion, renderRemandMix } from '../lib/charts.mjs';
+import {
+  renderCascade,
+  renderDisproportion,
+  renderRemandMix,
+  renderForceChoropleth,
+} from '../lib/charts.mjs';
 
 const cascade = renderCascade();
 const disproportion = renderDisproportion();
 const remandMix = renderRemandMix();
+const choropleth = renderForceChoropleth();
 ---
 
 <Base title="National picture — PRISM-R">
@@ -17,7 +23,7 @@ const remandMix = renderRemandMix();
       <p>
         This page traces youth remand disproportionality in England and Wales
         through the decisions that lead to it. It works at England and Wales
-        level. The three charts are PRISM-R's own analysis of open data; they
+        level. The four charts are PRISM-R's own analysis of open data; they
         are distinct from the published headline statistics on the home page,
         and each is captioned with its source.
       </p>
@@ -120,6 +126,53 @@ const remandMix = renderRemandMix();
         ethnicity, are not shown: one cell for the Other category is suppressed
         under disclosure control, and unknown ethnicity is not a defined group.
         Retrieved May 2026.
+        <a href="/data/manifest.json">See the build manifest</a>.
+      </p>
+      <p class="mt-4 leading-relaxed">
+        The pattern is corroborated independently. HM Chief Inspector of
+        Prisons' thematic review
+        <a
+          href="https://hmiprisons.justiceinspectorates.gov.uk/"
+          class="text-accent underline underline-offset-2"
+          >Children on short-term remand</a
+        >
+        (May 2026) cites the same figure, that 62% of children remanded to
+        youth detention accommodation in the year ending March 2025 did not
+        receive a custodial sentence, and reports that two in five children
+        held in custody are now on remand, with nearly 100 children each year
+        remanded only to be bailed or moved to local authority accommodation
+        within two weeks.
+      </p>
+    </section>
+
+    <!-- CHART D: stop-and-search choropleth by force -->
+    <section class="mt-12">
+      <h2 class="font-sans text-lg font-semibold tracking-tight text-ink">
+        Where stop-and-search disparity is highest
+      </h2>
+      <div class="mt-3 space-y-4 leading-relaxed">
+        <p>
+          The cascade's first stage varies sharply by place. Across the
+          {choropleth.forces} police force areas shown, the stop-and-search
+          Relative Rate Index for Black children runs from {choropleth.min} to
+          {choropleth.max}, with a median of {choropleth.median}. The highest
+          values are in forces with small Black child populations, where a
+          modest number of searches produces a high rate against a small
+          denominator; those values are real but less stable than the
+          large-force figures. In {choropleth.suppressed} forces the Black
+          search count falls below the disclosure threshold, so no value is
+          shown.
+        </p>
+      </div>
+      <div class="chart chart-map mt-6" set:html={choropleth.svg} />
+      <p class="caption font-sans">
+        Geographic variation in stop-and-search disparity. Each police force
+        area is shaded by the RRI for Black children stopped and searched,
+        year ending March 2025: the Black rate per 1,000 children divided by
+        the White rate, both against the Census 2021 child population. Full
+        interactive geographic exploration coming in Sprint 3. PRISM-R
+        analysis of Home Office Police powers and procedures open data;
+        boundaries: ONS Open Geography portal. Retrieved May 2026.
         <a href="/data/manifest.json">See the build manifest</a>.
       </p>
     </section>

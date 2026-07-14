@@ -45,7 +45,21 @@ REMAND_FIELDS = {
 
 @pytest.fixture(scope="module")
 def result():
-    return ingest_yjb.ingest()
+    """Run the ingest once for the module, restoring the outputs afterwards.
+
+    ingest() rewrites geographies.json and remand_outcomes.json without the
+    build orchestrator's disclosure-suppression stage. The tests validate the
+    freshly generated content; the suppressed build outputs are then put back,
+    so a test run never de-suppresses the working tree.
+    """
+    originals = {
+        path: path.read_bytes()
+        for path in (GEO_PATH, REMAND_PATH)
+        if path.exists()
+    }
+    yield ingest_yjb.ingest()
+    for path, data in originals.items():
+        path.write_bytes(data)
 
 
 @pytest.fixture(scope="module")

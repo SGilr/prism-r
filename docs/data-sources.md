@@ -22,6 +22,7 @@ Every source feeding PRISM-R, with retrieval date and version. This file is the 
 
 - ONS lookup table for UK Authority Codes 2024 (FOI-2024-2008), published 20 May 2024. Provides the local authority register and the local authority to police force area mapping used by the crosswalk. https://www.ons.gov.uk/aboutus/transparencyandgovernance/freedomofinformationfoi/lookuptableforukauthoritycodes2024
 - gov.uk youth justice services contact directory, used to confirm youth justice service structure. https://www.gov.uk/government/collections/youth-offending-team-contact-details
+- ONS Open Geography portal, Police Force Areas (December 2023) generalised clipped boundaries (BGC), used for the static force-level choropleth. Simplified by `pipeline/build_force_boundaries.py` into `data/processed/force_boundaries.json`. https://geoportal.statistics.gov.uk/
 
 ## Retrieval log
 
@@ -48,6 +49,7 @@ Every source feeding PRISM-R, with retrieval date and version. This file is the 
 | Home Office Police powers and procedures, year ending March 2025 | stop-search-open-data-tables-mar21-mar25.ods | 2026-05-17 | OGL v3.0 | stop and search by police force area, ethnicity and age band |
 | Home Office Police powers and procedures, year ending March 2025 | arrests-open-data-tables-mar25.ods | 2026-05-17 | OGL v3.0 | arrests by police force area, ethnicity and age band, sheet OD_5+1 |
 | MHCLG English Indices of Deprivation 2025 | iod2025_file10_la_lower.xlsx | 2026-05-17 | OGL v3.0 | File 10, lower-tier LA summaries; IDACI average score per LA |
+| ONS Open Geography portal, Police Force Areas Dec 2023 BGC | police_force_areas_dec2023_bgc.geojson | 2026-05-18 | OGL v3.0 | force boundary polygons for the static choropleth; simplified into force_boundaries.json |
 | Welsh Index of Multiple Deprivation 2019 | wimd2019_income_deprivation_by_age.json | 2026-05-17 | OGL v3.0 | income deprivation by age, LSOA and LA; child (0-15) income deprivation by LA. WIMD 2019 used pending WIMD 2025 LA indicator data |
 
 YJS files were downloaded from gov.uk. The Youth Justice Statistics 2024 to 2025 release was published on 29 January 2026. The original download archives (`supplementary_tables.zip`, `local_level_open_data_tables.zip`) are retained in `data/raw/yjb-2024-25/` as the canonical source.

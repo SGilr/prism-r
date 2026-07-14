@@ -10,11 +10,12 @@ Step order (dependency-ordered; the order is checked at runtime):
 
   1. ingest_yjb.py        geographies.json, remand_outcomes.json
   2. build_crosswalk.py   geo_crosswalk.json        (needs geographies.json)
-  3. ingest_ons.py        populations.json
-  4. ingest_dfe.py        ethnicity_crosswalk.json, context_indicators.json
-  5. ingest_home_office.py  context_indicators.json (merge; needs 2, 3, 4)
-  6. ingest_imd.py        context_indicators.json   (merge; needs 4)
-  7. compute_rri.py       rri.json                  (needs 1, 3, 4, 5, 6)
+  3. build_force_boundaries.py  force_boundaries.json  (needs geographies.json)
+  4. ingest_ons.py        populations.json
+  5. ingest_dfe.py        ethnicity_crosswalk.json, context_indicators.json
+  6. ingest_home_office.py  context_indicators.json (merge; needs 2, 4, 5)
+  7. ingest_imd.py        context_indicators.json   (merge; needs 5)
+  8. compute_rri.py       rri.json                  (needs 1, 4, 5, 6, 7)
 
 There is no separate Welsh ingest: ingest_dfe.py ingests English and Welsh
 exclusions and looked-after children together, because context_indicators.json
@@ -26,8 +27,8 @@ Outputs go to data/processed/ only; the build never writes to data/raw/.
 
 CLI flags:
   --dry-run         print the planned step order and exit
-  --only STEP       run a single step by name (yjb, crosswalk, ons, dfe,
-                    home_office, imd, rri)
+  --only STEP       run a single step by name (yjb, crosswalk, boundaries,
+                    ons, dfe, home_office, imd, rri)
   --from STEP       start at STEP and run every step after it
   --skip-raw-fetch  use the local data/raw/ files, do not fetch from source.
                     This is the only v1 behaviour: PRISM-R does not yet
@@ -85,6 +86,8 @@ STEPS: tuple[Step, ...] = (
          ("geographies.json", "remand_outcomes.json"), ()),
     Step("crosswalk", "build_crosswalk.py",
          ("geo_crosswalk.json",), ("yjb",)),
+    Step("boundaries", "build_force_boundaries.py",
+         ("force_boundaries.json",), ("yjb",)),
     Step("ons", "ingest_ons.py",
          ("populations.json",), ()),
     Step("dfe", "ingest_dfe.py",
@@ -101,6 +104,7 @@ STEPS: tuple[Step, ...] = (
 PROCESSED_OUTPUTS: tuple[str, ...] = (
     "geographies.json",
     "geo_crosswalk.json",
+    "force_boundaries.json",
     "remand_outcomes.json",
     "populations.json",
     "ethnicity_crosswalk.json",
@@ -113,6 +117,7 @@ PROCESSED_OUTPUTS: tuple[str, ...] = (
 MIN_RECORDS: dict[str, int] = {
     "geographies.json": 200,
     "geo_crosswalk.json": 300,
+    "force_boundaries.json": 42,
     "remand_outcomes.json": 60,
     "populations.json": 9000,
     "context_indicators.json": 3700,
@@ -150,6 +155,16 @@ PROVENANCE: dict[str, list[dict]] = {
             "reference_period": "2024 local authority and police force geography",
             "publication_date": "2024-05-20",
             "retrieval_date": "2026-05-17",
+        },
+    ],
+    "force_boundaries.json": [
+        {
+            "description": "ONS Open Geography portal, Police Force Areas "
+            "(December 2023), generalised clipped boundaries (BGC)",
+            "url": "https://geoportal.statistics.gov.uk/",
+            "reference_period": "December 2023 police force geography, unchanged since",
+            "publication_date": "2024",
+            "retrieval_date": "2026-05-18",
         },
     ],
     "remand_outcomes.json": [
@@ -473,7 +488,14 @@ def _write_processed(path: Path, payload: dict) -> None:
 
 
 def suppress_outputs() -> dict:
-    """Apply suppression to the count-bearing outputs and write the audit."""
+    """Apply suppression to the count-bearing outputs and write the audit.
+
+    Only sound immediately after a full build: the inputs must be freshly
+    regenerated, unsuppressed outputs. Running it over already-suppressed
+    files double-applies the rules, re-marking build-suppressed cells as
+    inherited and cascading spurious secondary suppression, which is why
+    main() calls it only when every step has just run.
+    """
     audit: list[dict] = []
     by_dataset: dict[str, int] = {}
     for plan in SUPPRESSION_PLANS:

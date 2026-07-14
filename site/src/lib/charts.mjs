@@ -307,3 +307,128 @@ export function renderRemandMix() {
     ],
   });
 }
+
+
+// --------------------------------------------------------------------------
+// Chart D: static choropleth, stop-and-search RRI for Black children by force
+//
+// A hand-built inline SVG from force_boundaries.json (simplified ONS police
+// force area boundaries) and context_indicators.json. The per-force RRI is
+// the Black stop-and-search rate divided by the White rate, both per 1,000
+// children in the force area. Sequential ramp, light grey near parity to
+// deep slate at an RRI of 3 or more.
+// --------------------------------------------------------------------------
+const CHORO_LOW = [0xe4, 0xe4, 0xe0];   // near parity
+const CHORO_HIGH = [0x1b, 0x3a, 0x5f];  // RRI 3.0 and above, the wordmark slate
+const CHORO_MIN = 1.0;
+const CHORO_MAX = 3.0;
+
+function choroplethColour(rri) {
+  const t = Math.min(1, Math.max(0, (rri - CHORO_MIN) / (CHORO_MAX - CHORO_MIN)));
+  const channel = (i) =>
+    Math.round(CHORO_LOW[i] + (CHORO_HIGH[i] - CHORO_LOW[i]) * t);
+  return `rgb(${channel(0)},${channel(1)},${channel(2)})`;
+}
+
+export function renderForceChoropleth() {
+  const boundaries = load("force_boundaries.json").records;
+  const context = load("context_indicators.json").records;
+
+  // Per-force Black and White stop-and-search rates -> RRI. A force whose
+  // Black or White cell is suppressed (search count below the disclosure
+  // threshold) gets no RRI: its rate derives from a sub-6 count, so shading
+  // it would display what the suppression module protects.
+  const rates = {};
+  const suppressed = new Set();
+  for (const r of context) {
+    if (r.indicator !== "stop_search_rate" || r.breakdown !== "by_ethnicity") continue;
+    if (r.ethnicity !== "Black" && r.ethnicity !== "White") continue;
+    if (r.suppressed === true || r.disclosure_status === "source_suppressed") {
+      suppressed.add(r.geo_id);
+      continue;
+    }
+    (rates[r.geo_id] ??= {})[r.ethnicity] = r.rate_per_1000;
+  }
+  const rriOf = {};
+  for (const [geo, v] of Object.entries(rates)) {
+    if (suppressed.has(geo)) continue;
+    if (v.White > 0 && v.Black != null) rriOf[geo] = v.Black / v.White;
+  }
+
+  // Equirectangular projection with latitude correction, fitted to the data.
+  let lonMin = Infinity, lonMax = -Infinity, latMin = Infinity, latMax = -Infinity;
+  for (const force of boundaries) {
+    for (const ring of force.rings) {
+      for (const [lon, lat] of ring) {
+        if (lon < lonMin) lonMin = lon;
+        if (lon > lonMax) lonMax = lon;
+        if (lat < latMin) latMin = lat;
+        if (lat > latMax) latMax = lat;
+      }
+    }
+  }
+  const kLat = Math.cos(((latMin + latMax) / 2) * Math.PI / 180);
+  const mapH = 500;
+  const scale = mapH / (latMax - latMin);
+  const mapW = (lonMax - lonMin) * kLat * scale;
+  const px = (lon) => ((lon - lonMin) * kLat * scale).toFixed(1);
+  const py = (lat) => ((latMax - lat) * scale).toFixed(1);
+
+  let paths = "";
+  for (const force of boundaries) {
+    const rri = rriOf[force.geo_id];
+    const isSuppressed = suppressed.has(force.geo_id);
+    const fill = rri == null
+      ? (isSuppressed ? "url(#choro-hatch)" : "#f4f4f2")
+      : choroplethColour(rri);
+    const d = force.rings
+      .map((ring) =>
+        "M" + ring.map(([lon, lat]) => `${px(lon)},${py(lat)}`).join("L") + "Z")
+      .join("");
+    const label = isSuppressed
+      ? `${force.geo_name}: search count below 6, suppressed for disclosure control`
+      : rri == null
+        ? `${force.geo_name}: no rate available`
+        : `${force.geo_name}: RRI ${rri.toFixed(2)}`;
+    paths +=
+      `<path d="${d}" fill="${fill}" stroke="#ffffff" stroke-width="0.6">` +
+      `<title>${label}</title></path>`;
+  }
+
+  // Legend: a horizontal ramp with ticks at 1, 2 and 3+.
+  const legendStops = Array.from({ length: 24 }, (_, i) => {
+    const t = i / 23;
+    const x = (i * 5).toFixed(1);
+    return `<rect x="${x}" y="0" width="5.2" height="10" ` +
+      `fill="${choroplethColour(CHORO_MIN + t * (CHORO_MAX - CHORO_MIN))}"/>`;
+  }).join("");
+  const legend =
+    `<g transform="translate(6,20)" font-size="10" fill="#5f5e5a">` +
+    `<text x="0" y="-7" font-size="10.5">RRI, Black children, stop and search</text>` +
+    legendStops +
+    `<text x="0" y="22">1.0</text>` +
+    `<text x="60" y="22" text-anchor="middle">2.0</text>` +
+    `<text x="120" y="22" text-anchor="end">3.0+</text>` +
+    `<rect x="150" y="0" width="14" height="10" fill="url(#choro-hatch)" stroke="#d8d6cf" stroke-width="0.5"/>` +
+    `<text x="169" y="8.5">suppressed, count below 6</text>` +
+    `</g>`;
+
+  const svg =
+    `<svg viewBox="0 0 ${Math.ceil(mapW + 12)} ${mapH + 56}" width="100%" ` +
+    `style="max-width:430px;font-family:${UI_FONT}" role="img" ` +
+    `aria-labelledby="choro-title-svg">` +
+    `<title id="choro-title-svg">Map of England and Wales police force areas ` +
+    `shaded by the stop-and-search Relative Rate Index for Black children</title>` +
+    `<defs><pattern id="choro-hatch" width="5" height="5" patternUnits="userSpaceOnUse" ` +
+    `patternTransform="rotate(45)"><rect width="5" height="5" fill="#f1f0ec"/>` +
+    `<line x1="0" y1="0" x2="0" y2="5" stroke="#c9c7bf" stroke-width="1.4"/></pattern></defs>` +
+    legend +
+    `<g transform="translate(6,52)">${paths}</g>` +
+    `</svg>`;
+
+  const values = Object.values(rriOf).sort((a, b) => a - b);
+  const median = values[Math.floor(values.length / 2)];
+  return { svg, forces: values.length, suppressed: suppressed.size,
+           median: median.toFixed(2),
+           min: values[0].toFixed(2), max: values[values.length - 1].toFixed(2) };
+}
