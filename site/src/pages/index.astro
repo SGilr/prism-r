@@ -17,15 +17,18 @@ const headline = [
 
 <Base title="PRISM-R: Remand Disparity Intelligence">
   <article>
-    <h1 class="text-5xl leading-none">
-      <Wordmark />
-    </h1>
-    <p class="strapline mt-3">
-      Prevention Risk Intelligence &amp; Stratified Mapping: Remand
-    </p>
-    <p class="mt-3 font-sans text-sm text-neutral-500">
-      An open analysis of youth remand disproportionality in England and Wales
-    </p>
+    <header class="masthead pb-8">
+      <h1 class="reveal text-5xl leading-none sm:text-6xl">
+        <Wordmark />
+      </h1>
+      <p class="strapline reveal reveal-2 mt-4">
+        Prevention Risk Intelligence &amp; Stratified Mapping: Remand
+      </p>
+      <p class="reveal reveal-3 mt-4 text-lg leading-snug text-neutral-600">
+        An open analysis of youth remand disproportionality in England and
+        Wales
+      </p>
+    </header>
 
     <section class="mt-8 space-y-4 leading-relaxed">
       <p>
@@ -44,40 +47,41 @@ const headline = [
       </p>
     </section>
 
-    <section class="mt-10">
-      <p class="font-sans text-sm font-medium text-neutral-600">
-        The headline picture, from Youth Justice Statistics 2024 to 2025:
+    <section class="mt-12 border-y border-neutral-200 py-7">
+      <p class="font-sans text-xs font-medium uppercase tracking-wider text-neutral-500">
+        The headline picture
       </p>
-      <div class="mt-4 grid grid-cols-1 gap-px overflow-hidden rounded border border-neutral-200 bg-neutral-200 sm:grid-cols-2">
+      <dl class="mt-6 grid grid-cols-2 gap-y-8 lg:grid-cols-4">
         {
-          headline.map((item) => (
-            <div class="bg-white p-5">
-              <p class="font-sans text-4xl font-semibold tracking-tight text-accent">
-                {item.value}
-              </p>
-              <p class="mt-2 leading-snug">{item.label}</p>
-              <p class="mt-3 font-sans text-xs leading-snug text-neutral-500">
-                Source:{' '}
-                <a
-                  href={yjsUrl}
-                  class="underline underline-offset-2 hover:text-accent"
-                >
-                  {yjsCitation}
-                </a>
-              </p>
+          headline.map((item, i) => (
+            <div
+              class:list={[
+                'px-5 first:pl-0',
+                i > 0 && 'border-l border-neutral-200',
+                i === 2 && 'max-lg:border-l-0 max-lg:pl-0',
+              ]}
+            >
+              <dd class="stat-figure">{item.value}</dd>
+              <dt class="mt-2 font-sans text-xs leading-snug text-neutral-600">
+                {item.label}
+              </dt>
             </div>
           ))
         }
-      </div>
-      <p class="mt-4 font-sans text-xs leading-relaxed text-neutral-500">
-        These four figures are published statistics, cited as the Youth Justice
-        Board and Ministry of Justice report them. The charts on the national
-        picture page are PRISM-R's own analysis and are labelled as such.
+      </dl>
+      <p class="mt-7 font-sans text-xs leading-relaxed text-neutral-500">
+        Published statistics, cited as reported in
+        <a
+          href={yjsUrl}
+          class="underline underline-offset-2 hover:text-accent"
+        >
+          {yjsCitation}</a>. The charts on the national picture page are
+        PRISM-R's own analysis and are labelled as such.
       </p>
     </section>
 
-    <section class="mt-10 rounded border border-neutral-200 bg-[#f6f5f0] p-5 sm:p-6">
-      <h2 class="font-sans text-sm font-semibold uppercase tracking-wide text-neutral-600">
+    <section class="mt-10 border-l-2 border-accent bg-[#f6f5f0] p-5 sm:p-6">
+      <h2 class="strapline" style="color: #5f5e5a;">
         Timely context
       </h2>
       <p class="mt-3 leading-relaxed">
@@ -97,43 +101,43 @@ const headline = [
       </p>
     </section>
 
-    <section class="mt-10">
-      <h2 class="font-sans text-lg font-semibold tracking-tight text-ink">
+    <section class="mt-12">
+      <h2 class="font-sans text-xs font-medium uppercase tracking-wider text-neutral-500">
         Where to go next
       </h2>
-      <ul class="mt-4 space-y-3">
-        <li>
+      <ul class="mt-2">
+        <li class="border-b border-neutral-200 py-4">
           <a
             href="/national"
-            class="font-sans font-medium text-accent underline underline-offset-2"
+            class="entry-link"
           >
             National picture
           </a>
-          <span class="block leading-relaxed">
+          <span class="mt-1 block leading-relaxed">
             The road-to-remand cascade, and what it reveals about where
             disparity is generated.
           </span>
         </li>
-        <li>
+        <li class="border-b border-neutral-200 py-4">
           <a
             href="/methods"
-            class="font-sans font-medium text-accent underline underline-offset-2"
+            class="entry-link"
           >
             Methods
           </a>
-          <span class="block leading-relaxed">
+          <span class="mt-1 block leading-relaxed">
             Every source, every methodological decision, the disclosure
             controls, and how to reproduce the pipeline.
           </span>
         </li>
-        <li>
+        <li class="border-b border-neutral-200 py-4">
           <a
             href="/about"
-            class="font-sans font-medium text-accent underline underline-offset-2"
+            class="entry-link"
           >
             About
           </a>
-          <span class="block leading-relaxed">
+          <span class="mt-1 block leading-relaxed">
             What PRISM-R is for, who produces it, and its independence.
           </span>
         </li>
@@ -151,4 +155,35 @@ const headline = [
       </p>
     </section>
   </article>
+
+  <style>
+    .masthead {
+      border-bottom: 1px solid #e5e5e5;
+    }
+    /* The four headline figures, set in the display serif so the numerals
+       carry the wordmark's character. */
+    .stat-figure {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-weight: 500;
+      font-size: 3.1rem;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: #1b3a5f;
+      font-variant-numeric: lining-nums;
+    }
+    .entry-link {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #1b3a5f;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      text-decoration-color: #b9c4cf;
+      transition: text-decoration-color 120ms ease;
+    }
+    .entry-link:hover {
+      text-decoration-color: #1b3a5f;
+    }
+  </style>
 </Base>
