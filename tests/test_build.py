@@ -18,7 +18,7 @@ sys.path.insert(0, str(REPO_ROOT))
 
 from pipeline import build  # noqa: E402
 
-EXPECTED_ORDER = ["yjb", "crosswalk", "boundaries", "explorer_boundaries", "ycs", "ons", "dfe", "home_office", "imd", "rri", "target"]
+EXPECTED_ORDER = ["yjb", "crosswalk", "boundaries", "explorer_boundaries", "ycs", "ons", "dfe", "home_office", "imd", "rri", "target", "explorer"]
 
 
 # --------------------------------------------------------------------------
@@ -54,7 +54,7 @@ def test_planned_steps_default_is_the_full_ordered_pipeline():
 
 def test_planned_steps_from_starts_midway():
     names = [s.name for s in build.planned_steps(None, "dfe")]
-    assert names == ["dfe", "home_office", "imd", "rri", "target"]
+    assert names == ["dfe", "home_office", "imd", "rri", "target", "explorer"]
 
 
 def test_planned_steps_only_is_a_single_step():
