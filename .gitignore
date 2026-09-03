@@ -16,6 +16,8 @@ data/processed/build.log
 # Raw source downloads, not committed; reproducible from the documented sources.
 data/raw/*
 !data/raw/.gitkeep
+# The fetch manifest is tracked: the machine-readable retrieval log.
+!data/raw/fetch_manifest.json
 # The ONS filter manifest is tracked, so the Census downloads are reproducible
 # by anyone with a copy of it; the bulk CSVs themselves stay untracked.
 !data/raw/ons-census-2021/

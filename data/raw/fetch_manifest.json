@@ -1,0 +1,85 @@
+{
+  "meta": {
+    "dataset": "fetch_manifest",
+    "generated_by": "pipeline/fetch.py",
+    "schema_note": "One entry per source. Automated entries record the download URL, retrieval timestamp, SHA-256 and the source's own publication date; status is downloaded or unchanged, and last_checked is stamped on every run. Manual sources carry manual: true and their last retrieval date. The manifest is the machine-readable arm of docs/data-sources.md."
+  },
+  "sources": {
+    "dfe_exclusions": {
+      "bytes": 47008976,
+      "download_url": "https://content.explore-education-statistics.service.gov.uk/api/releases/0e388e4d-3748-49a4-984c-08dece27c222/files?fromPage=ReleaseDownloads",
+      "filename": "exclusions_2024-25_alldata.zip",
+      "last_checked": "2026-09-03T09:25:58+00:00",
+      "manual": false,
+      "page_url": "https://explore-education-statistics.service.gov.uk/find-statistics/suspensions-and-permanent-exclusions-in-england",
+      "path": "data/raw/dfe/exclusions_2024-25_alldata.zip",
+      "release_id": "0e388e4d-3748-49a4-984c-08dece27c222",
+      "release_slug": "2024-25",
+      "release_title": "Academic year 2024/25",
+      "retrieved_at": "2026-09-03T09:25:58+00:00",
+      "sha256": "7243299f3777b3cdef7445c54c5eaff753aa3232e0f76640d1f0a332b1c0be54",
+      "source_publication_date": "2026-07-09T08:30:02.0602325+00:00",
+      "status": "downloaded"
+    },
+    "home_office": {
+      "last_retrieved": "2026-05-17",
+      "manual": true,
+      "note": "Police powers and procedures open data tables, year ending March 2025"
+    },
+    "imd": {
+      "last_retrieved": "2026-05-17",
+      "manual": true,
+      "note": "IoD2025 files from gov.uk; WIMD 2019 export from StatsWales"
+    },
+    "ons_census_2021": {
+      "last_retrieved": "2026-05-17",
+      "manual": true,
+      "note": "pulled through the ONS filter service; request specs in data/raw/ons-census-2021/filter_manifest.json"
+    },
+    "statswales": {
+      "last_retrieved": "2026-05-17",
+      "manual": true,
+      "note": "Welsh exclusions and children looked after; the stats.gov.wales platform needs a browser export"
+    },
+    "ycs": {
+      "bytes": 277907,
+      "download_url": "https://assets.publishing.service.gov.uk/media/6a7d80299cba0097fdd83254/youth-custody-population-june-2026.ods",
+      "filename": "youth-custody-population-june-2026.ods",
+      "last_checked": "2026-09-03T09:26:56+00:00",
+      "manual": false,
+      "page_url": "https://www.gov.uk/government/publications/youth-custody-data",
+      "path": "data/raw/ycs/youth-custody-population-june-2026.ods",
+      "retrieved_at": "2026-09-03T09:26:56+00:00",
+      "sha256": "41d5f55ddc703acc590adc1cc6bb2fc5dd8935cae67a8bdaa6f2ff5050fb051b",
+      "source_publication_date": "2026-08-14T09:30:00+01:00",
+      "status": "downloaded"
+    },
+    "yjs": {
+      "files": [
+        {
+          "bytes": 2068885,
+          "download_url": "https://assets.publishing.service.gov.uk/media/6984756b7da3dc19896c7dc4/Local_level_open_data_tables.zip",
+          "filename": "Local_level_open_data_tables.zip",
+          "path": "data/raw/yjb-2024-25/Local_level_open_data_tables.zip",
+          "retrieved_at": "2026-09-03T09:27:20+00:00",
+          "sha256": "85da9d125bc714b395c21d442106f36d58191b3dc68518dfb5dc0b162cc068d0"
+        },
+        {
+          "bytes": 1134315,
+          "download_url": "https://assets.publishing.service.gov.uk/media/6981c8d2e8900d4c455f3730/Youth_Justice_Statistics_2024_to_2025_supplementary_tables.zip",
+          "filename": "Youth_Justice_Statistics_2024_to_2025_supplementary_tables.zip",
+          "path": "data/raw/yjb-2024-25/Youth_Justice_Statistics_2024_to_2025_supplementary_tables.zip",
+          "retrieved_at": "2026-09-03T09:27:20+00:00",
+          "sha256": "6570ddb4240d8aa2cc32f6c20e99641289c3e3f2ec9f0a70a58b6b388740ae1e"
+        }
+      ],
+      "last_checked": "2026-09-03T09:27:20+00:00",
+      "manual": false,
+      "page_url": "https://www.gov.uk/government/statistics/youth-justice-statistics-2024-to-2025",
+      "publication_path": "/government/statistics/youth-justice-statistics-2024-to-2025",
+      "retrieved_at": "2026-09-03T09:27:20+00:00",
+      "source_publication_date": "2026-01-29T09:30:00+00:00",
+      "status": "downloaded"
+    }
+  }
+}

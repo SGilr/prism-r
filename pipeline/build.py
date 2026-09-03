@@ -33,9 +33,10 @@ CLI flags:
   --only STEP       run a single step by name (yjb, crosswalk, boundaries,
                     ycs, ons, dfe, home_office, imd, rri, target)
   --from STEP       start at STEP and run every step after it
-  --skip-raw-fetch  use the local data/raw/ files, do not fetch from source.
-                    This is the only v1 behaviour: PRISM-R does not yet
-                    automate downloads, so the flag is accepted and noted.
+  --fetch           run the fetch layer (pipeline/fetch.py) first, so the
+                    fast-refreshing raw sources are brought up to date before
+                    ingest. Default behaviour stays offline, using the local
+                    data/raw/ files.
 
 The build writes data/processed/manifest.json (the provenance record) and
 data/processed/build.log (the run log). build.log is a runtime artefact and
@@ -732,8 +733,8 @@ def main(argv: list[str] | None = None) -> int:
         description="Run the PRISM-R pipeline and write the build manifest.")
     parser.add_argument("--dry-run", action="store_true",
                         help="print the planned step order and exit")
-    parser.add_argument("--skip-raw-fetch", action="store_true",
-                        help="use local data/raw/ files (the only v1 behaviour)")
+    parser.add_argument("--fetch", action="store_true",
+                        help="run the fetch layer first; default is offline")
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--only", metavar="STEP",
                        help="run only the named step")
@@ -766,11 +767,20 @@ def main(argv: list[str] | None = None) -> int:
 
     setup_logging(to_file=True)
     log.info("PRISM-R pipeline build")
-    if args.skip_raw_fetch:
-        log.info("--skip-raw-fetch: using local data/raw/ files")
+    if args.fetch:
+        log.info("--fetch: running the fetch layer")
+        fetch_result = subprocess.run(
+            [sys.executable, str(PIPELINE_DIR / "fetch.py")],
+            cwd=REPO_ROOT, capture_output=True, text=True,
+        )
+        for line in (fetch_result.stdout + fetch_result.stderr).splitlines():
+            log.info("  %s", line)
+        if fetch_result.returncode != 0:
+            log.error("fetch layer failed; aborting before ingest")
+            return 1
     else:
-        log.info("PRISM-R v1 does not automate downloads; using local "
-                 "data/raw/ files (as with --skip-raw-fetch)")
+        log.info("offline build: using local data/raw/ files (run with "
+                 "--fetch to refresh the fast-moving sources first)")
     if len(steps) != len(STEPS):
         log.warning("partial build: %d of %d steps; outputs of skipped steps "
                     "must already exist", len(steps), len(STEPS))

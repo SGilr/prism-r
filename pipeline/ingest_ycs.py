@@ -51,7 +51,37 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 PROCESSED_DIR = REPO_ROOT / "data" / "processed"
 RAW_YCS = REPO_ROOT / "data" / "raw" / "ycs"
 
-SOURCE_FILE = "youth-custody-population-june-2026.ods"
+FETCH_MANIFEST = REPO_ROOT / "data" / "raw" / "fetch_manifest.json"
+
+
+def _resolve_source() -> tuple[str, str, str]:
+    """The current YCS edition: (filename, edition label, publication date).
+
+    Read from the fetch manifest when the fetch layer has run; otherwise the
+    newest youth-custody ODS in data/raw/ycs by filename-parsed month. The
+    edition label is derived from the filename (for example
+    youth-custody-population-june-2026.ods -> June 2026).
+    """
+    filename = None
+    publication_date = ""
+    if FETCH_MANIFEST.exists():
+        entry = json.loads(FETCH_MANIFEST.read_text(encoding="utf-8"))[
+            "sources"].get("ycs", {})
+        filename = entry.get("filename")
+        publication_date = entry.get("source_publication_date") or ""
+    if filename is None:
+        candidates = sorted(RAW_YCS.glob("youth-custody*.ods"),
+                            key=lambda p: p.stat().st_mtime)
+        if not candidates:
+            raise FileNotFoundError(f"no youth custody ODS in {RAW_YCS}")
+        filename = candidates[-1].name
+    stem = filename.rsplit(".", 1)[0]
+    month, year = stem.split("-")[-2:]
+    edition = f"{month.capitalize()} {year}"
+    return filename, edition, publication_date[:10]
+
+
+SOURCE_FILE, SOURCE_EDITION_RESOLVED, SOURCE_PUBLICATION_RESOLVED = _resolve_source()
 SOURCE_ODS = RAW_YCS / SOURCE_FILE
 YJS_CH7 = REPO_ROOT / "data" / "raw" / "yjb-2024-25" / "Ch 7 - Children in youth custody.xlsx"
 
@@ -60,8 +90,8 @@ EPISODES_OUT = PROCESSED_DIR / "custody_episodes_ending.json"
 LENGTH_OUT = PROCESSED_DIR / "custody_episode_length.json"
 
 SOURCE = "MoJ Youth Custody Service, monthly youth custody report"
-SOURCE_EDITION = "June 2026"
-SOURCE_PUBLICATION_DATE = "2026-08-14"
+SOURCE_EDITION = SOURCE_EDITION_RESOLVED
+SOURCE_PUBLICATION_DATE = SOURCE_PUBLICATION_RESOLVED or "2026-08-14"
 AGE_BASIS = "all_ages_youth_estate"
 
 # Source-anchored validation constants, verified against the published data.
