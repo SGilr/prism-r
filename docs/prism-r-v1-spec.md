@@ -344,7 +344,7 @@ Total: roughly 14-15 focused sessions, 6-8 weeks elapsed.
 - All charts are keyboard navigable and screen-reader accessible (WCAG 2.2 AA).
 - Every chart and table is downloadable.
 - Methods page lists every source with retrieval date and version.
-- An external methodology review note appears on the methods page, signed.
+- The methods page states the review status of the work plainly. As at 3 September 2026 no part of PRISM-R has been independently reviewed and the page says so; an external review remains an aim, not a launch gate.
 - The GitHub repository is public, with versioned data releases tagged by YJS publication year.
 
 ## 12. Known risks and limitations

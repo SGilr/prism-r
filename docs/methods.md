@@ -2,6 +2,12 @@
 
 This page records how PRISM-R is built so that every figure can be traced to a public source. It is a working draft; it is completed across sprints 2 to 5 and published on the methods page of the site.
 
+## Independent review
+
+No part of PRISM-R has been independently reviewed. The methods described on this page, including the application of the Ministry of Justice's Relative Rate Index method to children, the Wald log-ratio confidence intervals, the three-year pooling of the child custodial sentencing series, the disclosure control rules and the definition used to track the 25% target, are the author's own and have not been checked by anyone outside the project. A reviewer with quantitative criminology or official statistics experience is being sought.
+
+Until then, readers are asked to judge the work rather than take it on trust. Every figure is reproducible from public files: the pipeline, the tests and the raw data bundle are linked under [downloads](https://prism-r.howpreventionworks.com/methods#downloads), and the [corrections](#corrections) section below records the defects found so far, how each was found and when it was fixed. Correspondence pointing out errors is welcome at [admin@oxonadvisory.com](mailto:admin@oxonadvisory.com).
+
 ## Source files
 
 Each source is listed with its retrieval date and version. See [data-sources.md](data-sources.md).
@@ -123,7 +129,7 @@ Two points of method:
 
 3. Ethnic groups with small underlying populations, the "Other" group in particular and at times "Mixed", carry wider confidence intervals as a structural feature of disaggregation, not a flaw in the analysis: a smaller denominator gives a larger standard error. Such results should be read as less precise, not less real. The pooled "Other" child custodial sentencing RRI is a case in point: 1.47 with a 95% interval of 1.01 to 2.14. Its lower bound sits just above 1, so it is significant but only marginally; it should be presented as such, not treated as equivalent to a tighter finding.
 
-TODO, methodology reviewer: the confidence interval method above is to be reviewed and signed off before launch.
+This method has not been independently reviewed. See [Independent review](#independent-review).
 
 ## Reproducibility of MoJ-published RRIs
 

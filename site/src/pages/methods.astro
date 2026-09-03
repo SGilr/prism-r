@@ -20,6 +20,33 @@ const repoUrl = 'https://github.com/SGilr/prism-r';
       </p>
     </section>
 
+    <section class="review-status mt-8 space-y-4 leading-relaxed"
+             id="independent-review" aria-label="Independent review status">
+      <h2 class="font-sans text-lg font-semibold tracking-tight text-ink">
+        Independent review
+      </h2>
+      <p>
+        No part of PRISM-R has been independently reviewed. The methods
+        described on this page, including the application of the Ministry of
+        Justice's Relative Rate Index method to children, the Wald log-ratio
+        confidence intervals, the three-year pooling of the child custodial
+        sentencing series, the disclosure control rules and the definition
+        used to track the 25% target, are the author's own and have not been
+        checked by anyone outside the project. A reviewer with quantitative
+        criminology or official statistics experience is being sought.
+      </p>
+      <p>
+        Until then, readers are asked to judge the work rather than take it on
+        trust. Every figure is reproducible from public files: the pipeline,
+        the tests and the raw data bundle are linked under
+        <a href="#downloads">downloads</a>, and the
+        <a href={`${repoUrl}/blob/main/docs/methods.md#corrections`}>corrections
+        section</a> records the defects found so far, how each was found and
+        when it was fixed. Correspondence pointing out errors is welcome at
+        <a href="mailto:admin@oxonadvisory.com">admin@oxonadvisory.com</a>.
+      </p>
+    </section>
+
     <section class="mt-10 space-y-4 leading-relaxed">
       <h2 class="font-sans text-lg font-semibold tracking-tight text-ink">
         Published figures versus PRISM-R analysis
@@ -328,20 +355,20 @@ const repoUrl = 'https://github.com/SGilr/prism-r';
       </p>
     </section>
 
-    <section class="mt-10 space-y-4 leading-relaxed">
-      <h2 class="font-sans text-lg font-semibold tracking-tight text-ink">
-        Methodology review
-      </h2>
-      <p>
-        The confidence interval method and the wider analytical approach are to
-        be reviewed by an independent methodologist before launch. A reviewer
-        is being approached. This note will be updated, and signed, once that
-        review is complete.
-      </p>
-    </section>
   </article>
 
   <style>
+    .review-status {
+      border-left: 2px solid #1f3a5f;
+      background: #f6f5f0;
+      padding: 1rem 1.2rem;
+    }
+    .review-status h2 { margin-top: 0; }
+    .review-status a {
+      color: #1f3a5f;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
     .download-list {
       list-style: none;
       margin: 0.6rem 0 0;
