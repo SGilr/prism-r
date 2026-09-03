@@ -432,3 +432,213 @@ export function renderForceChoropleth() {
            median: median.toFixed(2),
            min: values[0].toFixed(2), max: values[values.length - 1].toFixed(2) };
 }
+
+
+// --------------------------------------------------------------------------
+// Target tracker charts, from target_tracker.json
+//
+// Three hand-built inline SVGs in the cascade's design language: the
+// rolling-average remand stock against the baseline and the 25% target, the
+// whole-custody ethnic composition companion, and median remand nights by
+// binary ethnicity.
+// --------------------------------------------------------------------------
+const TRACKER_INK = "#1B3A5F";
+const TRACKER_RAW = "#c3cdd8";
+const TRACKER_TARGET = "#1D9E75";
+const TRACKER_GREY = "#888780";
+
+function monthIndex(months, month) {
+  return months.indexOf(month);
+}
+
+export function renderTargetTracker() {
+  const payload = load("target_tracker.json");
+  const stock = payload.records.filter((r) => r.block === "stock_monthly");
+  const meta = payload.meta.stock;
+  const months = stock.map((r) => r.month);
+
+  const W = 640, H = 250, PADL = 34;
+  const x = (i) => PADL + (i / (months.length - 1)) * (W - PADL);
+  const yMin = 100, yMax = 280;
+  const y = (v) => H - ((v - yMin) / (yMax - yMin)) * H;
+
+  const rawPath = stock
+    .map((r, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(r.remand).toFixed(1)}`)
+    .join("");
+  const rollPts = stock.filter((r) => r.rolling_avg_12m != null);
+  const rollPath = rollPts
+    .map((r, i) => `${i ? "L" : "M"}${x(monthIndex(months, r.month)).toFixed(1)},` +
+      `${y(r.rolling_avg_12m).toFixed(1)}`)
+    .join("");
+
+  // Year ticks every two years, plus gridlines at 100/150/200/250.
+  let axis = "";
+  for (const value of [100, 150, 200, 250]) {
+    axis += `<line x1="${PADL}" y1="${y(value).toFixed(1)}" x2="${W}" ` +
+      `y2="${y(value).toFixed(1)}" stroke="#F1EFE8" stroke-width="0.5"/>` +
+      `<text x="${PADL - 6}" y="${y(value).toFixed(1)}" text-anchor="end" ` +
+      `dominant-baseline="middle" font-size="10" fill="${TRACKER_GREY}">${value}</text>`;
+  }
+  for (let year = 2016; year <= 2026; year += 2) {
+    const i = monthIndex(months, `${year}-01`);
+    if (i < 0) continue;
+    axis += `<text x="${x(i).toFixed(1)}" y="${H + 16}" text-anchor="middle" ` +
+      `font-size="10" fill="${TRACKER_GREY}">${year}</text>`;
+  }
+
+  // Baseline and target lines.
+  const guides =
+    `<line x1="${PADL}" y1="${y(meta.baseline).toFixed(1)}" x2="${W}" ` +
+    `y2="${y(meta.baseline).toFixed(1)}" stroke="${TRACKER_GREY}" ` +
+    `stroke-width="1" stroke-dasharray="4 4"/>` +
+    `<text x="${W}" y="${(y(meta.baseline) - 5).toFixed(1)}" text-anchor="end" ` +
+    `font-size="10" fill="#5F5E5A">baseline ${meta.baseline.toFixed(0)}</text>` +
+    `<line x1="${PADL}" y1="${y(meta.target).toFixed(1)}" x2="${W}" ` +
+    `y2="${y(meta.target).toFixed(1)}" stroke="${TRACKER_TARGET}" ` +
+    `stroke-width="1.2" stroke-dasharray="6 3"/>` +
+    `<text x="${W}" y="${(y(meta.target) + 12).toFixed(1)}" text-anchor="end" ` +
+    `font-size="10" fill="#0F6E56">25% target ${meta.target.toFixed(0)}</text>`;
+
+  // Markers: February 2026 and the White Paper (18 May 2026).
+  let markers = "";
+  const feb = monthIndex(months, "2026-02");
+  const may = monthIndex(months, "2026-05");
+  for (const [i, label, dy] of [[feb, "Feb 2026: 149 on remand", -8],
+                                [may, "White Paper, 18 May 2026", -30]]) {
+    if (i < 0) continue;
+    markers += `<line x1="${x(i).toFixed(1)}" y1="14" x2="${x(i).toFixed(1)}" ` +
+      `y2="${H}" stroke="#D3D1C7" stroke-width="0.8"/>` +
+      `<text x="${(x(i) - 4).toFixed(1)}" y="${H + dy}" text-anchor="end" ` +
+      `font-size="9.5" fill="#5F5E5A">${label}</text>`;
+  }
+
+  const latestI = monthIndex(months, meta.latest_month);
+  const latestDot =
+    `<circle cx="${x(latestI).toFixed(1)}" ` +
+    `cy="${y(meta.latest_rolling_avg).toFixed(1)}" r="3.5" fill="${TRACKER_INK}"/>`;
+
+  const svg = `<svg viewBox="0 0 ${W + 8} ${H + 24}" width="100%" role="img" ` +
+    `aria-labelledby="tracker-svg-title" style="font-family:${UI_FONT}">` +
+    `<title id="tracker-svg-title">The youth estate remand population, ` +
+    `12-month rolling average, against the March 2025 baseline and the 25% ` +
+    `reduction target</title>` +
+    axis + guides + markers +
+    `<path d="${rawPath}" fill="none" stroke="${TRACKER_RAW}" stroke-width="1"/>` +
+    `<path d="${rollPath}" fill="none" stroke="${TRACKER_INK}" stroke-width="2.4" ` +
+    `stroke-linecap="round"/>` + latestDot +
+    `</svg>`;
+
+  const monthName = (ym) => new Date(`${ym}-01`).toLocaleString("en-GB",
+    { month: "long", year: "numeric" });
+  const change = meta.change_from_baseline_pct;
+  const position =
+    `As of ${monthName(meta.latest_month)}` +
+    `${meta.latest_provisional ? " (provisional)" : ""}, the 12-month average ` +
+    `remand population is ${Math.round(meta.latest_rolling_avg)}, ` +
+    `${Math.abs(change).toFixed(1)}% ${change < 0 ? "below" : "above"} the ` +
+    `March 2025 baseline.`;
+  const trend = meta.pre_commitment_trend;
+  const preCommitment =
+    `The remand population was already falling before the White Paper: ` +
+    `${trend < 0 ? "down" : "up"} ${Math.abs(trend).toFixed(1)}% between ` +
+    `March 2025 and May 2026.`;
+
+  return { svg, position, preCommitment };
+}
+
+export function renderCustodyEthnicityCompanion() {
+  const payload = load("target_tracker.json");
+  const rows = payload.records.filter(
+    (r) => r.block === "whole_custody_ethnicity_monthly" &&
+      (r.category === "black" || r.category === "mixed") &&
+      r.month >= "2015-04");
+  const months = [...new Set(rows.map((r) => r.month))].sort();
+
+  const W = 640, H = 120, PADL = 34;
+  const x = (i) => PADL + (i / (months.length - 1)) * (W - PADL);
+  const y = (share) => H - (share / 0.3) * H;
+
+  const line = (category, colour) => {
+    const pts = months
+      .map((m, i) => {
+        const row = rows.find((r) => r.month === m && r.category === category);
+        return row && row.share != null
+          ? `${x(i).toFixed(1)},${y(row.share).toFixed(1)}` : null;
+      })
+      .filter(Boolean);
+    return `<polyline points="${pts.join(" ")}" fill="none" stroke="${colour}" ` +
+      `stroke-width="2"/>`;
+  };
+
+  let axis = "";
+  for (const share of [0.1, 0.2, 0.3]) {
+    axis += `<line x1="${PADL}" y1="${y(share).toFixed(1)}" x2="${W}" ` +
+      `y2="${y(share).toFixed(1)}" stroke="#F1EFE8" stroke-width="0.5"/>` +
+      `<text x="${PADL - 6}" y="${y(share).toFixed(1)}" text-anchor="end" ` +
+      `dominant-baseline="middle" font-size="9.5" fill="${TRACKER_GREY}">` +
+      `${Math.round(share * 100)}%</text>`;
+  }
+  for (let year = 2016; year <= 2026; year += 2) {
+    const i = months.indexOf(`${year}-01`);
+    if (i >= 0) axis += `<text x="${x(i).toFixed(1)}" y="${H + 14}" ` +
+      `text-anchor="middle" font-size="9.5" fill="${TRACKER_GREY}">${year}</text>`;
+  }
+
+  const svg = `<svg viewBox="0 0 ${W + 8} ${H + 20}" width="100%" role="img" ` +
+    `aria-labelledby="companion-svg-title" style="font-family:${UI_FONT}">` +
+    `<title id="companion-svg-title">Black and Mixed Heritage shares of the ` +
+    `whole custody population, monthly</title>` +
+    axis + line("black", "#534AB7") + line("mixed", "#D85A30") +
+    `</svg>`;
+  return svg;
+}
+
+export function renderRemandDuration() {
+  const payload = load("target_tracker.json");
+  const rows = payload.records.filter((r) => r.block === "duration_median_nights");
+  const years = [...new Set(rows.map((r) => r.year_ending_march))].sort();
+
+  const W = 560, rowH = 30, PADL = 96, PADR = 40;
+  const H = 26 + years.length * rowH;
+  const xMax = 80;
+  const x = (v) => PADL + (v / xMax) * (W - PADL - PADR);
+
+  let body = "";
+  for (const value of [0, 20, 40, 60, 80]) {
+    body += `<line x1="${x(value).toFixed(1)}" y1="18" x2="${x(value).toFixed(1)}" ` +
+      `y2="${H - 8}" stroke="#F1EFE8" stroke-width="0.5"/>` +
+      `<text x="${x(value).toFixed(1)}" y="12" text-anchor="middle" ` +
+      `font-size="9.5" fill="${TRACKER_GREY}">${value}</text>`;
+  }
+  years.forEach((year, i) => {
+    const cy = 30 + i * rowH;
+    const white = rows.find((r) => r.year_ending_march === year &&
+      r.ethnicity_group === "white");
+    const minority = rows.find((r) => r.year_ending_march === year &&
+      r.ethnicity_group === "ethnic_minority");
+    const label = `${year - 1}-${String(year).slice(2)}` +
+      (minority.provisional ? "*" : "");
+    body += `<text x="0" y="${cy}" dominant-baseline="middle" font-size="11" ` +
+      `fill="#444441">YE Mar ${label}</text>`;
+    if (white.median_nights != null && minority.median_nights != null) {
+      body += `<line x1="${x(white.median_nights).toFixed(1)}" y1="${cy}" ` +
+        `x2="${x(minority.median_nights).toFixed(1)}" y2="${cy}" ` +
+        `stroke="#D3D1C7" stroke-width="2"/>` +
+        `<circle cx="${x(white.median_nights).toFixed(1)}" cy="${cy}" r="4.5" ` +
+        `fill="#9aa7b4"/>` +
+        `<circle cx="${x(minority.median_nights).toFixed(1)}" cy="${cy}" r="4.5" ` +
+        `fill="${TRACKER_INK}"/>` +
+        `<text x="${(x(minority.median_nights) + 9).toFixed(1)}" y="${cy}" ` +
+        `dominant-baseline="middle" font-size="10.5" font-weight="600" ` +
+        `fill="${TRACKER_INK}">${minority.median_nights}</text>` +
+        `<text x="${(x(white.median_nights) - 9).toFixed(1)}" y="${cy}" ` +
+        `dominant-baseline="middle" font-size="10.5" text-anchor="end" ` +
+        `fill="#5F5E5A">${white.median_nights}</text>`;
+    }
+  });
+
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" ` +
+    `aria-labelledby="duration-svg-title" style="font-family:${UI_FONT}">` +
+    `<title id="duration-svg-title">Median remand nights by ethnicity group ` +
+    `and year: ethnic minority groups against White</title>` + body + `</svg>`;
+}

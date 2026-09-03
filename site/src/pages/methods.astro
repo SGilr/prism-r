@@ -143,12 +143,19 @@ const repoUrl = 'https://github.com/SGilr/prism-r';
         What PRISM-R does not yet show
       </h2>
       <p>
-        This version works at England and Wales level. It does not yet show
-        remand at local authority level, a geographic map, or post-remand
-        court outcomes by ethnicity. Those require data that is not yet
-        ingested and are planned for later work. The home page figure of 62%
-        of remanded children not receiving a custodial sentence is cited from
-        the published statistics for that reason.
+        This version works at England and Wales level, with a static force
+        map and a Lambeth worked example as previews of the geographic
+        explorer. It does not yet show remand at local authority level or
+        post-remand court outcomes by ethnicity; those require data that is
+        not yet published openly. The monthly remand tracker cannot show the
+        remand population by ethnicity, by age or by region, because the
+        Youth Custody Service monthly tables do not cross legal basis with
+        those dimensions; the ethnic composition shown alongside it is the
+        whole custody population, clearly labelled. HMI Prisons' thematic
+        review figure of 216 children on short-term remand in YOIs and STCs
+        cannot be reconciled from the published sector table, which does not
+        cross sector with legal basis; it is on a different basis from the
+        figures here.
       </p>
     </section>
 
@@ -170,15 +177,22 @@ const repoUrl = 'https://github.com/SGilr/prism-r';
         Baseline and tracking
       </h2>
       <p>
-        The values shown on PRISM-R as of May 2026 reflect the most recent
-        published Youth Justice Statistics, for the year ending March 2025, and
-        constitute a baseline against which future change will be measured. The
-        Youth Justice White Paper Cutting Youth Crime. Changing Young Lives.,
-        published on 18 May 2026 by the Ministry of Justice, sets a specific
-        target: reducing the number of children remanded to custody by 25%
-        this Parliament. PRISM-R will refresh annually within four weeks of
-        each Youth Justice Statistics publication, providing a public, open,
-        reproducible record of the trajectory.
+        The Youth Justice White Paper Cutting Youth Crime. Changing Young
+        Lives., published on 18 May 2026 by the Ministry of Justice, commits
+        to reducing custodial remand for children by 25% over this Parliament.
+        PRISM-R tracks that commitment on the home page: the monthly remand
+        stock from the Youth Custody Service report as a 12-month rolling
+        average, against a baseline of the twelve months to March 2025
+        (215.75) and a 75% target line (161.8), with the annual flow of
+        remands to youth detention accommodation (baseline 988, target 741)
+        as the accountable measure. The stock is the whole youth secure
+        estate, including the small number aged 18 who remain in the youth
+        estate, because the published tables do not cross legal basis with
+        age. The stock refreshes monthly and the latest month is provisional;
+        the flow refreshes annually. The full definition, including the
+        equity condition and what is not treated as progress, is in
+        <a href="https://github.com/SGilr/prism-r/blob/main/docs/target-metric.md">
+        the target metric definition</a>.
       </p>
     </section>
 

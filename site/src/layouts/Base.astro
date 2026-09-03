@@ -1,4 +1,5 @@
 ---
+import { readFileSync } from 'node:fs';
 import Wordmark from '../components/Wordmark.astro';
 
 interface Props {
@@ -6,6 +7,29 @@ interface Props {
 }
 
 const { title } = Astro.props;
+
+// The data-currency stamp, read from the pipeline outputs at build time.
+const processedDir = new URL('../../../data/processed/', import.meta.url);
+const manifest = JSON.parse(
+  readFileSync(new URL('manifest.json', processedDir), 'utf-8'),
+);
+const custody = JSON.parse(
+  readFileSync(new URL('custody_monthly.json', processedDir), 'utf-8'),
+);
+const latestMonth = custody.meta.latest_month;
+const latestProvisional = custody.records.some(
+  (r: { month: string; provisional: boolean }) =>
+    r.month === latestMonth && r.provisional,
+);
+const dataAsOf =
+  new Date(`${latestMonth}-01`).toLocaleString('en-GB', {
+    month: 'long',
+    year: 'numeric',
+  }) + (latestProvisional ? ' (provisional)' : '');
+const builtOn = new Date(manifest.meta.build_timestamp).toLocaleDateString(
+  'en-GB',
+  { day: 'numeric', month: 'long', year: 'numeric' },
+);
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -145,6 +169,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
           Prevention Risk Intelligence &amp; Stratified Mapping: Remand
         </p>
         <p><Wordmark nav />, Oxon Advisory. Hosted on Prevention Works.</p>
+        <p>Data as of {dataAsOf}, built {builtOn}.</p>
         <p>
           <a
             href="https://github.com/SGilr/prism-r"

@@ -1,11 +1,22 @@
 ---
 import Base from '../layouts/Base.astro';
 import Wordmark from '../components/Wordmark.astro';
+import {
+  renderTargetTracker,
+  renderCustodyEthnicityCompanion,
+} from '../lib/charts.mjs';
+
+const tracker = renderTargetTracker();
+const companion = renderCustodyEthnicityCompanion();
 
 const yjsUrl =
   'https://www.gov.uk/government/statistics/youth-justice-statistics-2024-to-2025';
 const yjsCitation =
   'Youth Justice Statistics 2024 to 2025, Ministry of Justice and Youth Justice Board, January 2026';
+const metricUrl =
+  'https://github.com/SGilr/prism-r/blob/main/docs/target-metric.md';
+const whitePaperUrl =
+  'https://assets.publishing.service.gov.uk/media/6a06eb37c0cc74b4523e4e8c/youth-justice-white-paper.pdf';
 
 const headline = [
   { value: '28%', label: 'Black children as a share of children remanded' },
@@ -82,22 +93,47 @@ const headline = [
 
     <section class="mt-10 border-l-2 border-accent bg-[#f6f5f0] p-5 sm:p-6">
       <h2 class="strapline" style="color: #5f5e5a;">
-        Timely context
+        Tracking the 25% target
       </h2>
       <p class="mt-3 leading-relaxed">
         The Youth Justice White Paper
         <a
-          href="https://assets.publishing.service.gov.uk/media/6a06eb37c0cc74b4523e4e8c/youth-justice-white-paper.pdf"
+          href={whitePaperUrl}
           class="text-accent underline underline-offset-2"
         >
           Cutting Youth Crime. Changing Young Lives.</a>, published on 18 May
-        2026, sets a specific target: a 25% reduction in the number of children
-        remanded to custody this Parliament, backed by £5 million for community
-        placements and enhanced bail support. PRISM-R provides the open,
-        reproducible evidence base against which that target can be tracked.
-        The values shown on this site reflect the year ending March 2025 and
-        form the baseline against which future change will be measured. PRISM-R
-        refreshes annually when the Youth Justice Statistics are published.
+        2026, commits to reducing custodial remand for children by 25% over
+        this Parliament. The chart shows the youth estate remand population as
+        a 12-month rolling average, monthly from 2015, against the baseline
+        (the twelve months to March 2025) and the 25% target line. The faint
+        line is the unaveraged monthly figure.
+      </p>
+      <div class="chart mt-5" set:html={tracker.svg} />
+      <p class="mt-4 leading-relaxed font-semibold">
+        {tracker.position}
+      </p>
+      <p class="mt-2 leading-relaxed">
+        {tracker.preCommitment}
+      </p>
+      <h3 class="mt-6 font-sans text-xs font-medium uppercase tracking-wider text-neutral-500">
+        Whole-custody ethnic composition
+      </h3>
+      <div class="chart mt-3" set:html={companion} />
+      <p class="mt-2 font-sans text-xs leading-relaxed text-neutral-500">
+        Share of the whole custody population, monthly:
+        <span style="color:#534AB7; font-weight:600;">Black</span> and
+        <span style="color:#D85A30; font-weight:600;">Mixed Heritage</span>
+        children. This is the whole custody population, not the remand
+        population; the Youth Custody Service does not publish remand by
+        ethnicity monthly. A volume reduction that leaves these shares, the
+        remand-stage Relative Rate Index, or the ethnic gap in remand duration
+        unchanged is a volume success and a fairness failure.
+      </p>
+      <p class="mt-3 font-sans text-xs leading-relaxed text-neutral-500">
+        Sources: MoJ Youth Custody Service monthly youth custody report, June
+        2026 edition (latest month provisional); YJS 2024-25.
+        <a href={metricUrl} class="underline underline-offset-2 hover:text-accent">
+          Read the full metric definition</a>.
       </p>
     </section>
 

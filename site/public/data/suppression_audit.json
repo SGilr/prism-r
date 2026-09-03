@@ -3,15 +3,18 @@
     "counts": {
       "by_rule": {
         "inherited": 157,
-        "primary": 55,
-        "secondary": 95
+        "primary": 82,
+        "secondary": 122
       },
       "cells_suppressed_by_dataset": {
         "context_indicators.json": 298,
+        "custody_episode_length.json": 0,
+        "custody_episodes_ending.json": 0,
+        "custody_monthly.json": 54,
         "remand_outcomes.json": 6,
         "rri.json": 0
       },
-      "decisions": 307
+      "decisions": 361
     },
     "dataset": "suppression_audit",
     "generated_by": "pipeline/build.py",
@@ -3027,6 +3030,546 @@
       "reason": null,
       "resulting_state": "suppressed",
       "rule": "primary"
+    },
+    {
+      "cell_id": "2015-04|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 2 below threshold 6",
+      "group": "2015-04|ethnicity|whole_custody",
+      "original_count": 2,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2015-04|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2015-04|ethnicity|whole_custody' cannot be recovered",
+      "group": "2015-04|ethnicity|whole_custody",
+      "original_count": 17,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2015-05|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 2 below threshold 6",
+      "group": "2015-05|ethnicity|whole_custody",
+      "original_count": 2,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2015-05|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2015-05|ethnicity|whole_custody' cannot be recovered",
+      "group": "2015-05|ethnicity|whole_custody",
+      "original_count": 14,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2015-06|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 2 below threshold 6",
+      "group": "2015-06|ethnicity|whole_custody",
+      "original_count": 2,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2015-06|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2015-06|ethnicity|whole_custody' cannot be recovered",
+      "group": "2015-06|ethnicity|whole_custody",
+      "original_count": 15,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2015-07|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 3 below threshold 6",
+      "group": "2015-07|ethnicity|whole_custody",
+      "original_count": 3,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2015-07|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2015-07|ethnicity|whole_custody' cannot be recovered",
+      "group": "2015-07|ethnicity|whole_custody",
+      "original_count": 16,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2016-05|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 5 below threshold 6",
+      "group": "2016-05|ethnicity|whole_custody",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2016-05|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2016-05|ethnicity|whole_custody' cannot be recovered",
+      "group": "2016-05|ethnicity|whole_custody",
+      "original_count": 16,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2016-11|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 5 below threshold 6",
+      "group": "2016-11|ethnicity|whole_custody",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2016-11|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2016-11|ethnicity|whole_custody' cannot be recovered",
+      "group": "2016-11|ethnicity|whole_custody",
+      "original_count": 25,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2016-12|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 3 below threshold 6",
+      "group": "2016-12|ethnicity|whole_custody",
+      "original_count": 3,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2016-12|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2016-12|ethnicity|whole_custody' cannot be recovered",
+      "group": "2016-12|ethnicity|whole_custody",
+      "original_count": 23,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2017-01|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 3 below threshold 6",
+      "group": "2017-01|ethnicity|whole_custody",
+      "original_count": 3,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2017-01|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2017-01|ethnicity|whole_custody' cannot be recovered",
+      "group": "2017-01|ethnicity|whole_custody",
+      "original_count": 25,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2017-02|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 2 below threshold 6",
+      "group": "2017-02|ethnicity|whole_custody",
+      "original_count": 2,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2017-02|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2017-02|ethnicity|whole_custody' cannot be recovered",
+      "group": "2017-02|ethnicity|whole_custody",
+      "original_count": 24,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2017-03|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 4 below threshold 6",
+      "group": "2017-03|ethnicity|whole_custody",
+      "original_count": 4,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2017-03|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2017-03|ethnicity|whole_custody' cannot be recovered",
+      "group": "2017-03|ethnicity|whole_custody",
+      "original_count": 23,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2017-04|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 5 below threshold 6",
+      "group": "2017-04|ethnicity|whole_custody",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2017-04|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2017-04|ethnicity|whole_custody' cannot be recovered",
+      "group": "2017-04|ethnicity|whole_custody",
+      "original_count": 25,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2019-07|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 5 below threshold 6",
+      "group": "2019-07|ethnicity|whole_custody",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2019-07|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2019-07|ethnicity|whole_custody' cannot be recovered",
+      "group": "2019-07|ethnicity|whole_custody",
+      "original_count": 20,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2019-08|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 4 below threshold 6",
+      "group": "2019-08|ethnicity|whole_custody",
+      "original_count": 4,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2019-08|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2019-08|ethnicity|whole_custody' cannot be recovered",
+      "group": "2019-08|ethnicity|whole_custody",
+      "original_count": 17,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2019-09|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 4 below threshold 6",
+      "group": "2019-09|ethnicity|whole_custody",
+      "original_count": 4,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2019-09|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2019-09|ethnicity|whole_custody' cannot be recovered",
+      "group": "2019-09|ethnicity|whole_custody",
+      "original_count": 21,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2019-10|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 4 below threshold 6",
+      "group": "2019-10|ethnicity|whole_custody",
+      "original_count": 4,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2019-10|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2019-10|ethnicity|whole_custody' cannot be recovered",
+      "group": "2019-10|ethnicity|whole_custody",
+      "original_count": 21,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2019-11|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 4 below threshold 6",
+      "group": "2019-11|ethnicity|whole_custody",
+      "original_count": 4,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2019-11|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2019-11|ethnicity|whole_custody' cannot be recovered",
+      "group": "2019-11|ethnicity|whole_custody",
+      "original_count": 18,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2020-04|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 4 below threshold 6",
+      "group": "2020-04|ethnicity|whole_custody",
+      "original_count": 4,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2020-04|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2020-04|ethnicity|whole_custody' cannot be recovered",
+      "group": "2020-04|ethnicity|whole_custody",
+      "original_count": 24,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2020-07|age|None|10_to_14",
+      "dataset": "custody_monthly.json",
+      "detail": "count 5 below threshold 6",
+      "group": "2020-07|age|None",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2020-07|age|None|15",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2020-07|age|None' cannot be recovered",
+      "group": "2020-07|age|None",
+      "original_count": 55,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2020-12|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 5 below threshold 6",
+      "group": "2020-12|ethnicity|whole_custody",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2020-12|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2020-12|ethnicity|whole_custody' cannot be recovered",
+      "group": "2020-12|ethnicity|whole_custody",
+      "original_count": 22,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2021-01|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 5 below threshold 6",
+      "group": "2021-01|ethnicity|whole_custody",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2021-01|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2021-01|ethnicity|whole_custody' cannot be recovered",
+      "group": "2021-01|ethnicity|whole_custody",
+      "original_count": 20,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2021-12|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 5 below threshold 6",
+      "group": "2021-12|ethnicity|whole_custody",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2021-12|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2021-12|ethnicity|whole_custody' cannot be recovered",
+      "group": "2021-12|ethnicity|whole_custody",
+      "original_count": 13,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2022-07|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 4 below threshold 6",
+      "group": "2022-07|ethnicity|whole_custody",
+      "original_count": 4,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2022-07|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2022-07|ethnicity|whole_custody' cannot be recovered",
+      "group": "2022-07|ethnicity|whole_custody",
+      "original_count": 9,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2022-08|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 5 below threshold 6",
+      "group": "2022-08|ethnicity|whole_custody",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2022-08|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2022-08|ethnicity|whole_custody' cannot be recovered",
+      "group": "2022-08|ethnicity|whole_custody",
+      "original_count": 9,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2022-09|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 4 below threshold 6",
+      "group": "2022-09|ethnicity|whole_custody",
+      "original_count": 4,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2022-09|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2022-09|ethnicity|whole_custody' cannot be recovered",
+      "group": "2022-09|ethnicity|whole_custody",
+      "original_count": 10,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2022-10|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 5 below threshold 6",
+      "group": "2022-10|ethnicity|whole_custody",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2022-10|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2022-10|ethnicity|whole_custody' cannot be recovered",
+      "group": "2022-10|ethnicity|whole_custody",
+      "original_count": 14,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2022-11|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 5 below threshold 6",
+      "group": "2022-11|ethnicity|whole_custody",
+      "original_count": 5,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2022-11|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2022-11|ethnicity|whole_custody' cannot be recovered",
+      "group": "2022-11|ethnicity|whole_custody",
+      "original_count": 13,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
+    },
+    {
+      "cell_id": "2023-04|ethnicity|whole_custody|not_known",
+      "dataset": "custody_monthly.json",
+      "detail": "count 4 below threshold 6",
+      "group": "2023-04|ethnicity|whole_custody",
+      "original_count": 4,
+      "reason": null,
+      "resulting_state": "suppressed",
+      "rule": "primary"
+    },
+    {
+      "cell_id": "2023-04|ethnicity|whole_custody|other",
+      "dataset": "custody_monthly.json",
+      "detail": "secondary suppression of the smallest non-zero cell so the single suppressed cell in group '2023-04|ethnicity|whole_custody' cannot be recovered",
+      "group": "2023-04|ethnicity|whole_custody",
+      "original_count": 12,
+      "reason": "next_smallest_nonzero",
+      "resulting_state": "suppressed",
+      "rule": "secondary"
     },
     {
       "cell_id": "ew|2025|ethnicity|rlaa|Other|None|None",

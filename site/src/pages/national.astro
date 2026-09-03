@@ -5,12 +5,14 @@ import {
   renderDisproportion,
   renderRemandMix,
   renderForceChoropleth,
+  renderRemandDuration,
 } from '../lib/charts.mjs';
 
 const cascade = renderCascade();
 const disproportion = renderDisproportion();
 const remandMix = renderRemandMix();
 const choropleth = renderForceChoropleth();
+const duration = renderRemandDuration();
 ---
 
 <Base title="National picture — PRISM-R">
@@ -173,6 +175,40 @@ const choropleth = renderForceChoropleth();
         interactive geographic exploration follows in the geographic explorer.
         PRISM-R analysis of Home Office Police powers and procedures open data;
         boundaries: ONS Open Geography portal. Retrieved May 2026.
+        <a href="/data/manifest.json">See the build manifest</a>.
+      </p>
+    </section>
+
+    <!-- CHART E: remand duration by ethnicity -->
+    <section class="mt-12">
+      <h2 class="font-sans text-lg font-semibold tracking-tight text-ink">
+        How long children spend on remand
+      </h2>
+      <div class="mt-3 space-y-4 leading-relaxed">
+        <p>
+          The remand population is the product of how many children enter
+          remand and how long each remand lasts. A 25% reduction in the stock
+          can therefore be achieved by remanding fewer children, by shortening
+          remands, or both; and a reduction achieved by shortening is assessed
+          for whether the shortening is equal across ethnic groups. The
+          published episode data shows it currently is not. In every year
+          since 2019, remand episodes for children from ethnic minority
+          groups have lasted substantially longer at the median than those
+          for White children: 74 nights against 40.5 in the year ending March
+          2025, and 70 against 48 in the provisional 2025-26 year.
+        </p>
+      </div>
+      <div class="chart mt-6" set:html={duration} />
+      <p class="caption font-sans">
+        Median nights per remand episode ending in each year:
+        <span style="color:#1B3A5F; font-weight:600;">ethnic minority
+        groups</span> against <span style="color:#5F5E5A;">White including
+        white minorities</span>. PRISM-R analysis of YCS monthly youth custody
+        report table 3.4, June 2026 edition. Four caveats: ethnicity is the
+        binary published split, not the YJB five groups; the measure counts
+        episodes ending in the year, not children on remand; no adjustment is
+        made for offence mix or court tier; the 2025-26 year (marked *) is
+        provisional. Retrieved September 2026.
         <a href="/data/manifest.json">See the build manifest</a>.
       </p>
     </section>
