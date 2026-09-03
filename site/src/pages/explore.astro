@@ -1,0 +1,280 @@
+---
+import { readFileSync } from 'node:fs';
+import Base from '../layouts/Base.astro';
+
+// The geography index is inlined so the search list and framing work before
+// any fetch resolves; the per-level payloads load on demand in the browser.
+const processed = new URL('../../../data/processed/', import.meta.url);
+const index = JSON.parse(
+  readFileSync(new URL('explorer/index.json', processed), 'utf-8'),
+);
+const indicators = index.meta.indicators;
+const ethnicities = index.meta.ethnicities;
+const defaultIndicator = 'suspension_rate';
+---
+
+<Base title="Explore your area — PRISM-R">
+  <article class="explorer">
+    <h1 class="page-title">Explore your area</h1>
+
+    <section class="framing" aria-label="What this explorer shows">
+      <p>
+        This explorer shows the conditions that precede a remand decision, not
+        remand outcomes. The Youth Justice Board does not publish remand below
+        England and Wales level, so no map here can show it. PRISM-R has
+        requested that data; until it is available, the national picture holds
+        remand and this page holds the road towards it: school exclusions,
+        children looked after, stop and search, arrests, child income
+        deprivation and the child population underneath them all.
+      </p>
+      <p class="framing-links">
+        <a href="/national">The road-to-remand cascade</a> ·
+        <a href="/methods">How each indicator is built</a> ·
+        <a href="/example-lambeth">A worked example: Lambeth</a>
+      </p>
+    </section>
+
+    <div class="controls">
+      <p class="control">
+        <label for="explorer-indicator">Indicator</label>
+        <select id="explorer-indicator">
+          {Object.entries(indicators).map(([key, spec]) => (
+            <option value={key} selected={key === defaultIndicator}>
+              {spec.label}
+            </option>
+          ))}
+        </select>
+      </p>
+      <p class="control">
+        <label for="explorer-ethnicity">Ethnicity</label>
+        <select id="explorer-ethnicity">
+          <option value="overall" selected>All children</option>
+          {ethnicities.map((e: string) => <option value={e}>{e}</option>)}
+        </select>
+      </p>
+      <p class="control">
+        <label for="explorer-year">Period</label>
+        <select id="explorer-year"></select>
+      </p>
+    </div>
+
+    <p class="level-note" id="explorer-level-note"></p>
+
+    <div class="explorer-grid">
+      <div class="map-column">
+        <div id="explorer-map" class="map"></div>
+        <p class="legend" id="explorer-legend"></p>
+        <p class="status" id="explorer-status" role="status"></p>
+      </div>
+
+      <div class="list-column">
+        <p class="control">
+          <label for="explorer-search">Find an area</label>
+          <input id="explorer-search" type="search" autocomplete="off"
+                 placeholder="Type a name, for example Lambeth" />
+        </p>
+        <p class="list-count" id="explorer-list-count"></p>
+        <ul id="explorer-list" class="geo-list"></ul>
+      </div>
+    </div>
+
+    <section id="explorer-panel" class="panel" hidden
+             aria-label="Selected area summary"></section>
+
+    <noscript>
+      <p class="noscript">
+        The map needs JavaScript. The same figures are published as open data:
+        the explorer files, the build manifest and the raw data release are
+        listed on the <a href="/methods">methods page</a>.
+      </p>
+    </noscript>
+  </article>
+
+  <script define:vars={{ index }}>
+    import('/scripts/explorer-client.js').then(({ initExplorer }) => {
+      initExplorer(document, index);
+    });
+  </script>
+
+  <style>
+    .framing {
+      border-left: 2px solid #1f3a5f;
+      background: #f6f5f0;
+      padding: 1rem 1.2rem;
+      margin-top: 1.5rem;
+      line-height: 1.6;
+    }
+    .framing p { margin: 0; }
+    .framing-links {
+      margin-top: 0.6rem !important;
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 0.82rem;
+    }
+    .framing-links a { color: #1f3a5f; }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem 1.5rem;
+      margin-top: 1.6rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .control { margin: 0; font-family: Inter, system-ui, sans-serif; }
+    .control label {
+      display: block;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6a6a6a;
+      margin-bottom: 0.25rem;
+    }
+    .control select, .control input {
+      font: inherit;
+      font-size: 0.9rem;
+      padding: 0.35rem 0.5rem;
+      border: 1px solid #cfd4d9;
+      border-radius: 2px;
+      background: #fff;
+      min-width: 12rem;
+    }
+    .level-note {
+      margin-top: 0.9rem;
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: #5f5e5a;
+    }
+    .explorer-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      gap: 1.8rem;
+      margin-top: 1rem;
+      align-items: start;
+    }
+    @media (max-width: 720px) {
+      .explorer-grid { grid-template-columns: 1fr; }
+    }
+    .map :global(svg) { width: 100%; height: auto; display: block; }
+    .map :global(path) { cursor: pointer; transition: opacity 100ms ease; }
+    .map :global(path:hover) { opacity: 0.82; }
+    .map :global(path:focus-visible) {
+      outline: 2px solid #1b3a5f;
+      outline-offset: 1px;
+    }
+    .legend, .status, .list-count {
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 0.74rem;
+      color: #6a6a6a;
+    }
+    .legend { display: flex; flex-wrap: wrap; gap: 0.5rem 0.9rem; margin-top: 0.6rem; }
+    .legend :global(.key) { display: flex; align-items: center; gap: 0.3rem; }
+    .legend :global(.sw) {
+      width: 0.8rem; height: 0.8rem; border-radius: 2px; display: inline-block;
+    }
+    .legend :global(.sw-none) {
+      background: repeating-linear-gradient(45deg, #f6f5f0, #f6f5f0 2px, #dcdad2 2px, #dcdad2 4px);
+      border: 1px solid #e5e5e5;
+    }
+    .geo-list {
+      list-style: none;
+      margin: 0.5rem 0 0;
+      padding: 0;
+      max-height: 26rem;
+      overflow-y: auto;
+      border-top: 1px solid #e5e5e5;
+    }
+    .geo-list :global(li) { border-bottom: 1px solid #f0f0ee; }
+    .geo-list :global(button) {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      gap: 0.8rem;
+      padding: 0.5rem 0.2rem;
+      background: none;
+      border: 0;
+      font: inherit;
+      font-size: 0.88rem;
+      text-align: left;
+      cursor: pointer;
+    }
+    .geo-list :global(button:hover) { background: #f6f5f0; }
+    .geo-list :global(button[aria-current="true"]) {
+      background: #eef1f4;
+      box-shadow: inset 2px 0 0 #1b3a5f;
+    }
+    .geo-list :global(.value) {
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 0.78rem;
+      color: #1a1a1a;
+      white-space: nowrap;
+    }
+    .geo-list :global(.value.muted) { color: #8a8782; font-style: italic; white-space: normal; }
+    .geo-list :global(.empty) { padding: 0.6rem 0.2rem; color: #6a6a6a; font-size: 0.85rem; }
+    .panel {
+      margin-top: 1.8rem;
+      border: 1px solid #e5e5e5;
+      border-radius: 3px;
+      padding: 1.2rem 1.4rem;
+      background: #fff;
+    }
+    .panel :global(h3) {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    .panel :global(.panel-level), .panel :global(.panel-parents) {
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 0.8rem;
+      color: #5f5e5a;
+      margin: 0.3rem 0 0;
+      line-height: 1.5;
+    }
+    .panel :global(dl) { margin: 1.1rem 0 0; }
+    .panel :global(.panel-row) {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+      gap: 0.8rem;
+      padding: 0.6rem 0;
+      border-top: 1px solid #f0f0ee;
+    }
+    .panel :global(dt) {
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    .panel :global(.methods-link) {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: #4a6b8c;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .panel :global(dd) { margin: 0; font-size: 0.95rem; }
+    .panel :global(dd.muted) { color: #6a6a6a; font-style: italic; font-size: 0.85rem; }
+    .panel :global(.national), .panel :global(.prov) {
+      display: block;
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 0.72rem;
+      font-style: normal;
+      color: #6a6a6a;
+      margin-top: 0.2rem;
+    }
+    .panel :global(.panel-foot) {
+      margin: 1.1rem 0 0;
+      padding-top: 0.8rem;
+      border-top: 1px solid #f0f0ee;
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 0.76rem;
+      color: #6a6a6a;
+    }
+    .panel :global(.panel-foot a), .noscript a { color: #1f3a5f; }
+    .noscript {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: #f6f5f0;
+      font-size: 0.9rem;
+    }
+  </style>
+</Base>

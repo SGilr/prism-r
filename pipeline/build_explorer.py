@@ -47,7 +47,7 @@ from __future__ import annotations
 
 import json
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -143,10 +143,15 @@ INDICATORS = {
 }
 
 LEVELS = {
-    "rgn": {"label": "Region", "boundary": "boundaries/rgn.topo.json"},
-    "utla": {"label": "Upper-tier authority", "boundary": "boundaries/utla.topo.json"},
-    "lad": {"label": "Local authority district", "boundary": "boundaries/lad.topo.json"},
-    "pfa": {"label": "Police force area", "boundary": "boundaries/pfa.topo.json"},
+    "rgn": {"label": "Region", "plural": "regions",
+            "boundary": "boundaries/rgn.topo.json"},
+    "utla": {"label": "Upper-tier authority", "plural": "upper-tier authorities",
+             "boundary": "boundaries/utla.topo.json"},
+    "lad": {"label": "Local authority district",
+            "plural": "local authority districts",
+            "boundary": "boundaries/lad.topo.json"},
+    "pfa": {"label": "Police force area", "plural": "police force areas",
+            "boundary": "boundaries/pfa.topo.json"},
 }
 
 
@@ -401,6 +406,11 @@ def build() -> tuple[dict, dict[str, list[dict]], list[str]]:
                                   else None),
             "suppressed": bool(record.get("suppressed")) or None,
             "national_value": national_entry.get("value"),
+            # Carried per record only where the scope varies within an
+            # indicator, as it does for imd_score: an English authority is
+            # compared with the England average, a Welsh one with Wales.
+            "national_scope": (national_entry.get("scope")
+                               if indicator == "imd_score" else None),
             "source_key": _source_key(sources, record),
             "jurisdiction": record.get("jurisdiction"),
         }))
@@ -454,6 +464,19 @@ def build() -> tuple[dict, dict[str, list[dict]], list[str]]:
             "the authority's own nation" if indicator == "imd_score"
             else "England and Wales")
         spec["default_disclosure_status"] = "released"
+        # Where every geography has exactly one record, the year is a
+        # property of the source rather than a filter: English IDACI 2025 and
+        # Welsh WIMD 2019 are one figure each per authority on parallel
+        # scales, not a time series, and filtering by year would blank a
+        # nation.
+        rows = [r for records in by_level.values() for r in records
+                if r["indicator"] == indicator]
+        years_by_cell = defaultdict(set)
+        for row in rows:
+            years_by_cell[(row["geo_id"], row["ethnicity"])].add(row["year"])
+        distinct_years = {row["year"] for row in rows}
+        spec["single_vintage"] = bool(rows) and len(distinct_years) > 1 and all(
+            len(years) == 1 for years in years_by_cell.values())
 
     index = {
         "meta": {
