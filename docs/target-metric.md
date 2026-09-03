@@ -14,6 +14,8 @@ Episodes per year from Youth Justice Statistics, chapter 6. Baseline: 988 in the
 
 Both measures are reported with their ethnic composition and the remand-stage Relative Rate Index. A 25% reduction that leaves the Black and Mixed Heritage shares, or the RRI, unchanged is recorded as a volume success and a fairness failure. PRISM-R reports the two side by side.
 
+Duration is the third leg of the condition. A reduction in the remand population achieved by shortening remands is assessed for whether the shortening is equal across ethnic groups. Median remand nights by ethnicity, from the Youth Custody Service episodes-ending tables, are reported alongside the two volume measures.
+
 ## Not treated as progress
 
 The share of the custody population on remand (44% in 2024-25), which is a ratio and can fall by sentencing more children. A fall in the stock that is not matched by the flow, which indicates shorter remands rather than fewer.
