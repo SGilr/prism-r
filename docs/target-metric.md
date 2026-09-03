@@ -4,7 +4,7 @@ The Youth Justice White Paper Cutting Youth Crime. Changing Young Lives. (MoJ, 1
 
 ## Headline tracker: custodial remand population (stock)
 
-Children under 18 held in youth detention accommodation on remand, whole secure estate, from the monthly Youth Custody Service report. Reported as a 12-month rolling average to remove seasonality. Baseline: the twelve months to March 2025. Markers shown for February 2026 (the figure cited in Parliament) and 18 May 2026 (White Paper). Refreshed monthly.
+The youth secure estate remand population as published by the Youth Custody Service, which includes a small number aged 18 who remain in the youth estate; no under-18 adjustment is applied because the published tables do not cross legal basis with age. Whole secure estate, from the monthly Youth Custody Service report. Reported as a 12-month rolling average to remove seasonality. Baseline: the twelve months to March 2025. Markers shown for February 2026 (the figure cited in Parliament) and 18 May 2026 (White Paper). Refreshed monthly.
 
 ## Accountable measure: remands to youth detention accommodation (flow)
 
