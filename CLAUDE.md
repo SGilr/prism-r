@@ -70,7 +70,7 @@ Pre-calculated Relative Rate Index per `geo_id` x `year` x `ethnicity` x `decisi
 These rules are non-negotiable and apply uniformly. They are described openly on the methods page. Full text in `docs/disclosure-control.md`; enforced in `pipeline/suppress.py`; verified in `tests/test_suppression.py`.
 
 1. Counts below 6 are suppressed and shown as "<6, suppressed for disclosure control".
-2. Secondary suppression applies where suppressing one cell would let another be back-calculated. Use standard ONS practice.
+2. A suppressed count must leave no published field from which it can be recovered. (a) Secondary suppression applies where suppressing one cell would let another be back-calculated from a group total; use standard ONS practice. (b) Every derived figure computed from a suppressed count must be suppressed with it, including rates, shares and percentages, wherever the denominator is published by PRISM-R or by a source. A rate against a known denominator can be multiplied back into the count.
 3. Rates are not shown where the denominator population in the relevant cell is below 100. Show "rate not shown, population too small".
 4. Every suppression decision is logged in a methods-page audit trail.
 5. Where the YJB has already suppressed a source value, propagate that suppression and flag it as inherited.

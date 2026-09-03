@@ -108,17 +108,30 @@ const repoUrl = 'https://github.com/SGilr/prism-r';
       </h2>
       <p>
         PRISM-R applies five disclosure control rules: counts below six are
-        suppressed; secondary suppression protects a single suppressed cell
-        from back-calculation; rates are not shown where the denominator is
-        below 100; suppression already applied in a source is carried through
-        and flagged as inherited; and every suppression decision is logged.
-        National figures rarely trigger suppression because the counts are
-        large; sub-national cells do, and they pass through the same rules.
+        suppressed; a suppressed count must leave no published field it can be
+        recovered from, which covers both back-calculation from a group total
+        and any rate, share or percentage derived from the count; rates are
+        not shown where the denominator is below 100; suppression already
+        applied in a source is carried through and flagged as inherited; and
+        every suppression decision is logged. National figures rarely trigger
+        suppression because the counts are large; sub-national cells do, and
+        they pass through the same rules.
       </p>
       <p>
         The full audit trail is published, one record per decision, so a reader
         can see the rule applied and not only its effect:
         <a href="/data/suppression_audit.json">suppression audit</a>.
+      </p>
+      <p class="correction-note">
+        Defects found in PRISM-R's own figures or methods are recorded, dated
+        and kept permanently, whether or not anyone outside the project
+        noticed them. The derived-field limb of the suppression rule was added
+        on 3 September 2026 after a defect in which suppressed stop and search
+        counts could be recovered from their published rates; it is written up
+        in full, including the affected cells and how long they were exposed,
+        in the corrections section of
+        <a href="https://github.com/SGilr/prism-r/blob/main/docs/methods.md#corrections">the
+        methods record</a>.
       </p>
     </section>
 
@@ -234,6 +247,12 @@ const repoUrl = 'https://github.com/SGilr/prism-r';
   </article>
 
   <style>
+    .correction-note {
+      border-left: 2px solid #b8b3a4;
+      padding-left: 0.9rem;
+      font-size: 0.88rem;
+      color: #55534d;
+    }
     .methods a {
       color: #1f3a5f;
       text-decoration: underline;

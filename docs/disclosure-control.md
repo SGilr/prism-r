@@ -5,7 +5,13 @@ These rules are non-negotiable and apply uniformly across PRISM-R. They are desc
 ## Rules
 
 1. Cells with a count of 1 to 5 are suppressed and displayed as "<6, suppressed for disclosure control". A count of exactly 0 is a true zero, not a disclosure risk, and is shown as "0".
-2. Secondary suppression applies where suppressing one cell would allow another to be back-calculated. Standard ONS practice is used: the next-smallest cell in the same group is suppressed, so a group never holds exactly one suppressed cell.
+2. A suppressed count must leave no published field from which it can be recovered. This has two limbs.
+
+   **2a. Within-table back-calculation.** Secondary suppression applies where suppressing one cell would allow another to be back-calculated from a published group total. Standard ONS practice is used: the next-smallest cell in the same group is suppressed, so a group never holds exactly one suppressed cell.
+
+   **2b. Derived-field recovery.** Suppressing the count is not sufficient on its own. Any rate, share, percentage, index or other derived figure computed from that count must be suppressed with it, wherever the denominator is published by PRISM-R or by any of its sources. A rate against a known denominator is the count, written differently: it can be multiplied back. This applies whether the denominator sits in the same record, in another PRISM-R output such as `populations.json`, or in the publisher's own release. In practice, suppressing a count nulls every field on the record from which the count could be reconstructed, including `numerator`, `rate_per_100`, `rate_per_1000`, `source_rate` and `share`.
+
+   Limb 2b was added on 3 September 2026 after a defect was found in which it was not enforced. See the "Corrections" section of `docs/methods.md`.
 3. Rates are not displayed where the denominator population is below 100 in the relevant cell. The display reads "rate not shown, population too small".
 4. Every suppression decision is logged in a methods-page audit trail.
 5. Where the YJB has already suppressed a value in source data, that suppression is propagated downstream and flagged as inherited.

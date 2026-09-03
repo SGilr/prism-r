@@ -204,6 +204,24 @@ The Welsh figure is WIMD 2019, not WIMD 2025. WIMD 2025 was published in Novembe
 
 See [disclosure-control.md](disclosure-control.md).
 
+## Corrections
+
+Defects found in PRISM-R's own published figures or methods are recorded here, dated, whether or not anyone outside the project noticed them. An entry stays permanently.
+
+### 3 September 2026: suppressed stop and search counts were recoverable from their rates
+
+**What the defect was.** The disclosure-control stage nulled a suppressed count but left the rate derived from it in place. Because the denominator, the ONS Census 2021 child population by police force area and ethnic group, is itself published by PRISM-R in `populations.json`, the suppressed count could be recovered exactly by multiplying the rate by that denominator and dividing by 1,000. Suppressing the count while publishing its rate hid nothing.
+
+**Which file and which cells.** `data/processed/context_indicators.json`. Thirty cells of the `stop_search_rate` indicator, covering 15 of the 42 police force areas: 12 Asian, 13 Other, 3 Mixed and 2 Black. Twenty were primary suppressions, cells whose own count was between 1 and 5. The other ten were secondary suppressions, larger counts hidden to stop the primaries being back-calculated; recovering those re-opened the route that secondary suppression exists to close. No other indicator and no other output was affected, because no other suppressed count had a published rate alongside it.
+
+**How long it was present.** From 18 May 2026, commit `30f4ab3`, which wired suppression into the build orchestrator, to 3 September 2026, commit `ded0100`: 108 days. Throughout that period the file was committed to the public repository at github.com/SGilr/prism-r. It was not served from this site: the site published `manifest.json` and the suppression audit, not `context_indicators.json`, and no chart or page on the site ever displayed the affected rates. The exposure was to anyone reading the repository.
+
+**When it was found and fixed.** Found on 3 September 2026 during validation of the geographic explorer data layer, by a check asserting that no suppressed cell carried a value; the rate fields failed it. Fixed the same day in commit `ded0100`, which nulls every field a suppressed count can be reconstructed from, not the count alone.
+
+**The rule change that followed.** Rule 2 of the disclosure-control standard covered within-table back-calculation only. It now has two limbs: 2a, the original secondary-suppression rule, and 2b, derived-field recovery, which requires that a suppressed count leave no published field it can be recovered from, including rates, shares and percentages computed against any denominator published by PRISM-R or by its sources. See [disclosure-control.md](disclosure-control.md). `tests/test_suppression.py` now carries a structural guard that reads every processed output and fails if any suppressed record retains a recoverable field, so a future indicator cannot reintroduce the pattern quietly.
+
+**Assessment.** The recovered figures were counts of children stopped and searched, between 1 and 5 per force and ethnic group. They were low-sensitivity in isolation and are not individually identifying. The defect is recorded here in full regardless, because the standard PRISM-R sets is that a suppression either holds or it does not, and this one did not.
+
 ## Known limitations
 
 Recorded here as the build proceeds. See spec section 12.

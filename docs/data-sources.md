@@ -57,6 +57,10 @@ Every source feeding PRISM-R, with retrieval date and version. This file is the 
 
 YJS files were downloaded from gov.uk. The Youth Justice Statistics 2024 to 2025 release was published on 29 January 2026. The original download archives (`supplementary_tables.zip`, `local_level_open_data_tables.zip`) are retained in `data/raw/yjb-2024-25/` as the canonical source.
 
+## If you are holding an older copy of the processed data
+
+Processed outputs published before 3 September 2026, commit `ded0100`, contained a disclosure-control defect: 30 suppressed `stop_search_rate` cells in `context_indicators.json` retained the rate derived from the suppressed count, and that rate against the published Census denominator recovers the count. If you hold a copy of `data/processed/` taken before that commit, refetch it and discard the old one; any analysis that read `rate_per_1000` or `rate_per_100` for a suppressed stop and search cell was reading a figure that should not have been published. Raw inputs are unaffected, so the `raw-data-2026-09` bundle needs no reissue and no raw file changed. The defect, the affected cells and the rule change are written up in the corrections section of [methods.md](methods.md#corrections).
+
 ## Release currency
 
 Per the standing instruction, the most recent published release of each source is verified at source. Publication date, reference period and next expected release:

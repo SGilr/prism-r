@@ -331,3 +331,146 @@ def test_apply_suppression_is_deterministic():
     second = apply_suppression(list(reversed(cells)))
     assert first.cells == second.cells
     assert first.audit == second.audit
+
+
+# --------------------------------------------------------------------------
+# Rule 2b: derived-field recovery, across every processed output
+#
+# Added after a defect in which suppressing a count left its rate in place.
+# A rate against a published denominator is the count written differently, so
+# these tests read the real build outputs rather than synthetic cells: they
+# are the structural guard that fails if a future indicator reintroduces the
+# pattern. See the "Corrections" section of docs/methods.md.
+# --------------------------------------------------------------------------
+PROCESSED_DIR = REPO_ROOT / "data" / "processed"
+
+# Fields from which a suppressed count could be reconstructed. A rate needs a
+# denominator; a numerator is the count itself under another name.
+RECOVERABLE_FIELDS = ("numerator", "rate_per_100", "rate_per_1000",
+                      "source_rate", "share", "percentage", "proportion")
+
+# Denominator bases a rate might have been computed against. rate_per_100 is
+# a percentage of the denominator, rate_per_1000 a rate per mille.
+RATE_BASES = {"rate_per_100": 100, "rate_per_1000": 1000, "share": 1,
+              "percentage": 100, "proportion": 1}
+
+
+def _processed_records():
+    """Every record in every processed output that carries a records array."""
+    for path in sorted(PROCESSED_DIR.rglob("*.json")):
+        if path.name in ("manifest.json", "suppression_audit.json"):
+            continue
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            continue
+        records = payload.get("records")
+        if not isinstance(records, list):
+            continue
+        for record in records:
+            if isinstance(record, dict):
+                yield path.relative_to(PROCESSED_DIR).as_posix(), record
+
+
+def _population_denominators():
+    """Child population by geography and ethnic group, and rolled up to the
+    police force areas and upper-tier authorities the crosswalk defines.
+
+    These are the denominators PRISM-R itself publishes, so they are exactly
+    what an observer would multiply a leaked rate by.
+    """
+    populations = json.loads(
+        (PROCESSED_DIR / "populations.json").read_text(encoding="utf-8"))["records"]
+    crosswalk = json.loads(
+        (PROCESSED_DIR / "geo_crosswalk.json").read_text(encoding="utf-8"))["records"]
+    parents = {r["la_code"]: (r["parent_force"], r["utla_code"]) for r in crosswalk}
+
+    totals: dict[tuple[str, str], int] = {}
+
+    def add(geo_id, ethnicity, count):
+        for key in ((geo_id, ethnicity), (geo_id, "overall")):
+            totals[key] = totals.get(key, 0) + count
+
+    for record in populations:
+        if record["population"] is None or record["ethnicity"] is None:
+            continue
+        add(record["geo_id"], record["ethnicity"], record["population"])
+        force, utla = parents.get(record["geo_id"], (None, None))
+        for parent in (force, utla):
+            if parent:
+                add(parent, record["ethnicity"], record["population"])
+    return totals
+
+
+def test_suppressed_counts_leave_no_recoverable_field():
+    """Rule 2b, the structural guard.
+
+    For every suppressed record in every processed output, no numeric field
+    may remain that reproduces a below-threshold count when multiplied by a
+    denominator available either on the record itself or in populations.json.
+    The strict form is asserted: a suppressed record carries none of the
+    recoverable fields at all, because a rate whose denominator we cannot
+    locate today may become recoverable the moment that denominator is
+    published.
+    """
+    denominators = _population_denominators()
+    offenders = []
+    for filename, record in _processed_records():
+        suppressed = (record.get("suppressed") is True
+                      or record.get("disclosure_status") in
+                      ("suppressed", "source_suppressed"))
+        if not suppressed:
+            continue
+        for field in RECOVERABLE_FIELDS:
+            value = record.get(field)
+            if not isinstance(value, (int, float)):
+                continue
+            # Name the recovery route in the failure, so a future breakage is
+            # actionable rather than merely red.
+            denominator = record.get("denominator")
+            if not isinstance(denominator, (int, float)):
+                ethnicity = record.get("ethnicity") or "overall"
+                denominator = denominators.get((record.get("geo_id"), ethnicity))
+            base = RATE_BASES.get(field)
+            recovered = (value * denominator / base
+                         if denominator and base else None)
+            offenders.append(
+                f"{filename}: {record.get('geo_id')} "
+                f"{record.get('indicator')} {record.get('ethnicity')} "
+                f"is suppressed but carries {field}={value}"
+                + (f", which against a published denominator of "
+                   f"{denominator:.0f} recovers {recovered:.1f}"
+                   if recovered is not None else ""))
+    assert not offenders, (
+        f"{len(offenders)} suppressed cells carry a recoverable field, "
+        "breaching disclosure rule 2b:\n" + "\n".join(offenders[:12]))
+
+
+def test_the_guard_would_catch_the_original_defect():
+    """The defect this rule was written for: a stop and search count nulled
+    while its rate survived. The denominator is the Census child population
+    PRISM-R publishes, so the count multiplies straight back out."""
+    denominators = _population_denominators()
+    # A primary suppression from the affected set: Dorset, Asian children,
+    # two searches, hidden as a count of 1 to 5 and then handed back by the
+    # rate. Twenty of the thirty affected cells were primary like this one;
+    # the other ten were secondary, hiding larger counts to protect these.
+    force, ethnicity = "pf-dorset", "Asian"
+    denominator = denominators.get((force, ethnicity))
+    assert denominator, "the force-level Census denominator must be resolvable"
+
+    # The shape of the original leaking record, reconstructed.
+    leaking = {"geo_id": force, "ethnicity": ethnicity,
+               "indicator": "stop_search_rate", "value": None,
+               "rate_per_1000": 1.08225, "suppressed": True,
+               "disclosure_status": "released"}
+    recovered = leaking["rate_per_1000"] * denominator / 1000
+    assert recovered < 6, (
+        "the recovered count must be below the suppression threshold, "
+        "which is what made this a disclosure and not merely untidy")
+    assert round(recovered) == 2, "the exact suppressed count comes back"
+
+    offending = [f for f in RECOVERABLE_FIELDS
+                 if isinstance(leaking.get(f), (int, float))]
+    assert offending == ["rate_per_1000"], (
+        "the guard must flag the surviving rate field")
