@@ -129,9 +129,14 @@ export function renderLambeth() {
 
   // --- Context-indicator helpers ------------------------------------------
   const byEthnicity = (indicator, geo) => {
+    // Exclusion indicators now carry two academic years; take the latest.
+    const latestYear = Math.max(...context
+      .filter((r) => r.indicator === indicator && r.geo_id === geo)
+      .map((r) => r.year));
     const rows = {};
     for (const r of context) {
-      if (r.indicator === indicator && r.geo_id === geo && r.breakdown === "by_ethnicity") {
+      if (r.indicator === indicator && r.geo_id === geo &&
+          r.breakdown === "by_ethnicity" && r.year === latestYear) {
         rows[r.ethnicity] = r;
       }
     }

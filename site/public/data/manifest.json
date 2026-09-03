@@ -1,10 +1,10 @@
 {
   "meta": {
-    "build_timestamp": "2026-09-03T08:46:03+00:00",
+    "build_timestamp": "2026-09-03T09:38:49+00:00",
     "dataset": "build_manifest",
     "generated_by": "pipeline/build.py",
     "git": {
-      "commit": "d0493d2a365e677917ca24dd8b98cd185adae424",
+      "commit": "2ebb39aa44c2205807b2292d63cd7b76a675fa28",
       "working_tree": "dirty"
     },
     "python_version": "3.14.2",
@@ -166,18 +166,18 @@
       ]
     },
     {
-      "bytes": 2437446,
+      "bytes": 3300928,
       "file": "data/processed/context_indicators.json",
       "generated_by": "pipeline/ingest_dfe.py, pipeline/ingest_home_office.py and pipeline/ingest_imd.py",
-      "records": 3770,
+      "records": 5602,
       "schema_version": "1.0.0",
-      "sha256": "5c63603b20ac2bded4b8c74b621a5722ac1136494ebb2ee1d99fbff6e8721b14",
+      "sha256": "ea556f348b2688aa40d7279ce64b0119e0e45e2966d62389d97b4fe6540a6331",
       "sources": [
         {
           "description": "DfE Suspensions and permanent exclusions in England",
-          "publication_date": "2025-07-10",
-          "reference_period": "academic year 2023/24",
-          "retrieval_date": "2026-05-17",
+          "publication_date": "2026-07-09",
+          "reference_period": "academic years 2023/24 and 2024/25",
+          "retrieval_date": "2026-09-03",
           "url": "https://explore-education-statistics.service.gov.uk/find-statistics/suspensions-and-permanent-exclusions-in-england"
         },
         {
@@ -306,7 +306,7 @@
   ],
   "steps": [
     {
-      "duration_seconds": 20.75,
+      "duration_seconds": 20.5,
       "name": "yjb",
       "script": "pipeline/ingest_yjb.py",
       "status": "ok",
@@ -320,49 +320,49 @@
       "step": 2
     },
     {
-      "duration_seconds": 0.22,
+      "duration_seconds": 0.21,
       "name": "boundaries",
       "script": "pipeline/build_force_boundaries.py",
       "status": "ok",
       "step": 3
     },
     {
-      "duration_seconds": 0.86,
+      "duration_seconds": 0.83,
       "name": "ycs",
       "script": "pipeline/ingest_ycs.py",
       "status": "ok",
       "step": 4
     },
     {
-      "duration_seconds": 0.26,
+      "duration_seconds": 0.25,
       "name": "ons",
       "script": "pipeline/ingest_ons.py",
       "status": "ok",
       "step": 5
     },
     {
-      "duration_seconds": 2.14,
+      "duration_seconds": 2.23,
       "name": "dfe",
       "script": "pipeline/ingest_dfe.py",
       "status": "ok",
       "step": 6
     },
     {
-      "duration_seconds": 71.49,
+      "duration_seconds": 70.87,
       "name": "home_office",
       "script": "pipeline/ingest_home_office.py",
       "status": "ok",
       "step": 7
     },
     {
-      "duration_seconds": 0.21,
+      "duration_seconds": 0.27,
       "name": "imd",
       "script": "pipeline/ingest_imd.py",
       "status": "ok",
       "step": 8
     },
     {
-      "duration_seconds": 0.73,
+      "duration_seconds": 0.76,
       "name": "rri",
       "script": "pipeline/compute_rri.py",
       "status": "ok",

@@ -224,9 +224,9 @@ PROVENANCE: dict[str, list[dict]] = {
         {
             "description": "DfE Suspensions and permanent exclusions in England",
             "url": "https://explore-education-statistics.service.gov.uk/find-statistics/suspensions-and-permanent-exclusions-in-england",
-            "reference_period": "academic year 2023/24",
-            "publication_date": "2025-07-10",
-            "retrieval_date": "2026-05-17",
+            "reference_period": "academic years 2023/24 and 2024/25",
+            "publication_date": "2026-07-09",
+            "retrieval_date": "2026-09-03",
         },
         {
             "description": "DfE Children looked after in England including adoptions",

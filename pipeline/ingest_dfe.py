@@ -5,9 +5,11 @@ data/processed/ethnicity_crosswalk.json with two documented mappings, the ONS
 Census rollup and the DfE school-census rollup.
 
 Indicators:
-  permanent_exclusion_rate  England (DfE, academic year 2023/24) LA x ethnicity;
-                            Wales (StatsWales, 2023/24) LA overall and
-                            all-Wales by ethnicity.
+  permanent_exclusion_rate  England (DfE, academic years 2023/24 and 2024/25)
+                            LA x ethnicity; Wales (StatsWales, 2023/24) LA
+                            overall and all-Wales by ethnicity. The Welsh
+                            2024/25 year is a manual source and not yet
+                            published in the ingested export.
   suspension_rate           As above. Welsh "fixed-term exclusions" are the
                             equivalent of English "suspensions".
   lac_count                 England (year ending March 2025) and Wales
@@ -42,7 +44,11 @@ PROCESSED_DIR = REPO_ROOT / "data" / "processed"
 RAW_DFE = REPO_ROOT / "data" / "raw" / "dfe"
 RAW_WALES = REPO_ROOT / "data" / "raw" / "statswales"
 
-EXCLUSIONS_CSV = RAW_DFE / "exclusions_2023-24" / "data" / "exc_characteristics.csv"
+EXCLUSIONS_CSV = RAW_DFE / "exclusions_2024-25" / "data" / "exc_characteristics.csv"
+# The 2024/25 all-data file carries the full time series; PRISM-R ingests
+# the two most recent academic years so the explorer can show change.
+EXCLUSION_YEARS = {"202324": (2024, "academic year 2023/24"),
+                   "202425": (2025, "academic year 2024/25")}
 CLA_CSV = RAW_DFE / "cla_2025" / "data" / "la_cla_on_31_march_by_characteristics.csv"
 WELSH_CLA_JSON = RAW_WALES / "welsh_cla_by_la_ethnicity.json"
 WELSH_EXCL_ODS = RAW_WALES / "welsh_exclusions_2023-24.ods"
@@ -218,13 +224,13 @@ def read_dfe_exclusions() -> list[dict]:
     frame = pd.read_csv(EXCLUSIONS_CSV, dtype=str)
     frame = frame[
         (frame["geographic_level"] == "Local authority")
-        & (frame["time_period"] == "202324")
+        & (frame["time_period"].isin(EXCLUSION_YEARS))
         & (frame["education_phase"] == "Total")
     ]
     source = "DfE, Suspensions and permanent exclusions in England"
-    period = "academic year 2023/24"
     records = []
     for row in frame.itertuples(index=False):
+        year, period = EXCLUSION_YEARS[row.time_period]
         if row.characteristic_group == "Total" and row.characteristic == "Total":
             breakdown, ethnicity = "overall", None
         elif row.characteristic_group == "Ethnicity Major" and row.characteristic in DFE_EXCL_ETHNICITY:
@@ -238,7 +244,7 @@ def read_dfe_exclusions() -> list[dict]:
             rate, suppressed = _number(raw)
             records.append(
                 _record(
-                    row.new_la_code, 2024, indicator, breakdown, ethnicity,
+                    row.new_la_code, year, indicator, breakdown, ethnicity,
                     rate_per_100=rate, source_rate=rate, source_rate_base=100,
                     suppressed=suppressed, source=source, reference_period=period,
                 )
