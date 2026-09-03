@@ -1,10 +1,10 @@
 {
   "meta": {
-    "build_timestamp": "2026-09-03T08:26:51+00:00",
+    "build_timestamp": "2026-09-03T08:46:03+00:00",
     "dataset": "build_manifest",
     "generated_by": "pipeline/build.py",
     "git": {
-      "commit": "efce3b4d1b4b655671c214fa2a00281ae26b70fa",
+      "commit": "d0493d2a365e677917ca24dd8b98cd185adae424",
       "working_tree": "dirty"
     },
     "python_version": "3.14.2",
@@ -263,6 +263,30 @@
       ]
     },
     {
+      "bytes": 231524,
+      "file": "data/processed/target_tracker.json",
+      "generated_by": "pipeline/compute_target.py",
+      "records": 966,
+      "schema_version": "1.0.0",
+      "sha256": "86a18b443d45fae99230987defff72aab05c2dd09ed6dbff6532e3c25d454afb",
+      "sources": [
+        {
+          "description": "MoJ Youth Custody Service, monthly youth custody report, June 2026 edition",
+          "publication_date": "2026-08-14",
+          "reference_period": "monthly, April 2000 to June 2026; the latest month is provisional",
+          "retrieval_date": "2026-09-03",
+          "url": "https://www.gov.uk/government/publications/youth-custody-data"
+        },
+        {
+          "description": "YJB Youth Justice Statistics 2024 to 2025, remand episodes (chapter 6)",
+          "publication_date": "2026-01-29",
+          "reference_period": "year ending March 2025",
+          "retrieval_date": "2026-05-16",
+          "url": "https://www.gov.uk/government/statistics/youth-justice-statistics-2024-to-2025"
+        }
+      ]
+    },
+    {
       "bytes": 141876,
       "file": "data/processed/suppression_audit.json",
       "generated_by": "pipeline/build.py",
@@ -282,7 +306,7 @@
   ],
   "steps": [
     {
-      "duration_seconds": 20.45,
+      "duration_seconds": 20.75,
       "name": "yjb",
       "script": "pipeline/ingest_yjb.py",
       "status": "ok",
@@ -296,14 +320,14 @@
       "step": 2
     },
     {
-      "duration_seconds": 0.28,
+      "duration_seconds": 0.22,
       "name": "boundaries",
       "script": "pipeline/build_force_boundaries.py",
       "status": "ok",
       "step": 3
     },
     {
-      "duration_seconds": 0.84,
+      "duration_seconds": 0.86,
       "name": "ycs",
       "script": "pipeline/ingest_ycs.py",
       "status": "ok",
@@ -317,32 +341,39 @@
       "step": 5
     },
     {
-      "duration_seconds": 2.15,
+      "duration_seconds": 2.14,
       "name": "dfe",
       "script": "pipeline/ingest_dfe.py",
       "status": "ok",
       "step": 6
     },
     {
-      "duration_seconds": 71.84,
+      "duration_seconds": 71.49,
       "name": "home_office",
       "script": "pipeline/ingest_home_office.py",
       "status": "ok",
       "step": 7
     },
     {
-      "duration_seconds": 0.26,
+      "duration_seconds": 0.21,
       "name": "imd",
       "script": "pipeline/ingest_imd.py",
       "status": "ok",
       "step": 8
     },
     {
-      "duration_seconds": 0.79,
+      "duration_seconds": 0.73,
       "name": "rri",
       "script": "pipeline/compute_rri.py",
       "status": "ok",
       "step": 9
+    },
+    {
+      "duration_seconds": 0.04,
+      "name": "target",
+      "script": "pipeline/compute_target.py",
+      "status": "ok",
+      "step": 10
     }
   ]
 }

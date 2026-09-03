@@ -38,6 +38,10 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+from pipeline.suppress import Cell, apply_suppression  # noqa: E402
+
 PROCESSED_DIR = REPO_ROOT / "data" / "processed"
 
 CUSTODY_MONTHLY = PROCESSED_DIR / "custody_monthly.json"
@@ -184,24 +188,49 @@ def duration_block() -> list[dict]:
 
 
 def ethnicity_block() -> list[dict]:
-    """Whole-custody ethnic composition per month, as shares of the total."""
+    """Whole-custody ethnic composition per month, as shares of the total.
+
+    PRISM-R's disclosure rules are applied here, through the suppress module,
+    so the block is consistent whether the ingested custody file has been
+    suppressed by the build yet or not: cells below the threshold lose both
+    count and share (a share against a published total would let the count be
+    recovered), with the standard secondary suppression within the month.
+    """
     monthly = _load(CUSTODY_MONTHLY)["records"]
     by_month: dict[str, list[dict]] = {}
+    totals: dict[str, int] = {}
     for r in monthly:
         if r["measure"] == "ethnicity":
             by_month.setdefault(r["month"], []).append(r)
+        elif r["measure"] == "total" and r["category"] == "all_ages":
+            totals[r["month"]] = r["count"]
+
+    cells = [
+        Cell(cell_id=f"{month}|{r['category']}", group=month, count=r["count"],
+             source_suppressed=r.get("disclosure_status") == "source_suppressed")
+        for month, rows in by_month.items() for r in rows
+    ]
+    suppressed_ids = {c["cell_id"] for c in apply_suppression(cells).cells
+                      if c["suppressed"]}
+
     records = []
     for month, rows in sorted(by_month.items()):
-        total = sum(r["count"] for r in rows if r["count"] is not None)
+        # The published all-ages estate total is the share denominator: it is
+        # identical whether or not the custody file has been suppressed yet,
+        # so the block is byte-stable across both build paths.
+        total = totals.get(month)
         for r in sorted(rows, key=lambda x: x["category"]):
+            hidden = (f"{month}|{r['category']}" in suppressed_ids
+                      or r["count"] is None)
             share = (round(r["count"] / total, 4)
-                     if r["count"] is not None and total else None)
+                     if not hidden and total else None)
             records.append({
                 "block": "whole_custody_ethnicity_monthly",
                 "month": month,
                 "category": r["category"],
-                "count": r["count"],
+                "count": None if hidden else r["count"],
                 "share": share,
+                "suppressed": hidden,
                 "scope": "whole_custody",
                 "provisional": r["provisional"],
             })
@@ -235,7 +264,9 @@ def main() -> int:
                 "duration_median_nights (YCS table 3.4, binary ethnicity, "
                 "episodes ending) and whole_custody_ethnicity_monthly (the "
                 "whole custody population, not the remand population; the "
-                "YCS does not publish remand by ethnicity monthly). The "
+                "YCS does not publish remand by ethnicity monthly; cells "
+                "below the disclosure threshold lose both count and share, "
+                "so shares in affected months sum to less than one). The "
                 "latest month and the latest episodes-ending year are "
                 "provisional. See docs/target-metric.md for definitions."
             ),
