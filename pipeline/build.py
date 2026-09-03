@@ -11,11 +11,13 @@ Step order (dependency-ordered; the order is checked at runtime):
   1. ingest_yjb.py        geographies.json, remand_outcomes.json
   2. build_crosswalk.py   geo_crosswalk.json        (needs geographies.json)
   3. build_force_boundaries.py  force_boundaries.json  (needs geographies.json)
-  4. ingest_ons.py        populations.json
-  5. ingest_dfe.py        ethnicity_crosswalk.json, context_indicators.json
-  6. ingest_home_office.py  context_indicators.json (merge; needs 2, 4, 5)
-  7. ingest_imd.py        context_indicators.json   (merge; needs 5)
-  8. compute_rri.py       rri.json                  (needs 1, 4, 5, 6, 7)
+  4. ingest_ycs.py        custody_monthly.json, custody_episodes_ending.json,
+                          custody_episode_length.json
+  5. ingest_ons.py        populations.json
+  6. ingest_dfe.py        ethnicity_crosswalk.json, context_indicators.json
+  7. ingest_home_office.py  context_indicators.json (merge; needs 2, 5, 6)
+  8. ingest_imd.py        context_indicators.json   (merge; needs 6)
+  9. compute_rri.py       rri.json                  (needs 1, 5, 6, 7, 8)
 
 There is no separate Welsh ingest: ingest_dfe.py ingests English and Welsh
 exclusions and looked-after children together, because context_indicators.json
@@ -28,7 +30,7 @@ Outputs go to data/processed/ only; the build never writes to data/raw/.
 CLI flags:
   --dry-run         print the planned step order and exit
   --only STEP       run a single step by name (yjb, crosswalk, boundaries,
-                    ons, dfe, home_office, imd, rri)
+                    ycs, ons, dfe, home_office, imd, rri)
   --from STEP       start at STEP and run every step after it
   --skip-raw-fetch  use the local data/raw/ files, do not fetch from source.
                     This is the only v1 behaviour: PRISM-R does not yet
@@ -88,6 +90,9 @@ STEPS: tuple[Step, ...] = (
          ("geo_crosswalk.json",), ("yjb",)),
     Step("boundaries", "build_force_boundaries.py",
          ("force_boundaries.json",), ("yjb",)),
+    Step("ycs", "ingest_ycs.py",
+         ("custody_monthly.json", "custody_episodes_ending.json",
+          "custody_episode_length.json"), ()),
     Step("ons", "ingest_ons.py",
          ("populations.json",), ()),
     Step("dfe", "ingest_dfe.py",
@@ -105,6 +110,9 @@ PROCESSED_OUTPUTS: tuple[str, ...] = (
     "geographies.json",
     "geo_crosswalk.json",
     "force_boundaries.json",
+    "custody_monthly.json",
+    "custody_episodes_ending.json",
+    "custody_episode_length.json",
     "remand_outcomes.json",
     "populations.json",
     "ethnicity_crosswalk.json",
@@ -118,6 +126,9 @@ MIN_RECORDS: dict[str, int] = {
     "geographies.json": 200,
     "geo_crosswalk.json": 300,
     "force_boundaries.json": 42,
+    "custody_monthly.json": 2500,
+    "custody_episodes_ending.json": 40,
+    "custody_episode_length.json": 200,
     "remand_outcomes.json": 60,
     "populations.json": 9000,
     "context_indicators.json": 3700,
@@ -134,6 +145,15 @@ _YJS = {
     "reference_period": "year ending March 2025",
     "publication_date": "2026-01-29",
     "retrieval_date": "2026-05-16",
+}
+_YCS = {
+    "description": "MoJ Youth Custody Service, monthly youth custody report, "
+    "June 2026 edition",
+    "url": "https://www.gov.uk/government/publications/youth-custody-data",
+    "reference_period": "monthly, April 2000 to June 2026; the latest month "
+    "is provisional",
+    "publication_date": "2026-08-14",
+    "retrieval_date": "2026-09-03",
 }
 _HOME_OFFICE = {
     "description": "Home Office Police powers and procedures, stop and search and arrests",
@@ -167,6 +187,9 @@ PROVENANCE: dict[str, list[dict]] = {
             "retrieval_date": "2026-05-18",
         },
     ],
+    "custody_monthly.json": [_YCS],
+    "custody_episodes_ending.json": [_YCS],
+    "custody_episode_length.json": [_YCS],
     "remand_outcomes.json": [
         {**_YJS, "description": "YJB Youth Justice Statistics 2024 to 2025, "
          "remand and outcomes tables"},
@@ -427,6 +450,23 @@ SUPPRESSION_PLANS: tuple[SuppressionPlan, ...] = (
         ("geo_id", "year", "indicator", "breakdown"),
         ("geo_id", "year", "indicator", "breakdown", "ethnicity"),
         indicators=("lac_count", "arrest_count", "stop_search_rate"),
+    ),
+    SuppressionPlan(
+        "custody_monthly.json", "count",
+        ("month", "measure", "scope"),
+        ("month", "measure", "scope", "category"),
+    ),
+    SuppressionPlan(
+        "custody_episodes_ending.json", "count",
+        ("year_ending_march", "ethnicity_group"),
+        ("year_ending_march", "ethnicity_group", "legal_basis"),
+    ),
+    SuppressionPlan(
+        "custody_episode_length.json", "value",
+        ("year_ending_march", "ethnicity_group", "legal_basis"),
+        ("year_ending_march", "ethnicity_group", "legal_basis", "indicator",
+         "nights_band"),
+        indicators=("episode_count",),
     ),
     SuppressionPlan(
         "rri.json", "events",

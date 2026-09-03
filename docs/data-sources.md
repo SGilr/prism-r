@@ -50,6 +50,7 @@ Every source feeding PRISM-R, with retrieval date and version. This file is the 
 | Home Office Police powers and procedures, year ending March 2025 | arrests-open-data-tables-mar25.ods | 2026-05-17 | OGL v3.0 | arrests by police force area, ethnicity and age band, sheet OD_5+1 |
 | MHCLG English Indices of Deprivation 2025 | iod2025_file10_la_lower.xlsx | 2026-05-17 | OGL v3.0 | File 10, lower-tier LA summaries; IDACI average score per LA |
 | ONS Open Geography portal, Police Force Areas Dec 2023 BGC | police_force_areas_dec2023_bgc.geojson | 2026-05-18 | OGL v3.0 | force boundary polygons for the static choropleth; simplified into force_boundaries.json |
+| MoJ Youth Custody Service, youth custody report June 2026 | youth-custody-population-june-2026.ods | 2026-09-03 | OGL v3.0 | monthly custody population by legal basis, age, ethnicity; annual episodes ending; feeds the target tracker |
 | Welsh Index of Multiple Deprivation 2019 | wimd2019_income_deprivation_by_age.json | 2026-05-17 | OGL v3.0 | income deprivation by age, LSOA and LA; child (0-15) income deprivation by LA. WIMD 2019 used pending WIMD 2025 LA indicator data |
 
 YJS files were downloaded from gov.uk. The Youth Justice Statistics 2024 to 2025 release was published on 29 January 2026. The original download archives (`supplementary_tables.zip`, `local_level_open_data_tables.zip`) are retained in `data/raw/yjb-2024-25/` as the canonical source.
@@ -65,6 +66,7 @@ Per the standing instruction, the most recent published release of each source i
 | StatsWales Welsh school exclusions | Sept 2023 to Aug 2024, provisional | November 2025 | academic year 2023/24 | revision or next year, to confirm |
 | StatsWales Welsh children looked after | data to 2023-24 | updated 30 January 2026 | year ending 31 March 2024 | June 2026 |
 | Home Office Police powers and procedures | Year ending March 2025 | 6 November 2025 | year ending 31 March 2025 | year ending March 2026, expected late 2026 |
+| MoJ YCS monthly youth custody report | June 2026 | 14 August 2026 | April 2000 to June 2026; latest month provisional | monthly; July 2026 edition expected September 2026 |
 | MHCLG English Indices of Deprivation, IDACI | IoD2025 | 30 October 2025 | income data financial year 2022/23 | next indices, no fixed cycle |
 | Welsh Index of Multiple Deprivation, child income | WIMD 2019 (indicator data) | 2019 | income data financial year 2016/17 | see re-ingest flag below |
 | ONS Census 2021, RM032 | Census 2021 | 2023 | Census day, 21 March 2021 | next census, around 2031 |

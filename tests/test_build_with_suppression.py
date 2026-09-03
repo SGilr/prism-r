@@ -118,4 +118,11 @@ def test_audit_entries_carry_dataset_and_rule():
 
 def test_suppression_plans_cover_the_count_bearing_outputs():
     covered = {plan.filename for plan in build.SUPPRESSION_PLANS}
-    assert covered == {"remand_outcomes.json", "context_indicators.json", "rri.json"}
+    assert covered == {
+        "remand_outcomes.json",
+        "context_indicators.json",
+        "custody_monthly.json",
+        "custody_episodes_ending.json",
+        "custody_episode_length.json",
+        "rri.json",
+    }
