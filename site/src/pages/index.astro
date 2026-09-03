@@ -109,6 +109,7 @@ const headline = [
         line is the unaveraged monthly figure.
       </p>
       <div class="chart mt-5" set:html={tracker.svg} />
+      <p class="chart-download"><a href="/data/csv/remand-target-tracker.csv" download>Download this chart's data (CSV)</a></p>
       <p class="mt-4 leading-relaxed font-semibold">
         {tracker.position}
       </p>
@@ -119,6 +120,7 @@ const headline = [
         Whole-custody ethnic composition
       </h3>
       <div class="chart mt-3" set:html={companion} />
+      <p class="chart-download"><a href="/data/csv/remand-duration.csv" download>Download this chart's data (CSV)</a></p>
       <p class="mt-2 font-sans text-xs leading-relaxed text-neutral-500">
         Share of the whole custody population, monthly:
         <span style="color:#534AB7; font-weight:600;">Black</span> and
@@ -194,6 +196,12 @@ const headline = [
   </article>
 
   <style>
+    .chart-download {
+      margin-top: 0.5rem;
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 0.72rem;
+    }
+    .chart-download a { color: #4a6b8c; text-decoration: underline; text-underline-offset: 2px; }
     .masthead {
       border-bottom: 1px solid #e5e5e5;
     }

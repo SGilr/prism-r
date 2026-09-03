@@ -59,7 +59,12 @@ YJS files were downloaded from gov.uk. The Youth Justice Statistics 2024 to 2025
 
 ## If you are holding an older copy of the processed data
 
-Processed outputs published before 3 September 2026, commit `ded0100`, contained a disclosure-control defect: 30 suppressed `stop_search_rate` cells in `context_indicators.json` retained the rate derived from the suppressed count, and that rate against the published Census denominator recovers the count. If you hold a copy of `data/processed/` taken before that commit, refetch it and discard the old one; any analysis that read `rate_per_1000` or `rate_per_100` for a suppressed stop and search cell was reading a figure that should not have been published. Raw inputs are unaffected, so the `raw-data-2026-09` bundle needs no reissue and no raw file changed. The defect, the affected cells and the rule change are written up in the corrections section of [methods.md](methods.md#corrections).
+Refetch `data/processed/` if your copy predates release `v0.5.0-explorer` of 3 September 2026. Two disclosure-control defects were fixed that day, and both affected published figures.
+
+- Copies taken before commit `ded0100`: 30 suppressed `stop_search_rate` cells in `context_indicators.json` retained the rate derived from the suppressed count, and that rate against the published Census denominator recovers the count exactly.
+- Copies of `explorer/` taken between commit `ded0100` and release `v0.5.0-explorer`, both on 3 September 2026: 141 cells suppressed in `context_indicators.json` were republished with their values in `explorer/utla.json` and `explorer/pfa.json`, because the step building them ran before the suppression stage.
+
+Discard any older copy. Any analysis that read a rate for a suppressed stop and search cell, or a value from the explorer payloads for a suppressed cell, was reading a figure that should not have been published. Raw inputs are unaffected by both: no raw file changed, so the `raw-data-2026-09` bundle needs no reissue. Both defects, the affected cells, the exposure windows and the guards added afterwards are written up in the corrections section of [methods.md](methods.md#corrections).
 
 ## Release currency
 

@@ -474,3 +474,90 @@ def test_the_guard_would_catch_the_original_defect():
                  if isinstance(leaking.get(f), (int, float))]
     assert offending == ["rate_per_1000"], (
         "the guard must flag the surviving rate field")
+
+
+def _audit_suppressed_cells() -> set[tuple]:
+    """Every cell the suppression stage withheld, from the audit trail.
+
+    Keyed on the identifying fields a derived output would carry, so a
+    suppression can be followed from the file where it was applied into every
+    file built from it.
+    """
+    audit_path = PROCESSED_DIR / "suppression_audit.json"
+    if not audit_path.exists():
+        return set()
+    entries = json.loads(audit_path.read_text(encoding="utf-8"))["records"]
+    cells = set()
+    for entry in entries:
+        if not entry.get("suppressed"):
+            continue
+        cell_id = entry.get("cell_id") or ""
+        # cell_id is the record's identity within its dataset, built by the
+        # suppression plan; the geography, indicator and group are enough to
+        # find the same cell in a derived output.
+        cells.add((entry.get("dataset"), cell_id))
+    return cells
+
+
+def test_derived_outputs_do_not_republish_a_suppressed_cell():
+    """A suppression applied upstream must hold in every output derived from
+    it.
+
+    The explorer payloads and the CSV exports are reshapings of
+    context_indicators.json and its siblings. If a derived step runs before
+    the suppression stage it will read the pre-suppression figures and
+    republish exactly what suppression was about to withhold, while looking
+    perfectly released. That is not caught by checking suppressed records for
+    stray values, because these records do not claim to be suppressed at all,
+    so it is checked here against the audit trail instead.
+    """
+    suppressed = {}
+    context = json.loads(
+        (PROCESSED_DIR / "context_indicators.json").read_text("utf-8"))["records"]
+    for record in context:
+        if record.get("suppressed") is True or record.get(
+                "disclosure_status") == "source_suppressed":
+            key = (record["geo_id"], record["indicator"], record["year"],
+                   record.get("ethnicity") or "overall")
+            suppressed[key] = record
+
+    assert suppressed, "the fixture assumes some cell is suppressed"
+
+    offenders = []
+
+    # The explorer payloads.
+    for level in ("rgn", "utla", "lad", "pfa"):
+        path = PROCESSED_DIR / "explorer" / f"{level}.json"
+        if not path.exists():
+            continue
+        for record in json.loads(path.read_text("utf-8"))["records"]:
+            key = (record["geo_id"], record["indicator"], record["year"],
+                   record.get("ethnicity") or "overall")
+            if key in suppressed and record.get("value") is not None:
+                offenders.append(
+                    f"explorer/{level}.json: {key} is suppressed in "
+                    f"context_indicators.json but carries value="
+                    f"{record['value']}")
+
+    # The CSV exports.
+    csv_path = PROCESSED_DIR / "csv" / "context-indicators.csv"
+    if csv_path.exists():
+        import csv as csv_module
+        lines = [line for line in csv_path.read_text("utf-8").splitlines()
+                 if not line.startswith("#")]
+        for row in csv_module.DictReader(lines):
+            key = (row["geo_id"], row["indicator"], int(row["year"]),
+                   row["ethnicity"] or "overall")
+            if key not in suppressed:
+                continue
+            for field in ("value", "numerator", "rate_per_100",
+                          "rate_per_1000", "source_rate"):
+                if row.get(field):
+                    offenders.append(
+                        f"csv/context-indicators.csv: {key} is suppressed "
+                        f"but carries {field}={row[field]}")
+
+    assert not offenders, (
+        f"{len(offenders)} suppressed cells are republished in a derived "
+        "output, which means a derived step ran before the suppression "
+        "stage:\n" + "\n".join(offenders[:12]))

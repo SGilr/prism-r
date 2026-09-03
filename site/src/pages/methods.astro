@@ -102,6 +102,98 @@ const repoUrl = 'https://github.com/SGilr/prism-r';
       </p>
     </section>
 
+    <section class="mt-10 space-y-4 leading-relaxed" id="downloads">
+      <h2 class="font-sans text-lg font-semibold tracking-tight text-ink">
+        Downloads
+      </h2>
+      <p>
+        Everything PRISM-R publishes is downloadable. Each CSV carries the
+        same provenance columns as the JSON, so a file can be cited without
+        returning here: source and reference period travel with every row,
+        alongside a disclosure status. A blank value with a status of
+        suppressed is a cell withheld under disclosure control. It is not a
+        zero and must not be read as one.
+      </p>
+
+      <h3 class="mt-6 font-sans text-base font-semibold text-ink">
+        Chart data, as CSV
+      </h3>
+      <ul class="download-list">
+        <li>
+          <a href="/data/csv/road-to-remand-cascade.csv" download>Road to remand cascade</a>
+          <span>Relative Rate Index by decision point and ethnic group, with confidence intervals.</span>
+        </li>
+        <li>
+          <a href="/data/csv/remand-outcomes.csv" download>Remand outcomes</a>
+          <span>Use of remand for children, England and Wales, by ethnicity, age band, sex and remand type.</span>
+        </li>
+        <li>
+          <a href="/data/csv/remand-target-tracker.csv" download>Remand target tracker</a>
+          <span>The monthly remand population against the 25 per cent commitment, with its 12-month rolling average.</span>
+        </li>
+        <li>
+          <a href="/data/csv/remand-duration.csv" download>Remand duration</a>
+          <span>Nights on remand by band and ethnic group, for episodes ending in the year.</span>
+        </li>
+        <li>
+          <a href="/data/csv/context-indicators.csv" download>Context indicators</a>
+          <span>Exclusions, children looked after, stop and search, arrests and child income deprivation, sub-nationally.</span>
+        </li>
+        <li>
+          <a href="/data/csv/child-population.csv" download>Child population</a>
+          <span>Population aged 10 to 17 by ethnic group: the denominator behind every rate.</span>
+        </li>
+      </ul>
+      <p class="download-note">
+        The geographic explorer exports its current map view and any area's
+        summary panel as CSV from the page itself, because both depend on the
+        filters chosen. Those exports carry the same columns as these files.
+      </p>
+
+      <h3 class="mt-6 font-sans text-base font-semibold text-ink">
+        Structured data
+      </h3>
+      <ul class="download-list">
+        <li>
+          <a href="/data/explorer/index.json">explorer/index.json</a>
+          <span>Every geography with its parents, child population, deprivation decile, the indicator catalogue and the national comparators.</span>
+        </li>
+        <li>
+          <a href="/data/explorer/rgn.json">explorer/rgn.json</a>,
+          <a href="/data/explorer/utla.json">utla.json</a>,
+          <a href="/data/explorer/lad.json">lad.json</a>,
+          <a href="/data/explorer/pfa.json">pfa.json</a>
+          <span>The indicator records for each geography level, already disclosure-controlled.</span>
+        </li>
+        <li>
+          <a href="/data/manifest.json">manifest.json</a>
+          <span>The provenance record: every output with its SHA-256, size, record count and sources, plus the build's step log.</span>
+        </li>
+        <li>
+          <a href="/data/suppression_audit.json">suppression_audit.json</a>
+          <span>One record per suppression decision, so a reader can see the rule applied and not only its effect.</span>
+        </li>
+      </ul>
+
+      <h3 class="mt-6 font-sans text-base font-semibold text-ink">
+        Raw source files
+      </h3>
+      <p>
+        The unmodified publisher files the pipeline reads are published as a
+        release asset, so the whole pipeline is reproducible from source:
+        <a href="https://github.com/SGilr/prism-r/releases">the raw-data
+        releases</a>, most recently <code>raw-data-2026-09</code>. The
+        archive carries a <code>RAW_BUNDLE.md</code> listing every file with
+        its source URL, retrieval date, SHA-256 and licence. Unpack it at the
+        repository root and run <code>python pipeline/build.py</code>.
+      </p>
+      <p class="download-note">
+        All PRISM-R outputs contain public sector information licensed under
+        the Open Government Licence v3.0. Please cite PRISM-R, Oxon Advisory,
+        and the underlying publisher named in the row you use.
+      </p>
+    </section>
+
     <section class="mt-10 space-y-4 leading-relaxed">
       <h2 class="font-sans text-lg font-semibold tracking-tight text-ink">
         Disclosure control
@@ -125,11 +217,14 @@ const repoUrl = 'https://github.com/SGilr/prism-r';
       <p class="correction-note">
         Defects found in PRISM-R's own figures or methods are recorded, dated
         and kept permanently, whether or not anyone outside the project
-        noticed them. The derived-field limb of the suppression rule was added
-        on 3 September 2026 after a defect in which suppressed stop and search
-        counts could be recovered from their published rates; it is written up
-        in full, including the affected cells and how long they were exposed,
-        in the corrections section of
+        noticed them. Two are recorded so far, both from 3 September 2026 and
+        both instances of a suppression being lost between the file where it
+        was applied and a figure derived from it: suppressed counts that
+        could be recovered from their published rates, and 141 suppressed
+        cells republished in the explorer payloads because a derived step ran
+        before the suppression stage. Each is written up in full, with the
+        affected cells, how long they were exposed and the guard added
+        afterwards, in the corrections section of
         <a href="https://github.com/SGilr/prism-r/blob/main/docs/methods.md#corrections">the
         methods record</a>.
       </p>
@@ -247,6 +342,37 @@ const repoUrl = 'https://github.com/SGilr/prism-r';
   </article>
 
   <style>
+    .download-list {
+      list-style: none;
+      margin: 0.6rem 0 0;
+      padding: 0;
+    }
+    .download-list li {
+      padding: 0.45rem 0;
+      border-top: 1px solid #f0f0ee;
+      font-size: 0.92rem;
+    }
+    .download-list a {
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 0.88rem;
+      color: #1f3a5f;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .download-list span {
+      display: block;
+      margin-top: 0.15rem;
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 0.76rem;
+      line-height: 1.5;
+      color: #6a6a6a;
+    }
+    .download-note {
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 0.78rem;
+      line-height: 1.55;
+      color: #6a6a6a;
+    }
     .correction-note {
       border-left: 2px solid #b8b3a4;
       padding-left: 0.9rem;

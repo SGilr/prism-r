@@ -24,6 +24,7 @@ const p = renderLambeth();
       <section class="panel">
         <h2 class="panel-heading">Child population aged 10 to 17</h2>
         <div class="panel-chart" set:html={p.population} />
+        <p class="chart-download"><a href="/data/csv/child-population.csv" download>Download the underlying data (CSV)</a></p>
         <p class="panel-caption">
           Lambeth's child population is more ethnically diverse than the
           national average. This is the denominator against which the
@@ -35,6 +36,7 @@ const p = renderLambeth();
       <section class="panel">
         <h2 class="panel-heading">Stop and search, Metropolitan Police</h2>
         <div class="panel-chart" set:html={p.stopSearch} />
+        <p class="chart-download"><a href="/data/csv/context-indicators.csv" download>Download the underlying data (CSV)</a></p>
         <p class="panel-caption">
           Rate per 1,000 children, year ending March 2025. Stop and search is
           published at police force level, not local authority: these figures
@@ -47,6 +49,7 @@ const p = renderLambeth();
       <section class="panel">
         <h2 class="panel-heading">Permanent exclusions in Lambeth</h2>
         <div class="panel-chart" set:html={p.exclusions} />
+        <p class="chart-download"><a href="/data/csv/context-indicators.csv" download>Download the underlying data (CSV)</a></p>
         <p class="panel-caption">
           Rate per 100 pupils, academic year 2024/25. Local authority level.
           Source: DfE suspensions and permanent exclusions in England.
@@ -57,6 +60,7 @@ const p = renderLambeth();
       <section class="panel">
         <h2 class="panel-heading">Suspensions in Lambeth</h2>
         <div class="panel-chart" set:html={p.suspensions} />
+        <p class="chart-download"><a href="/data/csv/context-indicators.csv" download>Download the underlying data (CSV)</a></p>
         <p class="panel-caption">
           Rate per 100 pupils, academic year 2024/25. Local authority level.
           Source: DfE suspensions and permanent exclusions in England.
@@ -67,6 +71,7 @@ const p = renderLambeth();
       <section class="panel">
         <h2 class="panel-heading">Children looked after in Lambeth</h2>
         <div class="panel-chart" set:html={p.lookedAfter} />
+        <p class="chart-download"><a href="/data/csv/context-indicators.csv" download>Download the underlying data (CSV)</a></p>
         <p class="panel-caption">
           Counts shown rather than rates. A true ethnicity-specific
           looked-after rate requires a 0 to 17 ethnic denominator, which is out
@@ -97,6 +102,7 @@ const p = renderLambeth();
           deprived than {p.idaci.percentile}% of them. Source: MHCLG English
           Indices of Deprivation 2025, IDACI.
         </p>
+        <p class="chart-download"><a href="/data/csv/context-indicators.csv" download>Download the underlying data (CSV)</a></p>
       </section>
     </div>
 
@@ -252,6 +258,16 @@ const p = renderLambeth();
       max-width: 100%;
       height: auto;
       display: block;
+    }
+    .chart-download {
+      margin-top: 0.5rem;
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 0.72rem;
+    }
+    .chart-download a {
+      color: #4a6b8c;
+      text-decoration: underline;
+      text-underline-offset: 2px;
     }
     .panel-caption {
       margin-top: 0.7rem;

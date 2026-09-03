@@ -46,6 +46,7 @@ const duration = renderRemandDuration();
         </p>
       </div>
       <div class="cascade-chart mt-6" set:html={cascade} />
+      <p class="chart-download"><a href="/data/csv/road-to-remand-cascade.csv" download>Download this chart's data (CSV)</a></p>
     </section>
 
     <section class="mt-10 space-y-4 leading-relaxed">
@@ -97,6 +98,7 @@ const duration = renderRemandDuration();
         </p>
       </div>
       <div class="chart mt-6" set:html={disproportion} />
+      <p class="chart-download"><a href="/data/csv/road-to-remand-cascade.csv" download>Download this chart's data (CSV)</a></p>
       <p class="caption font-sans">
         PRISM-R analysis. Child population: ONS Census 2021. Custodial remand,
         remand to youth detention accommodation: YJB Youth Justice Statistics
@@ -122,6 +124,7 @@ const duration = renderRemandDuration();
         </p>
       </div>
       <div class="chart mt-6" set:html={remandMix} />
+      <p class="chart-download"><a href="/data/csv/remand-outcomes.csv" download>Download this chart's data (CSV)</a></p>
       <p class="caption font-sans">
         PRISM-R analysis of YJB Youth Justice Statistics 2024-25, year ending
         March 2025. Children in the Other category, and those of unknown
@@ -167,6 +170,7 @@ const duration = renderRemandDuration();
         </p>
       </div>
       <div class="chart chart-map mt-6" set:html={choropleth.svg} />
+      <p class="chart-download"><a href="/data/csv/context-indicators.csv" download>Download this chart's data (CSV)</a></p>
       <p class="caption font-sans">
         Geographic variation in stop-and-search disparity. Each police force
         area is shaded by the RRI for Black children stopped and searched,
@@ -199,6 +203,7 @@ const duration = renderRemandDuration();
         </p>
       </div>
       <div class="chart mt-6" set:html={duration} />
+      <p class="chart-download"><a href="/data/csv/remand-duration.csv" download>Download this chart's data (CSV)</a></p>
       <p class="caption font-sans">
         Median nights per remand episode ending in each year:
         <span style="color:#1B3A5F; font-weight:600;">ethnic minority
@@ -215,6 +220,12 @@ const duration = renderRemandDuration();
   </article>
 
   <style>
+    .chart-download {
+      margin-top: 0.5rem;
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 0.72rem;
+    }
+    .chart-download a { color: #4a6b8c; text-decoration: underline; text-underline-offset: 2px; }
     .chart :global(svg),
     .chart :global(figure) {
       max-width: 100%;

@@ -18,7 +18,7 @@ sys.path.insert(0, str(REPO_ROOT))
 
 from pipeline import build  # noqa: E402
 
-EXPECTED_ORDER = ["yjb", "crosswalk", "boundaries", "explorer_boundaries", "ycs", "ons", "dfe", "home_office", "imd", "rri", "target", "explorer"]
+EXPECTED_ORDER = ["yjb", "crosswalk", "boundaries", "explorer_boundaries", "ycs", "ons", "dfe", "home_office", "imd", "rri", "target", "explorer", "csv_exports"]
 
 
 # --------------------------------------------------------------------------
@@ -40,6 +40,31 @@ def test_steps_are_listed_in_dependency_order():
         seen.add(step.name)
 
 
+def test_derived_steps_run_after_the_suppression_stage():
+    """Any step that reads an output which has been through disclosure
+    control must be marked after_suppression, or it will read the
+    pre-suppression figures and republish what suppression withholds."""
+    derived = {"explorer", "csv_exports"}
+    for step in build.STEPS:
+        if step.name in derived:
+            assert step.after_suppression, (
+                f"{step.name} derives from suppressed data and must run "
+                "after the suppression stage")
+        else:
+            assert not step.after_suppression, (
+                f"{step.name} is not marked as deriving from suppressed data")
+
+
+def test_suppression_splits_the_planned_pipeline_last():
+    """Every post-suppression step comes after every ordinary step, so the
+    split in main() cannot reorder the dependency graph."""
+    names = [s.name for s in build.planned_steps(None, None)]
+    marked = [s.after_suppression for s in build.planned_steps(None, None)]
+    first_post = marked.index(True) if True in marked else len(names)
+    assert all(marked[i] for i in range(first_post, len(names))), (
+        "post-suppression steps must be contiguous at the end of the plan")
+
+
 def test_every_manifest_output_is_produced_by_a_step():
     produced = {output for step in build.STEPS for output in step.produces}
     assert set(build.PROCESSED_OUTPUTS) == produced
@@ -54,7 +79,7 @@ def test_planned_steps_default_is_the_full_ordered_pipeline():
 
 def test_planned_steps_from_starts_midway():
     names = [s.name for s in build.planned_steps(None, "dfe")]
-    assert names == ["dfe", "home_office", "imd", "rri", "target", "explorer"]
+    assert names == ["dfe", "home_office", "imd", "rri", "target", "explorer", "csv_exports"]
 
 
 def test_planned_steps_only_is_a_single_step():

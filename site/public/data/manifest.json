@@ -1,10 +1,10 @@
 {
   "meta": {
-    "build_timestamp": "2026-09-03T13:04:20+00:00",
+    "build_timestamp": "2026-09-03T15:52:47+00:00",
     "dataset": "build_manifest",
     "generated_by": "pipeline/build.py",
     "git": {
-      "commit": "b174ec688f4dd69722843606718943d80b266b68",
+      "commit": "113427e76ff5ddcbe9c77ceb19b18b7e9c63dee2",
       "working_tree": "dirty"
     },
     "python_version": "3.14.2",
@@ -132,12 +132,12 @@
       ]
     },
     {
-      "bytes": 830839,
+      "bytes": 830947,
       "file": "data/processed/custody_monthly.json",
       "generated_by": "pipeline/ingest_ycs.py",
       "records": 2655,
       "schema_version": "1.0.0",
-      "sha256": "cefec391b43193c075d956557db99aff9a9d88f2f20cdae34e856af6804d6035",
+      "sha256": "7e7d7b2dea9282c5066c2518c927670b3be955b9b3680dd07000913cbb3d75df",
       "sources": [
         {
           "description": "MoJ Youth Custody Service, monthly youth custody report, June 2026 edition",
@@ -183,12 +183,12 @@
       ]
     },
     {
-      "bytes": 17611,
+      "bytes": 17857,
       "file": "data/processed/remand_outcomes.json",
       "generated_by": "pipeline/ingest_yjb.py",
       "records": 64,
       "schema_version": "1.0.0",
-      "sha256": "9a6419fc3042b61a4df723dfb9c38dfb63070c39d080fd82cdcbbd1b4778dae9",
+      "sha256": "8e12f93a3bef816af6a5f4cb2c49ab343ee001c727fe7a1ad830a94bd1091f33",
       "sources": [
         {
           "description": "YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",
@@ -234,12 +234,12 @@
       ]
     },
     {
-      "bytes": 3686699,
+      "bytes": 3686981,
       "file": "data/processed/context_indicators.json",
       "generated_by": "pipeline/ingest_dfe.py, pipeline/ingest_home_office.py and pipeline/ingest_imd.py",
       "records": 5842,
       "schema_version": "1.0.0",
-      "sha256": "7e09261e1e572f4859413234d853b0ed9e93bf8c85fb2989c0c6ac4bc2af927b",
+      "sha256": "1b012c518fc94c2c75aea05f44ffcd51541f2e0501a92197297a342c8a3ebf43",
       "sources": [
         {
           "description": "DfE Suspensions and permanent exclusions in England",
@@ -355,12 +355,12 @@
       ]
     },
     {
-      "bytes": 206948,
+      "bytes": 207225,
       "file": "data/processed/explorer/index.json",
       "generated_by": "pipeline/build_explorer.py",
       "records": 545,
       "schema_version": "1.0.0",
-      "sha256": "f1cc6beb471b85e1c7f608291c9926c7abe9002e670c34876f67c305444ab01d",
+      "sha256": "b9bdd80af4d9742b621468efd42376fcdcf84894802e5e7d61a9979e5767c12c",
       "sources": [
         {
           "description": "DfE Suspensions and permanent exclusions in England",
@@ -431,12 +431,12 @@
       ]
     },
     {
-      "bytes": 999523,
+      "bytes": 1005535,
       "file": "data/processed/explorer/utla.json",
       "generated_by": "pipeline/build_explorer.py",
       "records": 4758,
       "schema_version": "1.0.0",
-      "sha256": "62e4b2e11e4104efa6a42c3e8df3aeee0f33ba07e053677199e31e60f361478d",
+      "sha256": "c0abf19a9d8bea3f2d28bcccfceffd3f8f101725eeffe98d63a9ebec9e848ae3",
       "sources": [
         {
           "description": "DfE Suspensions and permanent exclusions in England",
@@ -469,12 +469,12 @@
       ]
     },
     {
-      "bytes": 321613,
+      "bytes": 332699,
       "file": "data/processed/explorer/lad.json",
       "generated_by": "pipeline/build_explorer.py",
       "records": 2214,
       "schema_version": "1.0.0",
-      "sha256": "f4d2cdd622c95c1cf2a9529469b1f2aad8cc1fe966e1d121b03084445553b8c0",
+      "sha256": "a948fa29e375191ebdbcc54c60a8cbd9f38963e252e7996522db5c859d047ad3",
       "sources": [
         {
           "description": "DfE Suspensions and permanent exclusions in England",
@@ -507,12 +507,12 @@
       ]
     },
     {
-      "bytes": 79399,
+      "bytes": 81472,
       "file": "data/processed/explorer/pfa.json",
       "generated_by": "pipeline/build_explorer.py",
       "records": 504,
       "schema_version": "1.0.0",
-      "sha256": "fda975bad2f8eb67d53f8554fc555eed7bac4a19434f45ab35e6ef0b1fd68103",
+      "sha256": "868e221cd8ae07f2ee60dc9829db28fc3365568375cd81175dc59260f57b6d6f",
       "sources": [
         {
           "description": "DfE Suspensions and permanent exclusions in England",
@@ -541,6 +541,143 @@
           "reference_period": "December 2023 administrative geography",
           "retrieval_date": "2026-09-03",
           "url": "https://geoportal.statistics.gov.uk/"
+        }
+      ]
+    },
+    {
+      "bytes": 9548,
+      "file": "data/processed/csv/road-to-remand-cascade.csv",
+      "generated_by": "pipeline/build_csv_exports.py",
+      "records": 45,
+      "schema_version": "1.0.0",
+      "sha256": "682c9d857572b270c1c122be5b2c2c433c357cbe254d86136423775c05516279",
+      "sources": [
+        {
+          "description": "YJB and MoJ Youth Justice Statistics 2024 to 2025",
+          "publication_date": "2026-01-29",
+          "reference_period": "year ending March 2025",
+          "retrieval_date": "2026-05-16",
+          "url": "https://www.gov.uk/government/statistics/youth-justice-statistics-2024-to-2025"
+        },
+        {
+          "description": "Home Office Police powers and procedures, stop and search and arrests",
+          "publication_date": "2025-11-06",
+          "reference_period": "year ending 31 March 2025",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.gov.uk/government/statistics/stop-and-search-arrests-and-mental-health-detentions-march-2025"
+        },
+        {
+          "description": "ONS Census 2021, dataset RM032, ethnic group by sex by age",
+          "publication_date": "2023-03-28",
+          "reference_period": "Census day, 21 March 2021",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.ons.gov.uk/datasets/RM032"
+        }
+      ]
+    },
+    {
+      "bytes": 9700,
+      "file": "data/processed/csv/remand-outcomes.csv",
+      "generated_by": "pipeline/build_csv_exports.py",
+      "records": 64,
+      "schema_version": "1.0.0",
+      "sha256": "385e8a46b207307878683f5c040f95a5d7456862a12fdc81a3d73040f4a2c94e",
+      "sources": [
+        {
+          "description": "YJB and MoJ Youth Justice Statistics 2024 to 2025",
+          "publication_date": "2026-01-29",
+          "reference_period": "year ending March 2025",
+          "retrieval_date": "2026-05-16",
+          "url": "https://www.gov.uk/government/statistics/youth-justice-statistics-2024-to-2025"
+        }
+      ]
+    },
+    {
+      "bytes": 116019,
+      "file": "data/processed/csv/remand-target-tracker.csv",
+      "generated_by": "pipeline/build_csv_exports.py",
+      "records": 966,
+      "schema_version": "1.0.0",
+      "sha256": "983c303515cd488bfab8e6efbc57c9017baf7673baca834c061abbb8c52640f4",
+      "sources": [
+        {
+          "description": "MoJ Youth Custody Service, monthly youth custody report, June 2026 edition",
+          "publication_date": "2026-08-14",
+          "reference_period": "monthly, April 2000 to June 2026; the latest month is provisional",
+          "retrieval_date": "2026-09-03",
+          "url": "https://www.gov.uk/government/publications/youth-custody-data"
+        }
+      ]
+    },
+    {
+      "bytes": 35568,
+      "file": "data/processed/csv/remand-duration.csv",
+      "generated_by": "pipeline/build_csv_exports.py",
+      "records": 240,
+      "schema_version": "1.0.0",
+      "sha256": "c3e5ba5bf5ff2bbf511ff4ebe233efd6e5e4b9cb61d113e4d97375cecd9a244b",
+      "sources": [
+        {
+          "description": "MoJ Youth Custody Service, monthly youth custody report, June 2026 edition",
+          "publication_date": "2026-08-14",
+          "reference_period": "monthly, April 2000 to June 2026; the latest month is provisional",
+          "retrieval_date": "2026-09-03",
+          "url": "https://www.gov.uk/government/publications/youth-custody-data"
+        }
+      ]
+    },
+    {
+      "bytes": 989921,
+      "file": "data/processed/csv/context-indicators.csv",
+      "generated_by": "pipeline/build_csv_exports.py",
+      "records": 5842,
+      "schema_version": "1.0.0",
+      "sha256": "794f9200d9fdd21c048f8f7a0a89bdc14757992dd97ef8fcbab465b9553002fd",
+      "sources": [
+        {
+          "description": "DfE Suspensions and permanent exclusions in England",
+          "publication_date": "2026-07-09",
+          "reference_period": "academic years 2023/24 and 2024/25",
+          "retrieval_date": "2026-09-03",
+          "url": "https://explore-education-statistics.service.gov.uk/find-statistics/suspensions-and-permanent-exclusions-in-england"
+        },
+        {
+          "description": "ONS Census 2021, dataset RM032, ethnic group by sex by age",
+          "publication_date": "2023-03-28",
+          "reference_period": "Census day, 21 March 2021",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.ons.gov.uk/datasets/RM032"
+        },
+        {
+          "description": "Home Office Police powers and procedures, stop and search and arrests",
+          "publication_date": "2025-11-06",
+          "reference_period": "year ending 31 March 2025",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.gov.uk/government/statistics/stop-and-search-arrests-and-mental-health-detentions-march-2025"
+        },
+        {
+          "description": "ONS Open Geography portal, December 2023 boundaries, ultra-generalised clipped (BUC)",
+          "publication_date": "2024",
+          "reference_period": "December 2023 administrative geography",
+          "retrieval_date": "2026-09-03",
+          "url": "https://geoportal.statistics.gov.uk/"
+        }
+      ]
+    },
+    {
+      "bytes": 885742,
+      "file": "data/processed/csv/child-population.csv",
+      "generated_by": "pipeline/build_csv_exports.py",
+      "records": 9452,
+      "schema_version": "1.0.0",
+      "sha256": "c816dd173e7d8a494c3aacff66ae46d637ab8154ca6208bfbf7f8717de56816e",
+      "sources": [
+        {
+          "description": "ONS Census 2021, dataset RM032, ethnic group by sex by age",
+          "publication_date": "2023-03-28",
+          "reference_period": "Census day, 21 March 2021",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.ons.gov.uk/datasets/RM032"
         }
       ]
     },
@@ -564,7 +701,7 @@
   ],
   "steps": [
     {
-      "duration_seconds": 20.54,
+      "duration_seconds": 20.16,
       "name": "yjb",
       "script": "pipeline/ingest_yjb.py",
       "status": "ok",
@@ -585,14 +722,14 @@
       "step": 3
     },
     {
-      "duration_seconds": 0.8,
+      "duration_seconds": 0.79,
       "name": "explorer_boundaries",
       "script": "pipeline/build_explorer_boundaries.py",
       "status": "ok",
       "step": 4
     },
     {
-      "duration_seconds": 0.8,
+      "duration_seconds": 0.75,
       "name": "ycs",
       "script": "pipeline/ingest_ycs.py",
       "status": "ok",
@@ -606,28 +743,28 @@
       "step": 6
     },
     {
-      "duration_seconds": 2.21,
+      "duration_seconds": 2.08,
       "name": "dfe",
       "script": "pipeline/ingest_dfe.py",
       "status": "ok",
       "step": 7
     },
     {
-      "duration_seconds": 72.0,
+      "duration_seconds": 71.37,
       "name": "home_office",
       "script": "pipeline/ingest_home_office.py",
       "status": "ok",
       "step": 8
     },
     {
-      "duration_seconds": 0.29,
+      "duration_seconds": 0.23,
       "name": "imd",
       "script": "pipeline/ingest_imd.py",
       "status": "ok",
       "step": 9
     },
     {
-      "duration_seconds": 0.8,
+      "duration_seconds": 0.7,
       "name": "rri",
       "script": "pipeline/compute_rri.py",
       "status": "ok",
@@ -646,6 +783,13 @@
       "script": "pipeline/build_explorer.py",
       "status": "ok",
       "step": 12
+    },
+    {
+      "duration_seconds": 0.09,
+      "name": "csv_exports",
+      "script": "pipeline/build_csv_exports.py",
+      "status": "ok",
+      "step": 13
     }
   ]
 }

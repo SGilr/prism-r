@@ -12,6 +12,9 @@
  * meaning alone: the value is in the tooltip, the panel and the list.
  */
 
+import { toCsv, downloadCsv, exportValue, exportStatus, slug }
+  from "/scripts/csv.mjs";
+
 const SUPPRESSED_LABEL = "<6, suppressed for disclosure control";
 const RATE_HIDDEN_LABEL = "rate not shown, population too small";
 
@@ -378,10 +381,14 @@ export function initExplorer(root, index) {
       (populationTotal ? `<p class="panel-parents">Child population aged 10 to 17: ${
         populationTotal.toLocaleString("en-GB")}.</p>` : "") +
       `<dl>${blocks.join("")}</dl>` +
+      `<p class="panel-actions"><button type="button" id="explorer-export-panel">` +
+      `Download this summary (CSV)</button></p>` +
       `<p class="panel-foot">Remand itself is not shown here: the Youth ` +
       `Justice Board does not publish it below England and Wales level. ` +
       `<a href="/national">See the national cascade</a>.</p>`;
     panel.hidden = false;
+    panel.querySelector("#explorer-export-panel")
+      .addEventListener("click", exportPanel);
   }
 
   function unavailableNote(indicator, spec, geography) {
@@ -401,6 +408,140 @@ export function initExplorer(root, index) {
       .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
 
+  // --------------------------------------------------------------- export
+  /**
+   * The current map view as CSV: one row per geography, carrying the same
+   * provenance columns as the JSON. A suppressed cell exports blank with its
+   * disclosure status, never a figure.
+   */
+  function exportView() {
+    const spec = catalogue[state.indicator];
+    const level = spec.level === "utla" && state.level === "rgn"
+      ? "rgn" : state.level;
+    const records = cache.records[level] || [];
+    const years = yearsFor(state.indicator, records);
+    const cells = cellsFor(records, state.indicator,
+                           state.year || years[0], state.ethnicity);
+    const columns = [
+      { key: "geo_id", label: "geo_id" },
+      { key: "geo_name", label: "geo_name" },
+      { key: "geo_level", label: "geo_level" },
+      { key: "indicator", label: "indicator" },
+      { key: "indicator_label", label: "indicator_label" },
+      { key: "year", label: "year" },
+      { key: "ethnicity", label: "ethnicity" },
+      { key: "value", label: "value" },
+      { key: "unit", label: "unit" },
+      { key: "numerator", label: "numerator" },
+      { key: "denominator", label: "denominator" },
+      { key: "national_value", label: "national_value" },
+      { key: "national_scope", label: "national_scope" },
+      { key: "source", label: "source" },
+      { key: "reference_period", label: "reference_period" },
+      { key: "disclosure_status", label: "disclosure_status" },
+    ];
+    const rows = geographies
+      .filter((g) => g.level === level)
+      .sort((a, b) => a.geo_name.localeCompare(b.geo_name))
+      .map((g) => {
+        const record = cells.get(g.geo_id);
+        const source = record ? index.sources[record.source_key] : null;
+        return {
+          geo_id: g.geo_id,
+          geo_name: g.geo_name,
+          geo_level: index.meta.levels[level].label,
+          indicator: state.indicator,
+          indicator_label: spec.label,
+          year: record?.year ?? "",
+          ethnicity: state.ethnicity,
+          value: exportValue(record),
+          unit: spec.unit,
+          numerator: record?.numerator ?? "",
+          denominator: record?.denominator ?? "",
+          national_value: record?.national_value ?? "",
+          national_scope: record?.national_scope || spec.national_scope,
+          source: source?.source ?? "",
+          reference_period: source?.reference_period ?? "",
+          disclosure_status: record ? exportStatus(record) : "not published",
+        };
+      });
+    downloadCsv(
+      `prism-r-${slug(spec.label)}-${slug(state.ethnicity)}.csv`,
+      toCsv(columns, rows, {
+        title: `PRISM-R: ${spec.label}, ${state.ethnicity === "overall"
+          ? "all children" : state.ethnicity}, by ${
+          index.meta.levels[level].label.toLowerCase()}`,
+        note: spec.level_note,
+      }));
+  }
+
+  /** The selected area's summary panel as CSV, one row per indicator. */
+  async function exportPanel() {
+    const geoId = state.selected;
+    if (!geoId) return;
+    const geography = byId.get(`${state.level}|${geoId}`) ||
+      geographies.find((g) => g.geo_id === geoId);
+    const columns = [
+      { key: "geo_id", label: "geo_id" },
+      { key: "geo_name", label: "geo_name" },
+      { key: "indicator", label: "indicator" },
+      { key: "indicator_label", label: "indicator_label" },
+      { key: "published_at_level", label: "published_at_level" },
+      { key: "year", label: "year" },
+      { key: "ethnicity", label: "ethnicity" },
+      { key: "value", label: "value" },
+      { key: "unit", label: "unit" },
+      { key: "national_value", label: "national_value" },
+      { key: "national_scope", label: "national_scope" },
+      { key: "source", label: "source" },
+      { key: "reference_period", label: "reference_period" },
+      { key: "disclosure_status", label: "disclosure_status" },
+    ];
+    const rows = [];
+    for (const [indicator, spec] of Object.entries(catalogue)) {
+      const servedLevel = state.level === "rgn" && spec.level === "utla"
+        ? "rgn"
+        : (byId.has(`${spec.level}|${geoId}`) ? spec.level : null);
+      let record = null;
+      if (servedLevel) {
+        const records = await load("records", servedLevel);
+        const years = yearsFor(indicator, records);
+        record = cellsFor(records, indicator, years[0], state.ethnicity)
+          .get(geoId) || null;
+      }
+      const source = record ? index.sources[record.source_key] : null;
+      rows.push({
+        geo_id: geoId,
+        geo_name: geography.geo_name,
+        indicator,
+        indicator_label: spec.label,
+        // Names the geography that holds the figure when it is not this one,
+        // so a reader of the CSV alone cannot mistake a gap for a zero.
+        published_at_level: servedLevel
+          ? index.meta.levels[servedLevel].label
+          : `not published at this level; published at ${
+              index.meta.levels[spec.level].label.toLowerCase()} level`,
+        year: record?.year ?? "",
+        ethnicity: state.ethnicity,
+        value: servedLevel ? exportValue(record) : "",
+        unit: spec.unit,
+        national_value: record?.national_value ?? "",
+        national_scope: record?.national_scope || spec.national_scope,
+        source: source?.source ?? "",
+        reference_period: source?.reference_period ?? "",
+        disclosure_status: servedLevel
+          ? (record ? exportStatus(record) : "not published")
+          : "not published at this level",
+      });
+    }
+    downloadCsv(`prism-r-${slug(geography.geo_name)}-summary.csv`,
+      toCsv(columns, rows, {
+        title: `PRISM-R: ${geography.geo_name}, every available indicator`,
+        note: "Remand is not included: the Youth Justice Board does not "
+            + "publish it below England and Wales level.",
+      }));
+  }
+
   // ------------------------------------------------------------- controls
   el("explorer-indicator").addEventListener("change", (event) => {
     state.indicator = event.target.value;
@@ -416,6 +557,7 @@ export function initExplorer(root, index) {
     state.year = Number(event.target.value);
     render();
   });
+  el("explorer-export").addEventListener("click", exportView);
   el("explorer-search").addEventListener("input", () => {
     const spec = catalogue[state.indicator];
     load("records", spec.level).then((records) => {

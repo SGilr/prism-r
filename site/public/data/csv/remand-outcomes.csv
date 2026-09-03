@@ -1,0 +1,75 @@
+# PRISM-R: use of remand for children, England and Wales
+# Remand is published at England and Wales level only; the Youth Justice Board does not publish it below national level.
+# PRISM-R, an open tool for analysis of remand disproportionality in
+# the youth justice system of England and Wales. Oxon Advisory.
+# https://prism-r.howpreventionworks.com
+# Contains public sector information licensed under the Open Government
+# Licence v3.0. Source and reference period are given per row.
+# A blank value with a disclosure_status of suppressed or
+# source_suppressed is a cell withheld under disclosure control; it is
+# not a zero and must not be treated as one.
+geo_id,year,breakdown,remand_type,ethnicity,age_band,sex,offence_band,count,source,reference_period,disclosure_status
+ew,2025,age,bail,,10-14,,,1584,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,age,bail,,15-17,,,7107,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,age,community_remand,,10-14,,,124,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,age,community_remand,,15-17,,,867,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,age,rlaa,,10-14,,,53,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,age,rlaa,,15-17,,,369,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,age,ydp,,10-14,,,72,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,age,ydp,,15-17,,,916,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,ethnicity,bail,Asian,,,,411,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,ethnicity,bail,Black,,,,1298,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,ethnicity,bail,Mixed,,,,1065,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,ethnicity,bail,Other,,,,258,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,ethnicity,bail,Unknown,,,,257,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,ethnicity,bail,White,,,,5402,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,ethnicity,community_remand,Asian,,,,50,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,ethnicity,community_remand,Black,,,,287,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,ethnicity,community_remand,Mixed,,,,150,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,ethnicity,community_remand,Other,,,,24,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,ethnicity,community_remand,Unknown,,,,12,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,ethnicity,community_remand,White,,,,468,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,ethnicity,rlaa,Asian,,,,20,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,ethnicity,rlaa,Black,,,,96,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,ethnicity,rlaa,Mixed,,,,70,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,ethnicity,rlaa,Other,,,,,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,suppressed
+ew,2025,ethnicity,rlaa,Unknown,,,,,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,suppressed
+ew,2025,ethnicity,rlaa,White,,,,212,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,ethnicity,ydp,Asian,,,,55,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,ethnicity,ydp,Black,,,,252,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,ethnicity,ydp,Mixed,,,,181,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,ethnicity,ydp,Other,,,,50,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,ethnicity,ydp,Unknown,,,,6,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,ethnicity,ydp,White,,,,444,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,sex,bail,,,female,,1185,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,sex,bail,,,male,,7448,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,sex,bail,,,unknown,,58,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,sex,community_remand,,,female,,60,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,sex,community_remand,,,male,,925,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,sex,community_remand,,,unknown,,6,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,sex,rlaa,,,female,,,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,suppressed
+ew,2025,sex,rlaa,,,male,,396,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,sex,rlaa,,,unknown,,,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,suppressed
+ew,2025,sex,ydp,,,female,,,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,suppressed
+ew,2025,sex,ydp,,,male,,958,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,sex,ydp,,,unknown,,,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,suppressed
+ew,2021,total,bail,,,,,10361,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2022,total,bail,,,,,8331,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2023,total,bail,,,,,8209,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2024,total,bail,,,,,9006,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,total,bail,,,,,8691,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2021,total,community_remand,,,,,696,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2022,total,community_remand,,,,,699,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2023,total,community_remand,,,,,857,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2024,total,community_remand,,,,,874,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,total,community_remand,,,,,991,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2021,total,rlaa,,,,,303,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2022,total,rlaa,,,,,301,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2023,total,rlaa,,,,,344,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2024,total,rlaa,,,,,346,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,total,rlaa,,,,,422,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2021,total,ydp,,,,,1350,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2022,total,ydp,,,,,1200,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2023,total,ydp,,,,,1009,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2024,total,ydp,,,,,837,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released
+ew,2025,total,ydp,,,,,988,"YJB Youth Justice Statistics 2024 to 2025, remand and outcomes tables",year ending March 2025,released

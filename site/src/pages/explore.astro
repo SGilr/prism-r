@@ -56,6 +56,10 @@ const defaultIndicator = 'suspension_rate';
         <label for="explorer-year">Period</label>
         <select id="explorer-year"></select>
       </p>
+      <p class="control control-action">
+        <label for="explorer-export">Data</label>
+        <button type="button" id="explorer-export">Download this view (CSV)</button>
+      </p>
     </div>
 
     <p class="level-note" id="explorer-level-note"></p>
@@ -128,6 +132,23 @@ const defaultIndicator = 'suspension_rate';
       color: #6a6a6a;
       margin-bottom: 0.25rem;
     }
+    .control-action { display: flex; flex-direction: column; }
+    .control button, .panel :global(.panel-actions button) {
+      font: inherit;
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 0.85rem;
+      padding: 0.4rem 0.75rem;
+      border: 1px solid #cfd4d9;
+      border-radius: 2px;
+      background: #fff;
+      color: #1f3a5f;
+      cursor: pointer;
+    }
+    .control button:hover, .panel :global(.panel-actions button:hover) {
+      background: #f6f5f0;
+      border-color: #1f3a5f;
+    }
+    .panel :global(.panel-actions) { margin: 1.1rem 0 0; }
     .control select, .control input {
       font: inherit;
       font-size: 0.9rem;

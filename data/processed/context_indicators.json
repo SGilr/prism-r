@@ -332,7 +332,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-cheshire",
       "indicator": "arrest_count",
@@ -382,7 +382,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "pf-cheshire",
       "indicator": "arrest_count",
@@ -528,7 +528,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-cumbria",
       "indicator": "arrest_count",
@@ -578,7 +578,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "pf-cumbria",
       "indicator": "arrest_count",
@@ -724,7 +724,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-devon-and-cornwall",
       "indicator": "arrest_count",
@@ -774,7 +774,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "pf-devon-and-cornwall",
       "indicator": "arrest_count",
@@ -824,7 +824,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-dorset",
       "indicator": "arrest_count",
@@ -842,7 +842,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "pf-dorset",
       "indicator": "arrest_count",
@@ -924,7 +924,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-durham",
       "indicator": "arrest_count",
@@ -942,7 +942,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "pf-durham",
       "indicator": "arrest_count",
@@ -1024,7 +1024,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-dyfed-powys",
       "indicator": "arrest_count",
@@ -1058,7 +1058,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Mixed",
       "geo_id": "pf-dyfed-powys",
       "indicator": "arrest_count",
@@ -1220,7 +1220,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-gloucestershire",
       "indicator": "arrest_count",
@@ -1270,7 +1270,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "pf-gloucestershire",
       "indicator": "arrest_count",
@@ -2088,7 +2088,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-lincolnshire",
       "indicator": "arrest_count",
@@ -2138,7 +2138,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "pf-lincolnshire",
       "indicator": "arrest_count",
@@ -2476,7 +2476,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-north-wales",
       "indicator": "arrest_count",
@@ -2494,7 +2494,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "pf-north-wales",
       "indicator": "arrest_count",
@@ -3344,7 +3344,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-surrey",
       "indicator": "arrest_count",
@@ -3394,7 +3394,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "pf-surrey",
       "indicator": "arrest_count",
@@ -3636,7 +3636,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-warwickshire",
       "indicator": "arrest_count",
@@ -3686,7 +3686,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "pf-warwickshire",
       "indicator": "arrest_count",
@@ -3736,7 +3736,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-west-mercia",
       "indicator": "arrest_count",
@@ -3786,7 +3786,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "pf-west-mercia",
       "indicator": "arrest_count",
@@ -4028,7 +4028,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-wiltshire",
       "indicator": "arrest_count",
@@ -4078,7 +4078,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "pf-wiltshire",
       "indicator": "arrest_count",
@@ -11352,7 +11352,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "E06000003",
       "indicator": "lac_count",
@@ -11541,7 +11541,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E06000005",
       "indicator": "lac_count",
@@ -11908,7 +11908,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "E06000008",
       "indicator": "lac_count",
@@ -12169,7 +12169,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E06000011",
       "indicator": "lac_count",
@@ -12400,7 +12400,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "E06000013",
       "indicator": "lac_count",
@@ -12907,7 +12907,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E06000018",
       "indicator": "lac_count",
@@ -13013,7 +13013,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E06000019",
       "indicator": "lac_count",
@@ -13340,7 +13340,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "E06000022",
       "indicator": "lac_count",
@@ -13656,7 +13656,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "E06000025",
       "indicator": "lac_count",
@@ -13779,7 +13779,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Mixed",
       "geo_id": "E06000026",
       "indicator": "lac_count",
@@ -14057,7 +14057,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E06000031",
       "indicator": "lac_count",
@@ -14284,7 +14284,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "E06000033",
       "indicator": "lac_count",
@@ -14371,7 +14371,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E06000034",
       "indicator": "lac_count",
@@ -14496,7 +14496,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "E06000035",
       "indicator": "lac_count",
@@ -14583,7 +14583,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E06000036",
       "indicator": "lac_count",
@@ -14795,7 +14795,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E06000038",
       "indicator": "lac_count",
@@ -15003,7 +15003,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E06000040",
       "indicator": "lac_count",
@@ -15211,7 +15211,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E06000042",
       "indicator": "lac_count",
@@ -15850,7 +15850,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "E06000049",
       "indicator": "lac_count",
@@ -15975,7 +15975,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Mixed",
       "geo_id": "E06000050",
       "indicator": "lac_count",
@@ -16045,7 +16045,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E06000051",
       "indicator": "lac_count",
@@ -16170,7 +16170,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "E06000052",
       "indicator": "lac_count",
@@ -16492,7 +16492,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "E06000055",
       "indicator": "lac_count",
@@ -16910,7 +16910,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "E06000059",
       "indicator": "lac_count",
@@ -17152,7 +17152,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "E06000061",
       "indicator": "lac_count",
@@ -17640,7 +17640,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "E06000066",
       "indicator": "lac_count",
@@ -18645,7 +18645,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E08000010",
       "indicator": "lac_count",
@@ -18857,7 +18857,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E08000012",
       "indicator": "lac_count",
@@ -18999,7 +18999,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Mixed",
       "geo_id": "E08000013",
       "indicator": "lac_count",
@@ -19292,7 +19292,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "E08000016",
       "indicator": "lac_count",
@@ -19587,7 +19587,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E08000019",
       "indicator": "lac_count",
@@ -19916,7 +19916,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "E08000023",
       "indicator": "lac_count",
@@ -20003,7 +20003,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E08000024",
       "indicator": "lac_count",
@@ -20366,7 +20366,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "E08000027",
       "indicator": "lac_count",
@@ -20574,7 +20574,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "E08000029",
       "indicator": "lac_count",
@@ -20627,7 +20627,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E08000030",
       "indicator": "lac_count",
@@ -20937,7 +20937,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E08000033",
       "indicator": "lac_count",
@@ -21145,7 +21145,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E08000035",
       "indicator": "lac_count",
@@ -21304,7 +21304,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "E08000036",
       "indicator": "lac_count",
@@ -21376,7 +21376,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "E08000037",
       "indicator": "lac_count",
@@ -21571,7 +21571,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E09000002",
       "indicator": "lac_count",
@@ -21677,7 +21677,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E09000003",
       "indicator": "lac_count",
@@ -21783,7 +21783,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E09000004",
       "indicator": "lac_count",
@@ -22399,7 +22399,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E09000010",
       "indicator": "lac_count",
@@ -22762,7 +22762,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "E09000013",
       "indicator": "lac_count",
@@ -22868,7 +22868,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "E09000014",
       "indicator": "lac_count",
@@ -23159,7 +23159,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Mixed",
       "geo_id": "E09000017",
       "indicator": "lac_count",
@@ -23333,7 +23333,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E09000019",
       "indicator": "lac_count",
@@ -23492,7 +23492,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "E09000020",
       "indicator": "lac_count",
@@ -23598,7 +23598,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "E09000021",
       "indicator": "lac_count",
@@ -23704,7 +23704,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "E09000022",
       "indicator": "lac_count",
@@ -23912,7 +23912,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "E09000024",
       "indicator": "lac_count",
@@ -23965,7 +23965,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E09000025",
       "indicator": "lac_count",
@@ -24500,7 +24500,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "E09000030",
       "indicator": "lac_count",
@@ -24589,7 +24589,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E09000031",
       "indicator": "lac_count",
@@ -24867,7 +24867,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "White",
       "geo_id": "E09000033",
       "indicator": "lac_count",
@@ -24956,7 +24956,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "E10000003",
       "indicator": "lac_count",
@@ -25123,7 +25123,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E10000007",
       "indicator": "lac_count",
@@ -25229,7 +25229,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E10000008",
       "indicator": "lac_count",
@@ -26000,7 +26000,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "E10000017",
       "indicator": "lac_count",
@@ -26053,7 +26053,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E10000018",
       "indicator": "lac_count",
@@ -26500,7 +26500,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "E10000024",
       "indicator": "lac_count",
@@ -26587,7 +26587,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E10000025",
       "indicator": "lac_count",
@@ -26795,7 +26795,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E10000029",
       "indicator": "lac_count",
@@ -27207,7 +27207,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "E10000034",
       "indicator": "lac_count",
@@ -27421,7 +27421,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "W06000002",
       "indicator": "lac_count",
@@ -27440,7 +27440,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "W06000002",
       "indicator": "lac_count",
@@ -27527,7 +27527,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "W06000003",
       "indicator": "lac_count",
@@ -27582,7 +27582,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "W06000003",
       "indicator": "lac_count",
@@ -27635,7 +27635,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "W06000004",
       "indicator": "lac_count",
@@ -27690,7 +27690,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "W06000004",
       "indicator": "lac_count",
@@ -27743,7 +27743,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "W06000005",
       "indicator": "lac_count",
@@ -27995,7 +27995,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Mixed",
       "geo_id": "W06000008",
       "indicator": "lac_count",
@@ -28173,7 +28173,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "W06000010",
       "indicator": "lac_count",
@@ -28489,7 +28489,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "W06000013",
       "indicator": "lac_count",
@@ -28508,7 +28508,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "W06000013",
       "indicator": "lac_count",
@@ -28597,7 +28597,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "W06000014",
       "indicator": "lac_count",
@@ -28805,7 +28805,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "W06000016",
       "indicator": "lac_count",
@@ -28824,7 +28824,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "W06000016",
       "indicator": "lac_count",
@@ -28930,7 +28930,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "W06000018",
       "indicator": "lac_count",
@@ -29076,7 +29076,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "W06000019",
       "indicator": "lac_count",
@@ -29235,7 +29235,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "W06000021",
       "indicator": "lac_count",
@@ -29358,7 +29358,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "W06000022",
       "indicator": "lac_count",
@@ -29591,7 +29591,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Mixed",
       "geo_id": "W06000024",
       "indicator": "lac_count",
@@ -29610,7 +29610,7 @@
     {
       "breakdown": "by_ethnicity",
       "denominator": null,
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "W06000024",
       "indicator": "lac_count",
@@ -63497,7 +63497,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-cambridgeshire",
       "indicator": "stop_search_rate",
@@ -63547,7 +63547,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "pf-cambridgeshire",
       "indicator": "stop_search_rate",
@@ -63981,7 +63981,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-devon-and-cornwall",
       "indicator": "stop_search_rate",
@@ -64031,7 +64031,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "pf-devon-and-cornwall",
       "indicator": "stop_search_rate",
@@ -64081,7 +64081,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-dorset",
       "indicator": "stop_search_rate",
@@ -64115,7 +64115,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Mixed",
       "geo_id": "pf-dorset",
       "indicator": "stop_search_rate",
@@ -64197,7 +64197,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "pf-durham",
       "indicator": "stop_search_rate",
@@ -64215,7 +64215,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Mixed",
       "geo_id": "pf-durham",
       "indicator": "stop_search_rate",
@@ -64297,7 +64297,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Black",
       "geo_id": "pf-dyfed-powys",
       "indicator": "stop_search_rate",
@@ -64331,7 +64331,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "pf-dyfed-powys",
       "indicator": "stop_search_rate",
@@ -64477,7 +64477,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-gloucestershire",
       "indicator": "stop_search_rate",
@@ -64527,7 +64527,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "pf-gloucestershire",
       "indicator": "stop_search_rate",
@@ -64673,7 +64673,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-gwent",
       "indicator": "stop_search_rate",
@@ -64723,7 +64723,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "pf-gwent",
       "indicator": "stop_search_rate",
@@ -64965,7 +64965,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-humberside",
       "indicator": "stop_search_rate",
@@ -65015,7 +65015,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "pf-humberside",
       "indicator": "stop_search_rate",
@@ -65641,7 +65641,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-norfolk",
       "indicator": "stop_search_rate",
@@ -65691,7 +65691,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "pf-norfolk",
       "indicator": "stop_search_rate",
@@ -65741,7 +65741,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-north-wales",
       "indicator": "stop_search_rate",
@@ -65791,7 +65791,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "pf-north-wales",
       "indicator": "stop_search_rate",
@@ -65841,7 +65841,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-north-yorkshire",
       "indicator": "stop_search_rate",
@@ -65891,7 +65891,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "pf-north-yorkshire",
       "indicator": "stop_search_rate",
@@ -66901,7 +66901,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-warwickshire",
       "indicator": "stop_search_rate",
@@ -66951,7 +66951,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "pf-warwickshire",
       "indicator": "stop_search_rate",
@@ -67001,7 +67001,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-west-mercia",
       "indicator": "stop_search_rate",
@@ -67051,7 +67051,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "pf-west-mercia",
       "indicator": "stop_search_rate",
@@ -67133,7 +67133,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Mixed",
       "geo_id": "pf-west-midlands",
       "indicator": "stop_search_rate",
@@ -67151,7 +67151,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "pf-west-midlands",
       "indicator": "stop_search_rate",
@@ -67297,7 +67297,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Asian",
       "geo_id": "pf-wiltshire",
       "indicator": "stop_search_rate",
@@ -67347,7 +67347,7 @@
     },
     {
       "breakdown": "by_ethnicity",
-      "disclosure_status": "released",
+      "disclosure_status": "suppressed",
       "ethnicity": "Other",
       "geo_id": "pf-wiltshire",
       "indicator": "stop_search_rate",

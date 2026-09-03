@@ -21,6 +21,8 @@ Step order (dependency-ordered; the order is checked at runtime):
   9. compute_rri.py       rri.json                  (needs 1, 5, 6, 7, 8)
   10. compute_target.py   target_tracker.json       (needs 1, 4)
   11. build_explorer.py   explorer/*.json           (needs 2, 5, 6, 7, 8)
+  12. build_csv_exports.py  csv/*.csv                (needs every output it
+                          exports; runs last, after suppression)
 
 There is no separate Welsh ingest: ingest_dfe.py ingests English and Welsh
 exclusions and looked-after children together, because context_indicators.json
@@ -34,7 +36,7 @@ CLI flags:
   --dry-run         print the planned step order and exit
   --only STEP       run a single step by name (yjb, crosswalk, boundaries,
                     ycs, ons, dfe, home_office, imd, rri, target,
-                    explorer_boundaries, explorer)
+                    explorer_boundaries, explorer, csv_exports)
   --from STEP       start at STEP and run every step after it
   --fetch           run the fetch layer (pipeline/fetch.py) first, so the
                     fast-refreshing raw sources are brought up to date before
@@ -80,12 +82,20 @@ log = logging.getLogger("prism_r.build")
 # --------------------------------------------------------------------------
 @dataclass(frozen=True)
 class Step:
-    """One pipeline step: a script, what it produces, and what it needs."""
+    """One pipeline step: a script, what it produces, and what it needs.
+
+    after_suppression marks a step that reads outputs which have already
+    been through disclosure control, so it must run after that stage rather
+    than alongside the ingests. Derived outputs (the explorer payloads, the
+    CSV exports) are all of this kind: built before suppression they would
+    republish figures the suppression stage is about to withhold.
+    """
 
     name: str
     script: str
     produces: tuple[str, ...]
     depends_on: tuple[str, ...]
+    after_suppression: bool = False
 
 
 STEPS: tuple[Step, ...] = (
@@ -117,7 +127,14 @@ STEPS: tuple[Step, ...] = (
     Step("explorer", "build_explorer.py",
          ("explorer/index.json", "explorer/rgn.json", "explorer/utla.json",
           "explorer/lad.json", "explorer/pfa.json"),
-         ("crosswalk", "ons", "dfe", "home_office", "imd")),
+         ("crosswalk", "ons", "dfe", "home_office", "imd"),
+         after_suppression=True),
+    Step("csv_exports", "build_csv_exports.py",
+         ("csv/road-to-remand-cascade.csv", "csv/remand-outcomes.csv",
+          "csv/remand-target-tracker.csv", "csv/remand-duration.csv",
+          "csv/context-indicators.csv", "csv/child-population.csv"),
+         ("yjb", "ons", "dfe", "home_office", "imd", "rri", "target", "ycs"),
+         after_suppression=True),
 )
 
 # Every processed output, in a stable manifest order.
@@ -143,6 +160,12 @@ PROCESSED_OUTPUTS: tuple[str, ...] = (
     "explorer/utla.json",
     "explorer/lad.json",
     "explorer/pfa.json",
+    "csv/road-to-remand-cascade.csv",
+    "csv/remand-outcomes.csv",
+    "csv/remand-target-tracker.csv",
+    "csv/remand-duration.csv",
+    "csv/context-indicators.csv",
+    "csv/child-population.csv",
 )
 
 # Validation gate: minimum record count per output. ethnicity_crosswalk.json
@@ -331,6 +354,14 @@ PROVENANCE: dict[str, list[dict]] = {
     ],
     # The explorer is a reshaping of context_indicators.json and
     # populations.json for the map, so it inherits their provenance.
+    # The CSV exports are the same figures in another format, so each
+    # inherits the provenance of the output it is derived from.
+    "csv/road-to-remand-cascade.csv": [_YJS, _HOME_OFFICE, _CENSUS],
+    "csv/remand-outcomes.csv": [_YJS],
+    "csv/remand-target-tracker.csv": [_YCS],
+    "csv/remand-duration.csv": [_YCS],
+    "csv/context-indicators.csv": _EXPLORER_SOURCES,
+    "csv/child-population.csv": [_CENSUS],
     "explorer/index.json": _EXPLORER_SOURCES,
     "explorer/rgn.json": _EXPLORER_SOURCES,
     "explorer/utla.json": _EXPLORER_SOURCES,
@@ -439,6 +470,34 @@ def run_step(step: Step) -> dict:
     }
 
 
+def _validate_csv(filename: str, path: Path) -> tuple[bool, str]:
+    """A CSV export: it must have the provenance columns, at least one data
+    row, and no suppressed row carrying a figure."""
+    import csv as csv_module
+    text = path.read_text(encoding="utf-8")
+    lines = [line for line in text.splitlines() if not line.startswith("#")]
+    if len(lines) < 2:
+        return False, f"{filename}: no data rows"
+    reader = csv_module.DictReader(lines)
+    required = {"source", "reference_period", "disclosure_status"}
+    missing = required - set(reader.fieldnames or [])
+    if missing:
+        return False, f"{filename}: missing provenance columns {sorted(missing)}"
+    figures = ("value", "count", "population", "remand", "numerator",
+               "rate_per_100", "rate_per_1000", "source_rate",
+               "rolling_avg_12m")
+    rows = list(reader)
+    for row in rows:
+        if row.get("disclosure_status") not in ("suppressed", "source_suppressed"):
+            continue
+        for field in figures:
+            if row.get(field):
+                return False, (f"{filename}: a suppressed row carries "
+                               f"{field}={row[field]}")
+    return True, (f"{filename}: {len(rows)} rows, provenance columns present, "
+                  f"no suppressed figure")
+
+
 def validate_output(filename: str) -> tuple[bool, str]:
     """Validate one processed output: it parses, and meets schema expectations.
 
@@ -449,6 +508,8 @@ def validate_output(filename: str) -> tuple[bool, str]:
     path = PROCESSED_DIR / filename
     if not path.exists():
         return False, f"{filename}: not written"
+    if filename.startswith("csv/"):
+        return _validate_csv(filename, path)
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as error:
@@ -626,6 +687,12 @@ def suppress_records(records: list[dict], plan: SuppressionPlan) -> list[dict]:
                 record[derived] = None
         record["suppressed"] = True
         record["suppression_rule"] = cell["rule"]
+        # Keep disclosure_status consistent with the suppression: a record
+        # that says "released" while carrying suppressed: True invites a
+        # reader, or a downstream export, to trust the wrong field. A
+        # source suppression keeps its own label, being inherited.
+        if record.get("disclosure_status") != "source_suppressed":
+            record["disclosure_status"] = "suppressed"
     return [{**entry, "dataset": plan.filename} for entry in result.audit]
 
 
@@ -698,6 +765,18 @@ def file_entry(filename: str) -> dict:
     """One manifest entry: integrity and provenance for a processed output."""
     path = PROCESSED_DIR / filename
     data = path.read_bytes()
+    if filename.startswith("csv/"):
+        lines = [line for line in data.decode("utf-8").splitlines()
+                 if not line.startswith("#")]
+        return {
+            "file": f"data/processed/{filename}",
+            "schema_version": SCHEMA_VERSION,
+            "sha256": hashlib.sha256(data).hexdigest(),
+            "bytes": len(data),
+            "records": max(len(lines) - 1, 0),  # less the header row
+            "generated_by": "pipeline/build_csv_exports.py",
+            "sources": PROVENANCE.get(filename, []),
+        }
     payload = json.loads(data)
     records = len(payload["records"]) if isinstance(payload.get("records"), list) else None
     generated_by = payload.get("meta", {}).get("generated_by")
@@ -889,15 +968,26 @@ def main(argv: list[str] | None = None) -> int:
         log.warning("partial build: %d of %d steps; outputs of skipped steps "
                     "must already exist", len(steps), len(STEPS))
 
-    exit_code, results = run_pipeline(steps)
+    # Disclosure suppression is a stage of the pipeline, not an afterthought:
+    # the steps that derive their outputs from suppressed data run after it.
+    before = [step for step in steps if not step.after_suppression]
+    after = [step for step in steps if step.after_suppression]
+
+    exit_code, results = run_pipeline(before)
     if exit_code == 0 and len(steps) == len(STEPS):
         log.info("applying disclosure suppression")
         audit = suppress_outputs()
         log.info("  suppression audit: %d decisions written to "
                  "suppression_audit.json", audit["meta"]["counts"]["decisions"])
-    elif exit_code == 0:
+    elif exit_code == 0 and before:
         log.warning("partial build: disclosure suppression skipped; "
                     "run a full build to refresh the suppressed outputs")
+    if exit_code == 0 and after:
+        log.info("post-suppression steps: deriving outputs from the "
+                 "suppressed data")
+        post_code, post_results = run_pipeline(after)
+        exit_code = post_code
+        results = results + post_results
     manifest = write_manifest(results)
     total = sum(r["duration_seconds"] for r in results)
 
