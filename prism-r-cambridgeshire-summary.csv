@@ -1,0 +1,19 @@
+# PRISM-R: Cambridgeshire, every available indicator
+# PRISM-R, an open tool for analysis of remand disproportionality in
+# the youth justice system of England and Wales. Oxon Advisory.
+# https://prism-r.howpreventionworks.com
+# Extracted: 2026-09-03
+# Remand is not included: the Youth Justice Board does not publish it below England and Wales level.
+# Contains public sector information licensed under the Open Government
+# Licence v3.0. Source and reference period are given per row.
+# A blank value with a disclosure_status of suppressed or
+# source_suppressed is a cell withheld under disclosure control; it is
+# not a zero and must not be treated as one.
+geo_id,geo_name,indicator,indicator_label,published_at_level,year,ethnicity,value,unit,national_value,national_scope,source,reference_period,disclosure_status
+pf-cambridgeshire,Cambridgeshire,arrest_count,Arrests of children,Police force area,2025,Asian,29,arrests,2931,England and Wales,"Home Office, Police powers and procedures: arrests open data tables",year ending 31 March 2025,released
+pf-cambridgeshire,Cambridgeshire,child_population,Child population aged 10 to 17,not published at this level; published at local authority district level,,Asian,,children,,England and Wales,,,not published at this level
+pf-cambridgeshire,Cambridgeshire,imd_score,Child income deprivation,not published at this level; published at local authority district level,,Asian,,proportion of children aged 0 to 15,,the authority's own nation,,,not published at this level
+pf-cambridgeshire,Cambridgeshire,lac_count,Children looked after,not published at this level; published at upper-tier authority level,,Asian,,children,,"England and Wales, released cells only",,,not published at this level
+pf-cambridgeshire,Cambridgeshire,permanent_exclusion_rate,Permanent exclusion rate,not published at this level; published at upper-tier authority level,,Asian,,per 100 pupils,,England,,,not published at this level
+pf-cambridgeshire,Cambridgeshire,stop_search_rate,Stop and search rate,Police force area,2025,Asian,,"per 1,000 children aged 10 to 17",7.58031,England and Wales,"Home Office, Police powers and procedures: stop and search open data tables",year ending 31 March 2025,suppressed
+pf-cambridgeshire,Cambridgeshire,suspension_rate,Suspension rate,not published at this level; published at upper-tier authority level,,Asian,,per 100 pupils,,England,,,not published at this level

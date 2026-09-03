@@ -40,19 +40,59 @@ def test_steps_are_listed_in_dependency_order():
         seen.add(step.name)
 
 
-def test_derived_steps_run_after_the_suppression_stage():
-    """Any step that reads an output which has been through disclosure
-    control must be marked after_suppression, or it will read the
-    pre-suppression figures and republish what suppression withholds."""
-    derived = {"explorer", "csv_exports"}
+def test_no_step_reads_suppression_controlled_data_too_early():
+    """The ordering rule, derived from the step definitions themselves.
+
+    A step reading a file that disclosure control rewrites must either
+    produce an output the suppression stage also processes, or be marked
+    after_suppression. Checked against SUPPRESSION_PLANS and each step's
+    declared reads, so a step added later inherits the check without anyone
+    remembering to extend a list.
+    """
+    assert build.suppression_ordering_issues() == []
+
+
+def test_the_ordering_guard_catches_an_unmarked_derived_step():
+    """The guard must fail on the shape of the 3 September 2026 defect: a
+    step reading suppressed data, producing something suppression does not
+    process, and not marked to run after the stage."""
+    import dataclasses
+    original = build.STEPS
+    try:
+        build.STEPS = tuple(
+            dataclasses.replace(step, after_suppression=False)
+            if step.name == "explorer" else step
+            for step in original)
+        issues = build.suppression_ordering_issues()
+        assert any("explorer" in issue and "after_suppression" in issue
+                   for issue in issues), issues
+        # and the build refuses to run at all
+        assert build.dependency_issues() != []
+    finally:
+        build.STEPS = original
+
+
+def test_a_step_producing_suppressed_output_is_not_marked_after():
+    """The converse error: a step marked after_suppression whose output the
+    suppression stage processes would never actually be suppressed."""
+    import dataclasses
+    original = build.STEPS
+    try:
+        build.STEPS = tuple(
+            dataclasses.replace(step, after_suppression=True)
+            if step.name == "rri" else step
+            for step in original)
+        assert any("rri" in issue and "never be suppressed" in issue
+                   for issue in build.suppression_ordering_issues())
+    finally:
+        build.STEPS = original
+
+
+def test_declared_reads_are_real_outputs():
+    """A typo in a step's reads would silently weaken the ordering check."""
+    produced = set(build.PROCESSED_OUTPUTS)
     for step in build.STEPS:
-        if step.name in derived:
-            assert step.after_suppression, (
-                f"{step.name} derives from suppressed data and must run "
-                "after the suppression stage")
-        else:
-            assert not step.after_suppression, (
-                f"{step.name} is not marked as deriving from suppressed data")
+        assert set(step.reads) <= produced, (step.name, set(step.reads) - produced)
 
 
 def test_suppression_splits_the_planned_pipeline_last():

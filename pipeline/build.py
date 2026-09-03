@@ -19,10 +19,15 @@ Step order (dependency-ordered; the order is checked at runtime):
   7. ingest_home_office.py  context_indicators.json (merge; needs 2, 5, 6)
   8. ingest_imd.py        context_indicators.json   (merge; needs 6)
   9. compute_rri.py       rri.json                  (needs 1, 5, 6, 7, 8)
+Disclosure control then runs as a stage. The steps that derive their
+outputs from suppressed data run after it, and are marked
+after_suppression; the requirement is derived from each step's declared
+reads rather than trusted, see suppression_ordering_issues().
+
   10. compute_target.py   target_tracker.json       (needs 1, 4)
   11. build_explorer.py   explorer/*.json           (needs 2, 5, 6, 7, 8)
   12. build_csv_exports.py  csv/*.csv                (needs every output it
-                          exports; runs last, after suppression)
+                          exports)
 
 There is no separate Welsh ingest: ingest_dfe.py ingests English and Welsh
 exclusions and looked-after children together, because context_indicators.json
@@ -84,17 +89,23 @@ log = logging.getLogger("prism_r.build")
 class Step:
     """One pipeline step: a script, what it produces, and what it needs.
 
-    after_suppression marks a step that reads outputs which have already
-    been through disclosure control, so it must run after that stage rather
-    than alongside the ingests. Derived outputs (the explorer payloads, the
-    CSV exports) are all of this kind: built before suppression they would
-    republish figures the suppression stage is about to withhold.
+    reads names the processed files the step consumes. It exists so the
+    ordering rule below can be checked mechanically rather than trusted: a
+    step that reads a file which disclosure control rewrites must run after
+    that stage, or it will read the pre-suppression figures and republish
+    what suppression is about to withhold. Leave it empty for a step that
+    reads only raw sources.
+
+    after_suppression marks such a step. dependency_issues() derives the
+    requirement from reads and SUPPRESSION_PLANS, so a new step inherits the
+    check without anyone remembering to add it to a list.
     """
 
     name: str
     script: str
     produces: tuple[str, ...]
     depends_on: tuple[str, ...]
+    reads: tuple[str, ...] = ()
     after_suppression: bool = False
 
 
@@ -102,38 +113,55 @@ STEPS: tuple[Step, ...] = (
     Step("yjb", "ingest_yjb.py",
          ("geographies.json", "remand_outcomes.json"), ()),
     Step("crosswalk", "build_crosswalk.py",
-         ("geo_crosswalk.json",), ("yjb",)),
+         ("geo_crosswalk.json",), ("yjb",),
+         reads=("geographies.json",)),
     Step("boundaries", "build_force_boundaries.py",
-         ("force_boundaries.json",), ("yjb",)),
+         ("force_boundaries.json",), ("yjb",),
+         reads=("geographies.json",)),
     Step("explorer_boundaries", "build_explorer_boundaries.py",
          ("boundaries/lad.topo.json", "boundaries/utla.topo.json",
           "boundaries/pfa.topo.json", "boundaries/rgn.topo.json"),
-         ("yjb", "crosswalk")),
+         ("yjb", "crosswalk"),
+         reads=("geographies.json", "geo_crosswalk.json")),
     Step("ycs", "ingest_ycs.py",
          ("custody_monthly.json", "custody_episodes_ending.json",
           "custody_episode_length.json"), ()),
     Step("ons", "ingest_ons.py",
-         ("populations.json",), ()),
+         ("populations.json",), (),
+         reads=("ethnicity_crosswalk.json",)),
     Step("dfe", "ingest_dfe.py",
-         ("ethnicity_crosswalk.json", "context_indicators.json"), ("crosswalk",)),
+         ("ethnicity_crosswalk.json", "context_indicators.json"), ("crosswalk",),
+         reads=("geo_crosswalk.json",)),
     Step("home_office", "ingest_home_office.py",
-         ("context_indicators.json",), ("dfe", "ons", "crosswalk", "yjb")),
+         ("context_indicators.json",), ("dfe", "ons", "crosswalk", "yjb"),
+         reads=("geographies.json", "geo_crosswalk.json", "populations.json")),
     Step("imd", "ingest_imd.py",
-         ("context_indicators.json",), ("dfe",)),
+         ("context_indicators.json",), ("dfe",),
+         reads=("geo_crosswalk.json",)),
     Step("rri", "compute_rri.py",
-         ("rri.json",), ("yjb", "ons", "dfe", "home_office", "imd")),
+         ("rri.json",), ("yjb", "ons", "dfe", "home_office", "imd"),
+         reads=("remand_outcomes.json", "populations.json",
+                "context_indicators.json")),
     Step("target", "compute_target.py",
-         ("target_tracker.json",), ("yjb", "ycs")),
+         ("target_tracker.json",), ("yjb", "ycs"),
+         reads=("custody_monthly.json", "custody_episode_length.json",
+                "custody_episodes_ending.json", "remand_outcomes.json"),
+         after_suppression=True),
     Step("explorer", "build_explorer.py",
          ("explorer/index.json", "explorer/rgn.json", "explorer/utla.json",
           "explorer/lad.json", "explorer/pfa.json"),
          ("crosswalk", "ons", "dfe", "home_office", "imd"),
+         reads=("geographies.json", "geo_crosswalk.json", "populations.json",
+                "context_indicators.json"),
          after_suppression=True),
     Step("csv_exports", "build_csv_exports.py",
          ("csv/road-to-remand-cascade.csv", "csv/remand-outcomes.csv",
           "csv/remand-target-tracker.csv", "csv/remand-duration.csv",
           "csv/context-indicators.csv", "csv/child-population.csv"),
          ("yjb", "ons", "dfe", "home_office", "imd", "rri", "target", "ycs"),
+         reads=("rri.json", "remand_outcomes.json", "target_tracker.json",
+                "custody_episode_length.json", "context_indicators.json",
+                "populations.json"),
          after_suppression=True),
 )
 
@@ -426,6 +454,54 @@ def dependency_issues() -> list[str]:
     for output in PROCESSED_OUTPUTS:
         if output not in produced:
             issues.append(f"manifest output {output!r} is produced by no step")
+    issues.extend(suppression_ordering_issues())
+    return issues
+
+
+def suppression_ordering_issues() -> list[str]:
+    """Check that no step reads suppression-controlled data too early.
+
+    Disclosure control rewrites the files named in SUPPRESSION_PLANS, as a
+    stage between the ordinary steps and the derived ones. A step that reads
+    one of those files therefore sees different data depending on when it
+    runs, and there are exactly two correct answers:
+
+      before  the step's own output is itself covered by a plan, so the
+              suppression stage will process what it writes. compute_rri is
+              of this kind: it needs the true counts to compute a rate, and
+              rri.json is suppressed afterwards.
+      after   the step's output is not covered by any plan, so nothing
+              downstream will clean it. It must therefore read data that has
+              already been through the stage, or it will republish figures
+              the stage is about to withhold.
+
+    The requirement is derived from each step's declared reads and produces,
+    not from a list of step names, so a new step is checked the moment it is
+    added. The failure this catches is the 3 September 2026 defect recorded
+    in docs/methods.md: two derived steps sat in the ordinary list and
+    republished 141 suppressed cells.
+    """
+    controlled = {plan.filename for plan in SUPPRESSION_PLANS}
+    issues: list[str] = []
+    for step in STEPS:
+        reads_controlled = sorted(set(step.reads) & controlled)
+        output_is_controlled = bool(set(step.produces) & controlled)
+        if reads_controlled and not output_is_controlled and not step.after_suppression:
+            issues.append(
+                f"step {step.name!r} reads suppression-controlled "
+                f"{reads_controlled} and produces {list(step.produces)}, which "
+                "disclosure control does not process, so it must be marked "
+                "after_suppression or it will republish suppressed figures")
+        if step.after_suppression and output_is_controlled:
+            issues.append(
+                f"step {step.name!r} is marked after_suppression but produces "
+                f"{sorted(set(step.produces) & controlled)}, which the "
+                "suppression stage processes; it would never be suppressed")
+        unknown = sorted(set(step.reads) - set(PROCESSED_OUTPUTS))
+        if unknown:
+            issues.append(
+                f"step {step.name!r} declares reads of {unknown}, which no "
+                "step produces")
     return issues
 
 

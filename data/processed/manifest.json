@@ -1,10 +1,10 @@
 {
   "meta": {
-    "build_timestamp": "2026-09-03T16:01:32+00:00",
+    "build_timestamp": "2026-09-03T17:14:36+00:00",
     "dataset": "build_manifest",
     "generated_by": "pipeline/build.py",
     "git": {
-      "commit": "113427e76ff5ddcbe9c77ceb19b18b7e9c63dee2",
+      "commit": "f17ba9bd641f6349ef882060f55405aad4336b6e",
       "working_tree": "dirty"
     },
     "python_version": "3.14.2",
@@ -701,56 +701,56 @@
   ],
   "steps": [
     {
-      "duration_seconds": 20.36,
+      "duration_seconds": 20.72,
       "name": "yjb",
       "script": "pipeline/ingest_yjb.py",
       "status": "ok",
       "step": 1
     },
     {
-      "duration_seconds": 0.16,
+      "duration_seconds": 0.17,
       "name": "crosswalk",
       "script": "pipeline/build_crosswalk.py",
       "status": "ok",
       "step": 2
     },
     {
-      "duration_seconds": 0.21,
+      "duration_seconds": 0.22,
       "name": "boundaries",
       "script": "pipeline/build_force_boundaries.py",
       "status": "ok",
       "step": 3
     },
     {
-      "duration_seconds": 0.8,
+      "duration_seconds": 0.82,
       "name": "explorer_boundaries",
       "script": "pipeline/build_explorer_boundaries.py",
       "status": "ok",
       "step": 4
     },
     {
-      "duration_seconds": 0.78,
+      "duration_seconds": 0.81,
       "name": "ycs",
       "script": "pipeline/ingest_ycs.py",
       "status": "ok",
       "step": 5
     },
     {
-      "duration_seconds": 0.25,
+      "duration_seconds": 0.26,
       "name": "ons",
       "script": "pipeline/ingest_ons.py",
       "status": "ok",
       "step": 6
     },
     {
-      "duration_seconds": 2.12,
+      "duration_seconds": 2.28,
       "name": "dfe",
       "script": "pipeline/ingest_dfe.py",
       "status": "ok",
       "step": 7
     },
     {
-      "duration_seconds": 71.79,
+      "duration_seconds": 71.83,
       "name": "home_office",
       "script": "pipeline/ingest_home_office.py",
       "status": "ok",
@@ -764,7 +764,7 @@
       "step": 9
     },
     {
-      "duration_seconds": 0.7,
+      "duration_seconds": 0.73,
       "name": "rri",
       "script": "pipeline/compute_rri.py",
       "status": "ok",

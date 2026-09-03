@@ -561,3 +561,34 @@ def test_derived_outputs_do_not_republish_a_suppressed_cell():
         f"{len(offenders)} suppressed cells are republished in a derived "
         "output, which means a derived step ran before the suppression "
         "stage:\n" + "\n".join(offenders[:12]))
+
+
+def test_the_tracker_does_not_republish_a_suppressed_custody_cell():
+    """target_tracker.json derives its ethnicity block from
+    custody_monthly.json, so a cell suppressed there must stay hidden here,
+    and must lose its share as well as its count: a share against the
+    published estate total gives the count back."""
+    monthly = json.loads(
+        (PROCESSED_DIR / "custody_monthly.json").read_text("utf-8"))["records"]
+    hidden = {(r["month"], r["category"]) for r in monthly
+              if r["measure"] == "ethnicity"
+              and (r.get("suppressed") is True
+                   or r.get("disclosure_status") in
+                   ("suppressed", "source_suppressed"))}
+    assert hidden, "the fixture assumes some custody cell is suppressed"
+
+    tracker = json.loads(
+        (PROCESSED_DIR / "target_tracker.json").read_text("utf-8"))["records"]
+    offenders = []
+    for record in tracker:
+        if record.get("block") != "whole_custody_ethnicity_monthly":
+            continue
+        if (record["month"], record["category"]) not in hidden:
+            continue
+        for field in ("count", "share"):
+            if record.get(field) is not None:
+                offenders.append(f"{record['month']} {record['category']}: "
+                                 f"{field}={record[field]}")
+    assert not offenders, (
+        f"{len(offenders)} custody cells suppressed upstream are republished "
+        "in the tracker:\n" + "\n".join(offenders[:10]))
