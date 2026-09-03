@@ -18,6 +18,7 @@ Step order (dependency-ordered; the order is checked at runtime):
   7. ingest_home_office.py  context_indicators.json (merge; needs 2, 5, 6)
   8. ingest_imd.py        context_indicators.json   (merge; needs 6)
   9. compute_rri.py       rri.json                  (needs 1, 5, 6, 7, 8)
+  10. compute_target.py   target_tracker.json       (needs 1, 4)
 
 There is no separate Welsh ingest: ingest_dfe.py ingests English and Welsh
 exclusions and looked-after children together, because context_indicators.json
@@ -30,7 +31,7 @@ Outputs go to data/processed/ only; the build never writes to data/raw/.
 CLI flags:
   --dry-run         print the planned step order and exit
   --only STEP       run a single step by name (yjb, crosswalk, boundaries,
-                    ycs, ons, dfe, home_office, imd, rri)
+                    ycs, ons, dfe, home_office, imd, rri, target)
   --from STEP       start at STEP and run every step after it
   --skip-raw-fetch  use the local data/raw/ files, do not fetch from source.
                     This is the only v1 behaviour: PRISM-R does not yet
@@ -103,6 +104,8 @@ STEPS: tuple[Step, ...] = (
          ("context_indicators.json",), ("dfe",)),
     Step("rri", "compute_rri.py",
          ("rri.json",), ("yjb", "ons", "dfe", "home_office", "imd")),
+    Step("target", "compute_target.py",
+         ("target_tracker.json",), ("yjb", "ycs")),
 )
 
 # Every processed output, in a stable manifest order.
@@ -118,6 +121,7 @@ PROCESSED_OUTPUTS: tuple[str, ...] = (
     "ethnicity_crosswalk.json",
     "context_indicators.json",
     "rri.json",
+    "target_tracker.json",
 )
 
 # Validation gate: minimum record count per output. ethnicity_crosswalk.json
@@ -133,6 +137,7 @@ MIN_RECORDS: dict[str, int] = {
     "populations.json": 9000,
     "context_indicators.json": 3700,
     "rri.json": 40,
+    "target_tracker.json": 900,
 }
 
 
@@ -264,6 +269,11 @@ PROVENANCE: dict[str, list[dict]] = {
             "publication_date": "2019-11-27",
             "retrieval_date": "2026-05-17",
         },
+    ],
+    "target_tracker.json": [
+        _YCS,
+        {**_YJS, "description": "YJB Youth Justice Statistics 2024 to 2025, "
+         "remand episodes (chapter 6)"},
     ],
     "rri.json": [
         {
