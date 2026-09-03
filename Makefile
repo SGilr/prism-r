@@ -1,7 +1,7 @@
 # PRISM-R pipeline entry points.
 # build.py is the canonical way to refresh the processed data.
 
-PYTHON := .venv/bin/python
+PYTHON ?= .venv/bin/python
 
 .PHONY: build test test-fast clean-processed
 

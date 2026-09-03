@@ -1,0 +1,93 @@
+name: Data refresh
+
+on:
+  schedule:
+    - cron: '0 6 15 * *'  # 06:00 UTC on the 15th of each month
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Download the raw data bundle
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=$(gh release list --json tagName \
+            --jq '[.[] | select(.tagName | startswith("raw-data-"))][0].tagName')
+          echo "raw bundle: $tag"
+          gh release download "$tag" --pattern '*.tar.gz' --output raw-bundle.tar.gz
+          tar xzf raw-bundle.tar.gz
+          rm raw-bundle.tar.gz
+          # The repository's tracked fetch manifest wins over the bundle copy,
+          # so the newer-than checks compare against the committed state.
+          git checkout -- data/raw/fetch_manifest.json
+
+      - name: Build with fetch
+        run: python pipeline/build.py --fetch
+
+      - name: Tests
+        run: make test-fast PYTHON=python
+
+      - name: Detect changes
+        id: changes
+        run: |
+          # manifest.json carries a build timestamp that changes every run,
+          # so it does not count as a change on its own.
+          if git status --porcelain data/processed/ | grep -v 'manifest.json' | grep -q .; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            sources=$(python -c "import json; m = json.load(open('data/raw/fetch_manifest.json'))['sources']; print(', '.join(sorted(k for k, v in m.items() if v.get('status') == 'downloaded')) or 'refreshed sources')")
+            month=$(python -c "import datetime, json; m = json.load(open('data/processed/custody_monthly.json'))['meta']['latest_month']; print(datetime.datetime.strptime(m, '%Y-%m').strftime('%B %Y'))")
+            echo "sources=$sources" >> "$GITHUB_OUTPUT"
+            echo "month=$month" >> "$GITHUB_OUTPUT"
+            {
+              echo 'diff<<MANIFEST_DIFF'
+              git diff data/processed/manifest.json | head -300
+              echo 'MANIFEST_DIFF'
+            } >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No processed output changed: the fetched sources carry no new data. No pull request needed."
+          fi
+
+      - name: Open pull request
+        if: steps.changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: data-refresh
+          delete-branch: true
+          add-paths: |
+            data/processed/
+            data/raw/fetch_manifest.json
+          commit-message: >-
+            Data refresh: ${{ steps.changes.outputs.sources }},
+            data as of ${{ steps.changes.outputs.month }}
+          title: >-
+            Data refresh: ${{ steps.changes.outputs.sources }},
+            data as of ${{ steps.changes.outputs.month }}
+          body: |
+            Automated data refresh from the scheduled workflow. Sources with
+            new downloads: ${{ steps.changes.outputs.sources }}. Latest
+            custody month: ${{ steps.changes.outputs.month }} (provisional).
+
+            The build ran `pipeline/build.py --fetch` over the raw bundle
+            plus freshly fetched sources; `make test-fast` passed. Review the
+            manifest diff below, then merge to publish. No auto-merge.
+
+            ```diff
+            ${{ steps.changes.outputs.diff }}
+            ```

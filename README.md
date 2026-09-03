@@ -1,5 +1,7 @@
 # PRISM-R
 
+[![CI](https://github.com/SGilr/prism-r/actions/workflows/ci.yml/badge.svg)](https://github.com/SGilr/prism-r/actions/workflows/ci.yml)
+
 An open tool for analysis of remand disproportionality in the youth justice system of England and Wales.
 
 PRISM-R makes the case that remand disproportionality is a prevention failure, and that a trans-disciplinary lens reveals patterns that siloed reporting hides. It is not a statistics portal. It is an argument made interactive, sitting alongside Peat and the Prevention Works community of practice.
@@ -43,11 +45,13 @@ This regenerates the seven JSON files in `data/processed/` and writes `data/proc
 `build.py` flags:
 
 - `--dry-run` print the planned step order and exit
-- `--only STEP` run a single step (`yjb`, `crosswalk`, `ons`, `dfe`, `home_office`, `imd`, `rri`)
+- `--only STEP` run a single step (`yjb`, `crosswalk`, `boundaries`, `ycs`, `ons`, `dfe`, `home_office`, `imd`, `rri`, `target`)
 - `--from STEP` start at a step and run every step after it
-- `--skip-raw-fetch` use the local `data/raw/` files; this is the only v1 behaviour, as PRISM-R does not yet automate downloads
+- `--fetch` run the fetch layer first, refreshing the fast-moving sources; the default stays offline
 
-The pipeline needs the raw source files under `data/raw/`, which are not in the repository. See `docs/data-sources.md` for every source with its retrieval date.
+The raw source files under `data/raw/` are not in the repository; they are published as a release asset. Download the latest `raw-data-*` release from [the releases page](https://github.com/SGilr/prism-r/releases), unpack the archive at the repository root (it expands into `data/raw/`), and the pipeline is fully reproducible. `RAW_BUNDLE.md` inside the archive lists every file with its source URL, retrieval date, SHA-256 and licence. See `docs/data-sources.md` for the retrieval log.
+
+The fast-moving sources refresh automatically: `python pipeline/build.py --fetch` brings the YCS monthly report, the DfE exclusions release and the annual Youth Justice Statistics up to date before building, and a scheduled workflow does the same on the 15th of each month, opening a pull request when the data changes. When a manual source (ONS Census, IMD, Home Office, StatsWales) is refreshed locally, the procedure is: re-run the build, run `python pipeline/make_raw_bundle.py` and publish the release it prints as `raw-data-YYYY-MM`, then note the refresh in `docs/data-sources.md`.
 
 Run the tests:
 
