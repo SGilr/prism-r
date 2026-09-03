@@ -8,9 +8,9 @@ The tool shows co-occurrence, not causation.
 
 ## Status
 
-v1 build, started May 2026. The full specification, including scope, data model, disclosure control rules, and the sprint plan, is in [docs/prism-r-v1-spec.md](docs/prism-r-v1-spec.md). This repository currently holds the data pipeline; the Astro site is built in later sprints.
+v1 build, started May 2026. The full specification, including scope, data model, disclosure control rules, and the sprint plan, is in [docs/prism-r-v1-spec.md](docs/prism-r-v1-spec.md).
 
-Sprints 1 and 2 are complete. The data pipeline is built: YJB remand and sentencing, ONS child population, DfE and StatsWales exclusions and looked-after children, Home Office stop and search and arrests, and English and Welsh child deprivation are all ingested, with Relative Rate Index computation and disclosure-control logic. `python pipeline/build.py` reproduces every processed output and writes a provenance manifest.
+The site is live at [prism-r.howpreventionworks.com](https://prism-r.howpreventionworks.com): the national road-to-remand cascade, a force-level stop-and-search choropleth, a Lambeth worked example, and the White Paper remand target tracker, which follows the youth estate remand population monthly against the 25% reduction commitment of 18 May 2026 (see [docs/target-metric.md](docs/target-metric.md)). The pipeline ingests YJB remand and sentencing, the YCS monthly custody report, ONS child population, DfE and StatsWales exclusions and looked-after children, Home Office stop and search and arrests, and English and Welsh child deprivation, with Relative Rate Index computation and disclosure control throughout. `python pipeline/build.py` reproduces every processed output byte for byte and writes a provenance manifest. The geographic explorer and the launch audits are still to come.
 
 ## Repository layout
 

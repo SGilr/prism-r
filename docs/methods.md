@@ -18,6 +18,26 @@ Remand data in v1 is held at England and Wales level only. The YJB publishes rem
 
 PRISM-R therefore shows remand directly in the national picture, and at sub-national level shows the upstream drivers that pre-date the remand decision: the road to remand. Securing access to YOT-level remand data, so that remand can be shown sub-nationally, is a stated aim for v2.
 
+The monthly remand tracker inherits a further limit: the Youth Custody Service monthly tables are one-dimensional, so the remand stock cannot be shown by age, ethnicity or region of youth justice service. The tracked stock is the whole youth secure estate, including the small number aged 18 who remain in the youth estate, and the ethnic composition published alongside it is the whole custody population, clearly labelled as such.
+
+## Tracking the target
+
+The Youth Justice White Paper Cutting Youth Crime. Changing Young Lives. (MoJ, 18 May 2026) commits to reducing custodial remand for children by 25% over this Parliament. The White Paper does not publish an operational definition, so PRISM-R tracks both readings and states which is which; the full definition is in [target-metric.md](target-metric.md).
+
+The headline tracker is the stock: the youth secure estate remand population from the monthly Youth Custody Service report, presented as a trailing 12-month rolling average to remove seasonality, with the full series from April 2015 so the pre-commitment trend is visible. The baseline is the mean of the twelve monthly values April 2024 to March 2025, 215.75; the target line is 75% of that, 161.8. The accountable measure is the flow: remands to youth detention accommodation from Youth Justice Statistics chapter 6, baseline 988 in the year ending March 2025, target 741 or fewer. The rolling average had already fallen 16.1% between March 2025 and May 2026, before any White Paper effect could operate; progress claimed against the baseline must be read against that pre-existing trend.
+
+Two markers anchor the series. February 2026 is the month cited to the Justice Committee on 18 May 2026: the published estate total was 412 and the published remand figure 149, a 36.2% share. The "about 185" remand figure quoted in that evidence applied the annual 44% remand share to the estate total rather than the published February remand count. The second marker is the White Paper's publication date itself.
+
+The tracker is computed by `pipeline/compute_target.py` into `data/processed/target_tracker.json`, refreshed monthly when the YCS report is ingested; the latest month is provisional and is overwritten at the following ingest.
+
+## Remand duration
+
+The remand stock is the product of the flow and the duration of each remand, so duration is the third leg of the target's equity condition: a reduction in the stock achieved by shortening remands is assessed for whether the shortening is equal across ethnic groups.
+
+YCS table 3.4 gives the length of legal-basis episodes ending in each year by ethnicity. The published ethnicity split is binary, ethnic minority groups against White including white minorities; PRISM-R carries it as published (`ethnicity_basis: "binary"`) and does not map it onto the YJB five groups. The measure counts episodes ending in the year, not children on remand, and makes no adjustment for offence mix or court tier. On that basis the median remand episode for children from ethnic minority groups has been longer than for White children in every year since the series begins in 2019: 74 nights against 40.5 in the year ending March 2025, and 70 against 48 in the provisional 2025-26 year.
+
+HMI Prisons' thematic review Children on short-term remand (May 2026) reports 216 children on remand in YOIs and STCs. That figure cannot be reconciled from the published YCS tables: table 1.8 gives sector by month for the whole population only, with no legal-basis cross, and the whole-estate remand stock at March 2025 was 199, below 216, so the HMIP figure is on a different basis. It is recorded here so the difference is visible, not treated as an inconsistency.
+
 ## Geography crosswalk
 
 `data/processed/geo_crosswalk.json` maps every local authority in England and Wales to its parent youth justice service (YOT) and its parent police force. It is built by `pipeline/build_crosswalk.py`.
