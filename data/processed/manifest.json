@@ -1,10 +1,10 @@
 {
   "meta": {
-    "build_timestamp": "2026-09-03T12:50:02+00:00",
+    "build_timestamp": "2026-09-03T13:04:20+00:00",
     "dataset": "build_manifest",
     "generated_by": "pipeline/build.py",
     "git": {
-      "commit": "6d7fad5b38c2609802e49009e3b99ad6507863b3",
+      "commit": "b174ec688f4dd69722843606718943d80b266b68",
       "working_tree": "dirty"
     },
     "python_version": "3.14.2",
@@ -234,12 +234,12 @@
       ]
     },
     {
-      "bytes": 3300928,
+      "bytes": 3686699,
       "file": "data/processed/context_indicators.json",
       "generated_by": "pipeline/ingest_dfe.py, pipeline/ingest_home_office.py and pipeline/ingest_imd.py",
-      "records": 5602,
+      "records": 5842,
       "schema_version": "1.0.0",
-      "sha256": "ea556f348b2688aa40d7279ce64b0119e0e45e2966d62389d97b4fe6540a6331",
+      "sha256": "7e09261e1e572f4859413234d853b0ed9e93bf8c85fb2989c0c6ac4bc2af927b",
       "sources": [
         {
           "description": "DfE Suspensions and permanent exclusions in England",
@@ -355,6 +355,196 @@
       ]
     },
     {
+      "bytes": 206948,
+      "file": "data/processed/explorer/index.json",
+      "generated_by": "pipeline/build_explorer.py",
+      "records": 545,
+      "schema_version": "1.0.0",
+      "sha256": "f1cc6beb471b85e1c7f608291c9926c7abe9002e670c34876f67c305444ab01d",
+      "sources": [
+        {
+          "description": "DfE Suspensions and permanent exclusions in England",
+          "publication_date": "2026-07-09",
+          "reference_period": "academic years 2023/24 and 2024/25",
+          "retrieval_date": "2026-09-03",
+          "url": "https://explore-education-statistics.service.gov.uk/find-statistics/suspensions-and-permanent-exclusions-in-england"
+        },
+        {
+          "description": "ONS Census 2021, dataset RM032, ethnic group by sex by age",
+          "publication_date": "2023-03-28",
+          "reference_period": "Census day, 21 March 2021",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.ons.gov.uk/datasets/RM032"
+        },
+        {
+          "description": "Home Office Police powers and procedures, stop and search and arrests",
+          "publication_date": "2025-11-06",
+          "reference_period": "year ending 31 March 2025",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.gov.uk/government/statistics/stop-and-search-arrests-and-mental-health-detentions-march-2025"
+        },
+        {
+          "description": "ONS Open Geography portal, December 2023 boundaries, ultra-generalised clipped (BUC)",
+          "publication_date": "2024",
+          "reference_period": "December 2023 administrative geography",
+          "retrieval_date": "2026-09-03",
+          "url": "https://geoportal.statistics.gov.uk/"
+        }
+      ]
+    },
+    {
+      "bytes": 54277,
+      "file": "data/processed/explorer/rgn.json",
+      "generated_by": "pipeline/build_explorer.py",
+      "records": 226,
+      "schema_version": "1.0.0",
+      "sha256": "cf1270402fe195a65b68d2233ebf18c72f515cbb622e0556d0a25a20e8e84623",
+      "sources": [
+        {
+          "description": "DfE Suspensions and permanent exclusions in England",
+          "publication_date": "2026-07-09",
+          "reference_period": "academic years 2023/24 and 2024/25",
+          "retrieval_date": "2026-09-03",
+          "url": "https://explore-education-statistics.service.gov.uk/find-statistics/suspensions-and-permanent-exclusions-in-england"
+        },
+        {
+          "description": "ONS Census 2021, dataset RM032, ethnic group by sex by age",
+          "publication_date": "2023-03-28",
+          "reference_period": "Census day, 21 March 2021",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.ons.gov.uk/datasets/RM032"
+        },
+        {
+          "description": "Home Office Police powers and procedures, stop and search and arrests",
+          "publication_date": "2025-11-06",
+          "reference_period": "year ending 31 March 2025",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.gov.uk/government/statistics/stop-and-search-arrests-and-mental-health-detentions-march-2025"
+        },
+        {
+          "description": "ONS Open Geography portal, December 2023 boundaries, ultra-generalised clipped (BUC)",
+          "publication_date": "2024",
+          "reference_period": "December 2023 administrative geography",
+          "retrieval_date": "2026-09-03",
+          "url": "https://geoportal.statistics.gov.uk/"
+        }
+      ]
+    },
+    {
+      "bytes": 999523,
+      "file": "data/processed/explorer/utla.json",
+      "generated_by": "pipeline/build_explorer.py",
+      "records": 4758,
+      "schema_version": "1.0.0",
+      "sha256": "62e4b2e11e4104efa6a42c3e8df3aeee0f33ba07e053677199e31e60f361478d",
+      "sources": [
+        {
+          "description": "DfE Suspensions and permanent exclusions in England",
+          "publication_date": "2026-07-09",
+          "reference_period": "academic years 2023/24 and 2024/25",
+          "retrieval_date": "2026-09-03",
+          "url": "https://explore-education-statistics.service.gov.uk/find-statistics/suspensions-and-permanent-exclusions-in-england"
+        },
+        {
+          "description": "ONS Census 2021, dataset RM032, ethnic group by sex by age",
+          "publication_date": "2023-03-28",
+          "reference_period": "Census day, 21 March 2021",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.ons.gov.uk/datasets/RM032"
+        },
+        {
+          "description": "Home Office Police powers and procedures, stop and search and arrests",
+          "publication_date": "2025-11-06",
+          "reference_period": "year ending 31 March 2025",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.gov.uk/government/statistics/stop-and-search-arrests-and-mental-health-detentions-march-2025"
+        },
+        {
+          "description": "ONS Open Geography portal, December 2023 boundaries, ultra-generalised clipped (BUC)",
+          "publication_date": "2024",
+          "reference_period": "December 2023 administrative geography",
+          "retrieval_date": "2026-09-03",
+          "url": "https://geoportal.statistics.gov.uk/"
+        }
+      ]
+    },
+    {
+      "bytes": 321613,
+      "file": "data/processed/explorer/lad.json",
+      "generated_by": "pipeline/build_explorer.py",
+      "records": 2214,
+      "schema_version": "1.0.0",
+      "sha256": "f4d2cdd622c95c1cf2a9529469b1f2aad8cc1fe966e1d121b03084445553b8c0",
+      "sources": [
+        {
+          "description": "DfE Suspensions and permanent exclusions in England",
+          "publication_date": "2026-07-09",
+          "reference_period": "academic years 2023/24 and 2024/25",
+          "retrieval_date": "2026-09-03",
+          "url": "https://explore-education-statistics.service.gov.uk/find-statistics/suspensions-and-permanent-exclusions-in-england"
+        },
+        {
+          "description": "ONS Census 2021, dataset RM032, ethnic group by sex by age",
+          "publication_date": "2023-03-28",
+          "reference_period": "Census day, 21 March 2021",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.ons.gov.uk/datasets/RM032"
+        },
+        {
+          "description": "Home Office Police powers and procedures, stop and search and arrests",
+          "publication_date": "2025-11-06",
+          "reference_period": "year ending 31 March 2025",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.gov.uk/government/statistics/stop-and-search-arrests-and-mental-health-detentions-march-2025"
+        },
+        {
+          "description": "ONS Open Geography portal, December 2023 boundaries, ultra-generalised clipped (BUC)",
+          "publication_date": "2024",
+          "reference_period": "December 2023 administrative geography",
+          "retrieval_date": "2026-09-03",
+          "url": "https://geoportal.statistics.gov.uk/"
+        }
+      ]
+    },
+    {
+      "bytes": 79399,
+      "file": "data/processed/explorer/pfa.json",
+      "generated_by": "pipeline/build_explorer.py",
+      "records": 504,
+      "schema_version": "1.0.0",
+      "sha256": "fda975bad2f8eb67d53f8554fc555eed7bac4a19434f45ab35e6ef0b1fd68103",
+      "sources": [
+        {
+          "description": "DfE Suspensions and permanent exclusions in England",
+          "publication_date": "2026-07-09",
+          "reference_period": "academic years 2023/24 and 2024/25",
+          "retrieval_date": "2026-09-03",
+          "url": "https://explore-education-statistics.service.gov.uk/find-statistics/suspensions-and-permanent-exclusions-in-england"
+        },
+        {
+          "description": "ONS Census 2021, dataset RM032, ethnic group by sex by age",
+          "publication_date": "2023-03-28",
+          "reference_period": "Census day, 21 March 2021",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.ons.gov.uk/datasets/RM032"
+        },
+        {
+          "description": "Home Office Police powers and procedures, stop and search and arrests",
+          "publication_date": "2025-11-06",
+          "reference_period": "year ending 31 March 2025",
+          "retrieval_date": "2026-05-17",
+          "url": "https://www.gov.uk/government/statistics/stop-and-search-arrests-and-mental-health-detentions-march-2025"
+        },
+        {
+          "description": "ONS Open Geography portal, December 2023 boundaries, ultra-generalised clipped (BUC)",
+          "publication_date": "2024",
+          "reference_period": "December 2023 administrative geography",
+          "retrieval_date": "2026-09-03",
+          "url": "https://geoportal.statistics.gov.uk/"
+        }
+      ]
+    },
+    {
       "bytes": 141876,
       "file": "data/processed/suppression_audit.json",
       "generated_by": "pipeline/build.py",
@@ -374,14 +564,14 @@
   ],
   "steps": [
     {
-      "duration_seconds": 20.7,
+      "duration_seconds": 20.54,
       "name": "yjb",
       "script": "pipeline/ingest_yjb.py",
       "status": "ok",
       "step": 1
     },
     {
-      "duration_seconds": 0.17,
+      "duration_seconds": 0.16,
       "name": "crosswalk",
       "script": "pipeline/build_crosswalk.py",
       "status": "ok",
@@ -395,7 +585,7 @@
       "step": 3
     },
     {
-      "duration_seconds": 0.82,
+      "duration_seconds": 0.8,
       "name": "explorer_boundaries",
       "script": "pipeline/build_explorer_boundaries.py",
       "status": "ok",
@@ -409,35 +599,35 @@
       "step": 5
     },
     {
-      "duration_seconds": 0.26,
+      "duration_seconds": 0.25,
       "name": "ons",
       "script": "pipeline/ingest_ons.py",
       "status": "ok",
       "step": 6
     },
     {
-      "duration_seconds": 2.23,
+      "duration_seconds": 2.21,
       "name": "dfe",
       "script": "pipeline/ingest_dfe.py",
       "status": "ok",
       "step": 7
     },
     {
-      "duration_seconds": 71.76,
+      "duration_seconds": 72.0,
       "name": "home_office",
       "script": "pipeline/ingest_home_office.py",
       "status": "ok",
       "step": 8
     },
     {
-      "duration_seconds": 0.22,
+      "duration_seconds": 0.29,
       "name": "imd",
       "script": "pipeline/ingest_imd.py",
       "status": "ok",
       "step": 9
     },
     {
-      "duration_seconds": 0.7,
+      "duration_seconds": 0.8,
       "name": "rri",
       "script": "pipeline/compute_rri.py",
       "status": "ok",
@@ -449,6 +639,13 @@
       "script": "pipeline/compute_target.py",
       "status": "ok",
       "step": 11
+    },
+    {
+      "duration_seconds": 0.1,
+      "name": "explorer",
+      "script": "pipeline/build_explorer.py",
+      "status": "ok",
+      "step": 12
     }
   ]
 }

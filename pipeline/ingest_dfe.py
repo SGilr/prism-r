@@ -186,7 +186,16 @@ def _number(value: object):
 
 def _record(geo_id, year, indicator, breakdown, ethnicity, *, value=None,
             rate_per_100=None, source_rate=None, source_rate_base=None,
+            numerator=None, denominator=None,
             suppressed=False, source, reference_period, methodology_note=None) -> dict:
+    """One context-indicator record.
+
+    numerator and denominator are carried wherever the source publishes them,
+    so a rate can be recomputed at any level of aggregation rather than
+    averaged from a lower level's rates. Welsh exclusion rates and imd_score
+    have no published counts and carry null for both; they are shown only at
+    the level their publisher releases them.
+    """
     return {
         "geo_id": geo_id,
         "year": year,
@@ -194,6 +203,8 @@ def _record(geo_id, year, indicator, breakdown, ethnicity, *, value=None,
         "breakdown": breakdown,
         "ethnicity": ethnicity,
         "value": value,
+        "numerator": numerator,
+        "denominator": denominator,
         "rate_per_100": rate_per_100,
         "source_rate": source_rate,
         "source_rate_base": source_rate_base,
@@ -220,10 +231,32 @@ def _welsh_code(la_name: str, la_codes: dict[str, str]) -> str | None:
 # --------------------------------------------------------------------------
 # England: DfE exclusions (rate per 100, LA x ethnicity)
 # --------------------------------------------------------------------------
+# DfE region names to PRISM-R region geo_ids.
+DFE_REGIONS = {
+    "East Midlands": "rgn-east-midlands",
+    "East of England": "rgn-eastern",
+    "London": "rgn-london",
+    "North East": "rgn-north-east",
+    "North West": "rgn-north-west",
+    "South East": "rgn-south-east",
+    "South West": "rgn-south-west",
+    "West Midlands": "rgn-west-midlands",
+    "Yorkshire and The Humber": "rgn-yorkshire-and-the-humber",
+}
+
+
 def read_dfe_exclusions() -> list[dict]:
+    """English exclusions and suspensions, upper-tier authority and region.
+
+    Both levels come from the DfE's own published rows, so a regional figure
+    is the DfE's, not an average of local authority rates. Each record carries
+    the numerator (perm_excl or suspension) and the denominator (headcount)
+    alongside the rate, so the explorer can recompute a rate at whatever level
+    it displays.
+    """
     frame = pd.read_csv(EXCLUSIONS_CSV, dtype=str)
     frame = frame[
-        (frame["geographic_level"] == "Local authority")
+        (frame["geographic_level"].isin(["Local authority", "Regional", "National"]))
         & (frame["time_period"].isin(EXCLUSION_YEARS))
         & (frame["education_phase"] == "Total")
     ]
@@ -231,22 +264,36 @@ def read_dfe_exclusions() -> list[dict]:
     records = []
     for row in frame.itertuples(index=False):
         year, period = EXCLUSION_YEARS[row.time_period]
+        if row.geographic_level == "Regional":
+            geo_id = DFE_REGIONS.get(row.region_name)
+            if geo_id is None:
+                continue
+        elif row.geographic_level == "National":
+            # The DfE publishes England, not England and Wales; the geo_id
+            # says so, and the explorer labels the comparator's scope.
+            geo_id = "nat-england"
+        else:
+            geo_id = row.new_la_code
         if row.characteristic_group == "Total" and row.characteristic == "Total":
             breakdown, ethnicity = "overall", None
         elif row.characteristic_group == "Ethnicity Major" and row.characteristic in DFE_EXCL_ETHNICITY:
             breakdown, ethnicity = "by_ethnicity", DFE_EXCL_ETHNICITY[row.characteristic]
         else:
             continue
-        for indicator, raw in (
-            ("permanent_exclusion_rate", row.perm_excl_rate),
-            ("suspension_rate", row.susp_rate),
+        headcount, _ = _number(row.headcount)
+        for indicator, raw_rate, raw_count in (
+            ("permanent_exclusion_rate", row.perm_excl_rate, row.perm_excl),
+            ("suspension_rate", row.susp_rate, row.suspension),
         ):
-            rate, suppressed = _number(raw)
+            rate, suppressed = _number(raw_rate)
+            count, count_suppressed = _number(raw_count)
             records.append(
                 _record(
-                    row.new_la_code, year, indicator, breakdown, ethnicity,
+                    geo_id, year, indicator, breakdown, ethnicity,
                     rate_per_100=rate, source_rate=rate, source_rate_base=100,
-                    suppressed=suppressed, source=source, reference_period=period,
+                    numerator=count, denominator=headcount,
+                    suppressed=suppressed or count_suppressed,
+                    source=source, reference_period=period,
                 )
             )
     return records

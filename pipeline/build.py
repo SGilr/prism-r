@@ -20,6 +20,7 @@ Step order (dependency-ordered; the order is checked at runtime):
   8. ingest_imd.py        context_indicators.json   (merge; needs 6)
   9. compute_rri.py       rri.json                  (needs 1, 5, 6, 7, 8)
   10. compute_target.py   target_tracker.json       (needs 1, 4)
+  11. build_explorer.py   explorer/*.json           (needs 2, 5, 6, 7, 8)
 
 There is no separate Welsh ingest: ingest_dfe.py ingests English and Welsh
 exclusions and looked-after children together, because context_indicators.json
@@ -33,7 +34,7 @@ CLI flags:
   --dry-run         print the planned step order and exit
   --only STEP       run a single step by name (yjb, crosswalk, boundaries,
                     ycs, ons, dfe, home_office, imd, rri, target,
-                    explorer_boundaries)
+                    explorer_boundaries, explorer)
   --from STEP       start at STEP and run every step after it
   --fetch           run the fetch layer (pipeline/fetch.py) first, so the
                     fast-refreshing raw sources are brought up to date before
@@ -113,6 +114,10 @@ STEPS: tuple[Step, ...] = (
          ("rri.json",), ("yjb", "ons", "dfe", "home_office", "imd")),
     Step("target", "compute_target.py",
          ("target_tracker.json",), ("yjb", "ycs")),
+    Step("explorer", "build_explorer.py",
+         ("explorer/index.json", "explorer/rgn.json", "explorer/utla.json",
+          "explorer/lad.json", "explorer/pfa.json"),
+         ("crosswalk", "ons", "dfe", "home_office", "imd")),
 )
 
 # Every processed output, in a stable manifest order.
@@ -133,6 +138,11 @@ PROCESSED_OUTPUTS: tuple[str, ...] = (
     "context_indicators.json",
     "rri.json",
     "target_tracker.json",
+    "explorer/index.json",
+    "explorer/rgn.json",
+    "explorer/utla.json",
+    "explorer/lad.json",
+    "explorer/pfa.json",
 )
 
 # Validation gate: minimum record count per output. ethnicity_crosswalk.json
@@ -149,6 +159,10 @@ MIN_RECORDS: dict[str, int] = {
     "context_indicators.json": 3700,
     "rri.json": 40,
     "target_tracker.json": 900,
+    "explorer/rgn.json": 200,
+    "explorer/utla.json": 4000,
+    "explorer/lad.json": 2000,
+    "explorer/pfa.json": 400,
 }
 
 
@@ -186,6 +200,23 @@ _HOME_OFFICE = {
     "publication_date": "2025-11-06",
     "retrieval_date": "2026-05-17",
 }
+
+_CENSUS = {
+    "description": "ONS Census 2021, dataset RM032, ethnic group by sex by age",
+    "url": "https://www.ons.gov.uk/datasets/RM032",
+    "reference_period": "Census day, 21 March 2021",
+    "publication_date": "2023-03-28",
+    "retrieval_date": "2026-05-17",
+}
+_DFE_EXCLUSIONS = {
+    "description": "DfE Suspensions and permanent exclusions in England",
+    "url": "https://explore-education-statistics.service.gov.uk/find-statistics/"
+    "suspensions-and-permanent-exclusions-in-england",
+    "reference_period": "academic years 2023/24 and 2024/25",
+    "publication_date": "2026-07-09",
+    "retrieval_date": "2026-09-03",
+}
+_EXPLORER_SOURCES = [_DFE_EXCLUSIONS, _CENSUS, _HOME_OFFICE, _ONS_BOUNDARIES]
 
 PROVENANCE: dict[str, list[dict]] = {
     "geographies.json": [
@@ -298,6 +329,13 @@ PROVENANCE: dict[str, list[dict]] = {
         {**_YJS, "description": "YJB Youth Justice Statistics 2024 to 2025, "
          "remand episodes (chapter 6)"},
     ],
+    # The explorer is a reshaping of context_indicators.json and
+    # populations.json for the map, so it inherits their provenance.
+    "explorer/index.json": _EXPLORER_SOURCES,
+    "explorer/rgn.json": _EXPLORER_SOURCES,
+    "explorer/utla.json": _EXPLORER_SOURCES,
+    "explorer/lad.json": _EXPLORER_SOURCES,
+    "explorer/pfa.json": _EXPLORER_SOURCES,
     "rri.json": [
         {
             "description": "MoJ Statistics on Ethnicity and the Criminal Justice "
@@ -415,6 +453,22 @@ def validate_output(filename: str) -> tuple[bool, str]:
         payload = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as error:
         return False, f"{filename}: invalid JSON ({error})"
+    if filename == "explorer/index.json":
+        geographies = payload.get("geographies")
+        if not isinstance(geographies, list) or len(geographies) < 500:
+            return False, f"{filename}: expected the full geography index"
+        size_kb = path.stat().st_size / 1024
+        return True, f"{filename}: {len(geographies)} geographies, {size_kb:.0f} KB"
+    if filename.startswith("explorer/"):
+        records = payload.get("records")
+        minimum = MIN_RECORDS.get(filename, 1)
+        if not isinstance(records, list) or len(records) < minimum:
+            return False, (f"{filename}: {len(records) if isinstance(records, list) else 'no'} "
+                           f"records, below the expected {minimum}")
+        size_kb = path.stat().st_size / 1024
+        if size_kb > 2048:
+            return False, f"{filename}: {size_kb:.0f} KB exceeds the 2 MB budget"
+        return True, f"{filename}: {len(records)} records, {size_kb:.0f} KB"
     if filename.startswith("boundaries/"):
         # TopoJSON: no meta/records block, but it carries a prism_r stamp and
         # must decode as a topology with at least one geography.
@@ -562,6 +616,14 @@ def suppress_records(records: list[dict], plan: SuppressionPlan) -> list[dict]:
             continue
         record = records[index_by_id[cell["cell_id"]]]
         record[plan.count_field] = None
+        # Null every field the count can be recovered from. A rate published
+        # against a known denominator, the Census child population in the
+        # stop and search case, gives the count back exactly, so suppressing
+        # the count alone would leak it.
+        for derived in ("numerator", "rate_per_100", "rate_per_1000",
+                        "source_rate", "share"):
+            if record.get(derived) is not None:
+                record[derived] = None
         record["suppressed"] = True
         record["suppression_rule"] = cell["rule"]
     return [{**entry, "dataset": plan.filename} for entry in result.audit]
@@ -642,6 +704,9 @@ def file_entry(filename: str) -> dict:
     if filename.startswith("boundaries/"):
         records = len(payload["objects"]["data"]["geometries"])
         generated_by = "pipeline/build_explorer_boundaries.py"
+    if filename == "explorer/index.json":
+        records = len(payload["geographies"])
+        generated_by = "pipeline/build_explorer.py"
     return {
         "file": f"data/processed/{filename}",
         "schema_version": SCHEMA_VERSION,
