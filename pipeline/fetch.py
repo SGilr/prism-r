@@ -77,6 +77,17 @@ MANUAL_SOURCES = {
         "note": "Police powers and procedures open data tables, year ending "
                 "March 2025",
     },
+    "ons_boundaries_2023": {
+        "manual": True,
+        "last_retrieved": "2026-09-03",
+        "note": "ONS Open Geography portal, December 2023 boundaries at BUC "
+                "(ultra-generalised clipped): local authority districts, "
+                "counties and unitary authorities, police force areas and "
+                "English regions. Pulled from the ArcGIS feature service into "
+                "data/raw/geo/boundaries-2023/; boundaries change rarely, so "
+                "this is a manual source. Built into TopoJSON by "
+                "pipeline/build_explorer_boundaries.py.",
+    },
     "statswales": {
         "manual": True,
         "last_retrieved": "2026-05-17",

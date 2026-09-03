@@ -52,6 +52,7 @@ Every source feeding PRISM-R, with retrieval date and version. This file is the 
 | MHCLG English Indices of Deprivation 2025 | iod2025_file10_la_lower.xlsx | 2026-05-17 | OGL v3.0 | File 10, lower-tier LA summaries; IDACI average score per LA |
 | ONS Open Geography portal, Police Force Areas Dec 2023 BGC | police_force_areas_dec2023_bgc.geojson | 2026-05-18 | OGL v3.0 | force boundary polygons for the static choropleth; simplified into force_boundaries.json |
 | MoJ Youth Custody Service, youth custody report June 2026 | youth-custody-population-june-2026.ods | 2026-09-03 | OGL v3.0 | monthly custody population by legal basis, age, ethnicity; annual episodes ending; feeds the target tracker |
+| ONS Open Geography portal, December 2023 boundaries (BUC) | boundaries-2023/{LAD,CTYUA,PFA,RGN}_2023_BUC.geojson | 2026-09-03 | OGL v3.0 | ultra-generalised boundaries for the geographic explorer; built into TopoJSON by pipeline/build_explorer_boundaries.py |
 | Welsh Index of Multiple Deprivation 2019 | wimd2019_income_deprivation_by_age.json | 2026-05-17 | OGL v3.0 | income deprivation by age, LSOA and LA; child (0-15) income deprivation by LA. WIMD 2019 used pending WIMD 2025 LA indicator data |
 
 YJS files were downloaded from gov.uk. The Youth Justice Statistics 2024 to 2025 release was published on 29 January 2026. The original download archives (`supplementary_tables.zip`, `local_level_open_data_tables.zip`) are retained in `data/raw/yjb-2024-25/` as the canonical source.

@@ -11,6 +11,7 @@ Step order (dependency-ordered; the order is checked at runtime):
   1. ingest_yjb.py        geographies.json, remand_outcomes.json
   2. build_crosswalk.py   geo_crosswalk.json        (needs geographies.json)
   3. build_force_boundaries.py  force_boundaries.json  (needs geographies.json)
+  3b. build_explorer_boundaries.py  boundaries/*.topo.json (needs 1, 2)
   4. ingest_ycs.py        custody_monthly.json, custody_episodes_ending.json,
                           custody_episode_length.json
   5. ingest_ons.py        populations.json
@@ -31,7 +32,8 @@ Outputs go to data/processed/ only; the build never writes to data/raw/.
 CLI flags:
   --dry-run         print the planned step order and exit
   --only STEP       run a single step by name (yjb, crosswalk, boundaries,
-                    ycs, ons, dfe, home_office, imd, rri, target)
+                    ycs, ons, dfe, home_office, imd, rri, target,
+                    explorer_boundaries)
   --from STEP       start at STEP and run every step after it
   --fetch           run the fetch layer (pipeline/fetch.py) first, so the
                     fast-refreshing raw sources are brought up to date before
@@ -92,6 +94,10 @@ STEPS: tuple[Step, ...] = (
          ("geo_crosswalk.json",), ("yjb",)),
     Step("boundaries", "build_force_boundaries.py",
          ("force_boundaries.json",), ("yjb",)),
+    Step("explorer_boundaries", "build_explorer_boundaries.py",
+         ("boundaries/lad.topo.json", "boundaries/utla.topo.json",
+          "boundaries/pfa.topo.json", "boundaries/rgn.topo.json"),
+         ("yjb", "crosswalk")),
     Step("ycs", "ingest_ycs.py",
          ("custody_monthly.json", "custody_episodes_ending.json",
           "custody_episode_length.json"), ()),
@@ -114,6 +120,10 @@ PROCESSED_OUTPUTS: tuple[str, ...] = (
     "geographies.json",
     "geo_crosswalk.json",
     "force_boundaries.json",
+    "boundaries/lad.topo.json",
+    "boundaries/utla.topo.json",
+    "boundaries/pfa.topo.json",
+    "boundaries/rgn.topo.json",
     "custody_monthly.json",
     "custody_episodes_ending.json",
     "custody_episode_length.json",
@@ -161,6 +171,14 @@ _YCS = {
     "publication_date": "2026-08-14",
     "retrieval_date": "2026-09-03",
 }
+_ONS_BOUNDARIES = {
+    "description": "ONS Open Geography portal, December 2023 boundaries, "
+    "ultra-generalised clipped (BUC)",
+    "url": "https://geoportal.statistics.gov.uk/",
+    "reference_period": "December 2023 administrative geography",
+    "publication_date": "2024",
+    "retrieval_date": "2026-09-03",
+}
 _HOME_OFFICE = {
     "description": "Home Office Police powers and procedures, stop and search and arrests",
     "url": "https://www.gov.uk/government/statistics/stop-and-search-arrests-and-mental-health-detentions-march-2025",
@@ -193,6 +211,10 @@ PROVENANCE: dict[str, list[dict]] = {
             "retrieval_date": "2026-05-18",
         },
     ],
+    "boundaries/lad.topo.json": [_ONS_BOUNDARIES],
+    "boundaries/utla.topo.json": [_ONS_BOUNDARIES],
+    "boundaries/pfa.topo.json": [_ONS_BOUNDARIES],
+    "boundaries/rgn.topo.json": [_ONS_BOUNDARIES],
     "custody_monthly.json": [_YCS],
     "custody_episodes_ending.json": [_YCS],
     "custody_episode_length.json": [_YCS],
@@ -393,6 +415,20 @@ def validate_output(filename: str) -> tuple[bool, str]:
         payload = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as error:
         return False, f"{filename}: invalid JSON ({error})"
+    if filename.startswith("boundaries/"):
+        # TopoJSON: no meta/records block, but it carries a prism_r stamp and
+        # must decode as a topology with at least one geography.
+        stamp = payload.get("prism_r", {})
+        objects = payload.get("objects", {}).get("data", {}).get("geometries", [])
+        if payload.get("type") != "Topology" or not objects:
+            return False, f"{filename}: not a TopoJSON topology with geographies"
+        if len(objects) != stamp.get("features"):
+            return False, (f"{filename}: {len(objects)} geographies but the "
+                           f"stamp claims {stamp.get('features')}")
+        size_kb = path.stat().st_size / 1024
+        if size_kb > 400:
+            return False, f"{filename}: {size_kb:.0f} KB exceeds the 400 KB budget"
+        return True, f"{filename}: {len(objects)} geographies, {size_kb:.0f} KB"
     if not isinstance(payload, dict) or "meta" not in payload:
         return False, f"{filename}: missing meta block"
     if filename == "ethnicity_crosswalk.json":
@@ -603,6 +639,9 @@ def file_entry(filename: str) -> dict:
     payload = json.loads(data)
     records = len(payload["records"]) if isinstance(payload.get("records"), list) else None
     generated_by = payload.get("meta", {}).get("generated_by")
+    if filename.startswith("boundaries/"):
+        records = len(payload["objects"]["data"]["geometries"])
+        generated_by = "pipeline/build_explorer_boundaries.py"
     return {
         "file": f"data/processed/{filename}",
         "schema_version": SCHEMA_VERSION,
