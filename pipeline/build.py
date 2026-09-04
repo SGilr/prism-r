@@ -904,6 +904,15 @@ def git_state() -> dict:
     }
 
 
+def manifest_destination(complete: bool) -> Path:
+    """Which manifest a build of this kind may write.
+
+    Kept separate from write_manifest so both branches can be tested without
+    writing over the committed record to prove where it would have gone.
+    """
+    return MANIFEST if complete else MANIFEST_PARTIAL
+
+
 def write_manifest(step_results: list[dict], *, complete: bool) -> dict:
     """Assemble and write the build manifest.
 
@@ -957,7 +966,7 @@ def write_manifest(step_results: list[dict], *, complete: bool) -> dict:
             "present on disk, most of which this run did not produce. Not "
             "the committed provenance record; see manifest.json for that."
         )
-    destination = MANIFEST if complete else MANIFEST_PARTIAL
+    destination = manifest_destination(complete)
     destination.parent.mkdir(parents=True, exist_ok=True)
     with destination.open("w", encoding="utf-8") as handle:
         json.dump(manifest, handle, ensure_ascii=False, indent=2, sort_keys=True)

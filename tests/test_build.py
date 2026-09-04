@@ -225,6 +225,19 @@ def test_committed_manifest_records_a_whole_build():
     assert manifest["meta"].get("build_complete") is not False
 
 
+def test_only_a_complete_build_may_write_the_committed_manifest():
+    """Both branches of the destination choice, without writing either file.
+
+    The complete branch is otherwise exercised only by the slow smoke test,
+    which CI deselects, so this is the only automated check that a whole
+    build still writes the committed record.
+    """
+    assert build.manifest_destination(True) == build.MANIFEST
+    assert build.manifest_destination(False) == build.MANIFEST_PARTIAL
+    assert build.MANIFEST.name == "manifest.json"
+    assert build.MANIFEST_PARTIAL != build.MANIFEST
+
+
 def test_an_incomplete_build_leaves_the_committed_manifest_alone(tmp_path):
     """write_manifest(complete=False) writes the partial file and nothing else.
 
