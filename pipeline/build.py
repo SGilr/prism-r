@@ -51,6 +51,13 @@ CLI flags:
 The build writes data/processed/manifest.json (the provenance record) and
 data/processed/build.log (the run log). build.log is a runtime artefact and
 is git-ignored; manifest.json is the committed provenance record.
+
+manifest.json is written only by a complete, successful build: every step in
+STEPS ran and every validation gate passed. A build that fails part way, or
+one narrowed by --only or --from, writes data/processed/manifest.partial.json
+instead, which is git-ignored. The committed record therefore always describes
+a whole build, and a failed run in a working copy cannot leave a truncated
+provenance record staged for commit.
 """
 
 from __future__ import annotations
@@ -70,6 +77,11 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 PIPELINE_DIR = REPO_ROOT / "pipeline"
 PROCESSED_DIR = REPO_ROOT / "data" / "processed"
 MANIFEST = PROCESSED_DIR / "manifest.json"
+# An incomplete build writes here instead of over the committed record. See
+# write_manifest: manifest.json is only ever written by a complete, successful
+# build, so a failed or partial run cannot degrade the provenance of the last
+# good one.
+MANIFEST_PARTIAL = PROCESSED_DIR / "manifest.partial.json"
 BUILD_LOG = PROCESSED_DIR / "build.log"
 SUPPRESSION_AUDIT = PROCESSED_DIR / "suppression_audit.json"
 
@@ -892,8 +904,17 @@ def git_state() -> dict:
     }
 
 
-def write_manifest(step_results: list[dict]) -> dict:
-    """Assemble and write data/processed/manifest.json."""
+def write_manifest(step_results: list[dict], *, complete: bool) -> dict:
+    """Assemble and write the build manifest.
+
+    A complete build writes data/processed/manifest.json, the committed
+    provenance record. An incomplete one, whether it failed or was narrowed
+    by --only or --from, writes manifest.partial.json and leaves the
+    committed record untouched: its steps list would describe only the part
+    that ran, while its outputs list would still name every file on disk, so
+    it would read as a whole build that had somehow skipped most of its
+    steps.
+    """
     outputs = [file_entry(name) for name in MANIFEST_OUTPUTS
                if (PROCESSED_DIR / name).exists()]
     manifest = {
@@ -927,8 +948,18 @@ def write_manifest(step_results: list[dict]) -> dict:
         ],
         "outputs": outputs,
     }
-    MANIFEST.parent.mkdir(parents=True, exist_ok=True)
-    with MANIFEST.open("w", encoding="utf-8") as handle:
+    if not complete:
+        manifest["meta"]["build_complete"] = False
+        manifest["meta"]["schema_note"] = (
+            "The provenance record of an incomplete build: it either failed "
+            "or was narrowed by --only or --from. steps lists only the "
+            "scripts that ran, while outputs describes every processed file "
+            "present on disk, most of which this run did not produce. Not "
+            "the committed provenance record; see manifest.json for that."
+        )
+    destination = MANIFEST if complete else MANIFEST_PARTIAL
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with destination.open("w", encoding="utf-8") as handle:
         json.dump(manifest, handle, ensure_ascii=False, indent=2, sort_keys=True)
         handle.write("\n")
     return manifest
@@ -1064,10 +1095,11 @@ def main(argv: list[str] | None = None) -> int:
         post_code, post_results = run_pipeline(after)
         exit_code = post_code
         results = results + post_results
-    manifest = write_manifest(results)
+    complete = exit_code == 0 and len(steps) == len(STEPS)
+    manifest = write_manifest(results, complete=complete)
     total = sum(r["duration_seconds"] for r in results)
 
-    if exit_code == 0:
+    if complete:
         log.info("build complete: %d steps in %.1fs", len(results), total)
         log.info("manifest.json written, %d processed outputs",
                  len(manifest["outputs"]))
@@ -1075,8 +1107,14 @@ def main(argv: list[str] | None = None) -> int:
             records = output["records"]
             tag = f"{records:>7,} records" if records is not None else "       (mappings)"
             log.info("  %-38s %s  %s", output["file"], tag, output["sha256"][:12])
+    elif exit_code == 0:
+        log.warning("partial build: %d of %d steps in %.1fs; wrote %s and left "
+                    "manifest.json untouched, because the committed provenance "
+                    "record describes a whole build",
+                    len(results), len(STEPS), total, MANIFEST_PARTIAL.name)
     else:
-        log.error("build aborted after %d steps; partial manifest written", len(results))
+        log.error("build aborted after %d steps; wrote %s and left "
+                  "manifest.json untouched", len(results), MANIFEST_PARTIAL.name)
     return exit_code
 
 

@@ -204,10 +204,52 @@ def test_committed_manifest_is_well_formed():
         (REPO_ROOT / "data" / "processed" / "manifest.json").read_text("utf-8")
     )
     assert manifest["meta"]["dataset"] == "build_manifest"
-    assert {s["name"] for s in manifest["steps"]} <= set(EXPECTED_ORDER)
     files = {output["file"] for output in manifest["outputs"]}
     assert "data/processed/rri.json" in files
     assert "data/processed/context_indicators.json" in files
+
+
+def test_committed_manifest_records_a_whole_build():
+    """The committed record must describe every step, in order, all passing.
+
+    A subset check would not do. On 4 September 2026 a failed build
+    overwrote this file with the one step it had managed to run, and the
+    outputs list still named every file on disk, so the result read as a
+    valid manifest. Equality is what makes that visible.
+    """
+    manifest = json.loads(
+        (REPO_ROOT / "data" / "processed" / "manifest.json").read_text("utf-8")
+    )
+    assert [s["name"] for s in manifest["steps"]] == EXPECTED_ORDER
+    assert all(s["status"] == "ok" for s in manifest["steps"])
+    assert manifest["meta"].get("build_complete") is not False
+
+
+def test_an_incomplete_build_leaves_the_committed_manifest_alone(tmp_path):
+    """write_manifest(complete=False) writes the partial file and nothing else.
+
+    This is the guard on the defect above: a run that fails, or one narrowed
+    by --only or --from, must not touch data/processed/manifest.json.
+    """
+    before = build.MANIFEST.read_bytes()
+    partial_existed = build.MANIFEST_PARTIAL.exists()
+    try:
+        one_step = [{
+            "name": "yjb", "script": "ingest_yjb.py", "status": "ok",
+            "duration_seconds": 0.0,
+        }]
+        manifest = build.write_manifest(one_step, complete=False)
+
+        assert build.MANIFEST.read_bytes() == before, (
+            "an incomplete build overwrote the committed provenance record"
+        )
+        assert build.MANIFEST_PARTIAL.exists()
+        assert manifest["meta"]["build_complete"] is False
+        written = json.loads(build.MANIFEST_PARTIAL.read_text("utf-8"))
+        assert [s["name"] for s in written["steps"]] == ["yjb"]
+    finally:
+        if not partial_existed:
+            build.MANIFEST_PARTIAL.unlink(missing_ok=True)
 
 
 # --------------------------------------------------------------------------

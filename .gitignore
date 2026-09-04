@@ -12,6 +12,9 @@ data/interim/*
 # Build log: a runtime artefact written by pipeline/build.py. The committed
 # provenance record is data/processed/manifest.json, not this log.
 data/processed/build.log
+# The manifest of an incomplete build, written when a run fails or is narrowed
+# by --only or --from. A diagnostic, never the committed provenance record.
+data/processed/manifest.partial.json
 
 # Raw source downloads, not committed; reproducible from the documented sources.
 data/raw/*
