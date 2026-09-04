@@ -78,7 +78,17 @@ SOURCES: list[tuple[str, tuple[str, str, str, str]]] = [
     ("geo/police_force_areas", (
         "ONS Open Geography portal, police force areas December 2023 BGC",
         "https://geoportal.statistics.gov.uk/", "2026-05-18", OGL_ONS)),
-    ("geo/", (
+    ("geo/boundaries-2023", (
+        "ONS Open Geography portal, December 2023 boundaries at BUC "
+        "(ultra-generalised clipped): local authority districts, counties "
+        "and unitary authorities, police force areas and English regions",
+        "https://geoportal.statistics.gov.uk/", "2026-09-03", OGL_ONS)),
+    # Named for the one file it describes, not the whole geo/ directory.
+    # geo/ holds files from different ONS sources, so a directory-wide entry
+    # here silently attributes anything added later to whichever file it was
+    # written for. A new file falls through to the unattributed fallback
+    # instead, which tests/test_raw_bundle.py fails on.
+    ("geo/uk_authority_codes", (
         "ONS lookup table for UK authority codes 2024 (FOI-2024-2008)",
         "https://www.ons.gov.uk/aboutus/transparencyandgovernance/"
         "freedomofinformationfoi/lookuptableforukauthoritycodes2024",
