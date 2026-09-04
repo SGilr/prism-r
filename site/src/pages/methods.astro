@@ -218,6 +218,37 @@ const repoUrl = 'https://github.com/SGilr/prism-r';
         All PRISM-R outputs contain public sector information licensed under
         the Open Government Licence v3.0. Please cite PRISM-R, Oxon Advisory,
         and the underlying publisher named in the row you use.
+        <a href="#citing">Citing PRISM-R</a> gives the form of citation.
+      </p>
+    </section>
+
+    <section class="mt-10 space-y-4 leading-relaxed" id="citing">
+      <h2 class="font-sans text-lg font-semibold tracking-tight text-ink">
+        Citing PRISM-R
+      </h2>
+      <p>
+        PRISM-R is refreshed as its sources publish, so any citation should
+        name the version and the date the figures were read. Each release is
+        tagged in the repository and every page carries the date of the data
+        it shows.
+      </p>
+      <p class="citation-form">
+        Gilmour, S. (2026) <i>PRISM-R: an open analysis of remand
+        disproportionality in the youth justice system of England and
+        Wales</i> (version [tag]). Available at:
+        https://prism-r.howpreventionworks.com (Accessed: [date]).
+      </p>
+      <p>
+        For a specific figure, cite the underlying source as well, which is
+        named in the caption of every chart and in the provenance columns of
+        every CSV. Where a figure is PRISM-R's own analysis rather than a
+        published statistic, the chart caption says so.
+      </p>
+      <p>
+        The repository at <a href={repoUrl}>github.com/SGilr/prism-r</a>
+        carries a <code>CITATION.cff</code> file, which GitHub renders as a
+        citation block, and the raw data bundle used for each build is
+        published as a release asset.
       </p>
     </section>
 
@@ -368,6 +399,12 @@ const repoUrl = 'https://github.com/SGilr/prism-r';
       color: #1f3a5f;
       text-decoration: underline;
       text-underline-offset: 2px;
+    }
+    .citation-form {
+      border-left: 2px solid #d8d6cc;
+      padding-left: 1rem;
+      font-size: 0.94rem;
+      line-height: 1.6;
     }
     .download-list {
       list-style: none;

@@ -2,7 +2,7 @@
 
 **Project:** PRISM-R, an open tool for analysis of remand disproportionality in the youth justice system of England and Wales.
 **Owner:** Stan Gilmour KPM FRSA, Oxon Advisory.
-**Host:** Prevention Works (howpreventionworks.com), as a top-level section at `/prism-r` or subdomain `prism-r.howpreventionworks.com` (final hosting decision pending).
+**Host:** Prevention Works (howpreventionworks.com). Live at `prism-r.howpreventionworks.com`, served as a static site from Cloudflare Pages.
 **Status:** Specification for v1 build, May 2026.
 **Revision:** 2026-05-16, sub-national remand rescoped. Remand data stays at England and Wales level for v1; the sub-national explorer is built around the upstream drivers of remand. See sections 2 and 6.3.
 **Reconciled:** 2026-05-17, at Sprint 2 close. Sections 4.5, 4.6 and 8 have been aligned with the realised implementation: the context-layer indicator codes, the rate-index decision points, and the pipeline file list now match what was built. See `docs/SPRINT_2_CLOSURE.md`.

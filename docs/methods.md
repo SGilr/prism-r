@@ -256,6 +256,12 @@ Defects found in PRISM-R's own published figures or methods are recorded here, d
 
 Recorded here as the build proceeds. See spec section 12.
 
-## Citation guidance
+## Citing PRISM-R
 
-Added before launch.
+PRISM-R is refreshed as its sources publish, so any citation should name the version and the date the figures were read. Each release is tagged in the repository and every page carries the date of the data it shows.
+
+> Gilmour, S. (2026) *PRISM-R: an open analysis of remand disproportionality in the youth justice system of England and Wales* (version [tag]). Available at: https://prism-r.howpreventionworks.com (Accessed: [date]).
+
+For a specific figure, cite the underlying source as well, which is named in the caption of every chart and in the provenance columns of every CSV. Where a figure is PRISM-R's own analysis rather than a published statistic, the chart caption says so.
+
+The repository at [github.com/SGilr/prism-r](https://github.com/SGilr/prism-r) carries a `CITATION.cff` file, which GitHub renders as a citation block, and the raw data bundle used for each build is published as a release asset.
