@@ -64,7 +64,28 @@ Refetch `data/processed/` if your copy predates release `v0.5.0-explorer` of 3 S
 - Copies taken before commit `ded0100`: 30 suppressed `stop_search_rate` cells in `context_indicators.json` retained the rate derived from the suppressed count, and that rate against the published Census denominator recovers the count exactly.
 - Copies of `explorer/` taken between commit `ded0100` and release `v0.5.0-explorer`, both on 3 September 2026: 141 cells suppressed in `context_indicators.json` were republished with their values in `explorer/utla.json` and `explorer/pfa.json`, because the step building them ran before the suppression stage.
 
-Discard any older copy. Any analysis that read a rate for a suppressed stop and search cell, or a value from the explorer payloads for a suppressed cell, was reading a figure that should not have been published. Raw inputs are unaffected by both: no raw file changed, so the `raw-data-2026-09` bundle needs no reissue. Both defects, the affected cells, the exposure windows and the guards added afterwards are written up in the corrections section of [methods.md](methods.md#corrections).
+Discard any older copy. Any analysis that read a rate for a suppressed stop and search cell, or a value from the explorer payloads for a suppressed cell, was reading a figure that should not have been published. No raw file changed in either fix. Both defects, the affected cells, the exposure windows and the guards added afterwards are written up in the corrections section of [methods.md](methods.md#corrections).
+
+## The raw data bundle
+
+The raw inputs are published as a dated GitHub release, so the pipeline can be
+run from source. Download the newest `raw-data-*` release, unpack it at the
+repository root, and run `python pipeline/build.py`.
+
+| release | files | note |
+|---|---|---|
+| `raw-data-2026-09-05` | 137 | current |
+| `raw-data-2026-09` | 133 | superseded, do not use |
+
+`raw-data-2026-09` was cut at 09:40 UTC on 3 September 2026, three hours before
+the four ONS boundary files in `data/raw/geo/boundaries-2023/` were retrieved,
+so it does not contain them. A build from that bundle aborts at the
+`explorer_boundaries` step and nothing downstream runs, which made the
+reproducibility claim on the methods page false for anyone who tried it. The
+release is left published, with a note on it saying so, rather than having its
+asset replaced: it is a citable artefact, and a tag that means different bytes
+on different days cannot be verified against. Bundles are date-stamped from
+raw-data-2026-09-05 onward for the same reason.
 
 ## Release currency
 

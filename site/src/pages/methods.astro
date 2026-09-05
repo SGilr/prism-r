@@ -209,10 +209,14 @@ const repoUrl = 'https://github.com/SGilr/prism-r';
         The unmodified publisher files the pipeline reads are published as a
         release asset, so the whole pipeline is reproducible from source:
         <a href="https://github.com/SGilr/prism-r/releases">the raw-data
-        releases</a>, most recently <code>raw-data-2026-09</code>. The
+        releases</a>, most recently <code>raw-data-2026-09-05</code>. The
         archive carries a <code>RAW_BUNDLE.md</code> listing every file with
         its source URL, retrieval date, SHA-256 and licence. Unpack it at the
-        repository root and run <code>python pipeline/build.py</code>.
+        repository root and run <code>python pipeline/build.py</code>. Always
+        take the newest release: <code>raw-data-2026-09</code> is missing four
+        ONS boundary files and will not build. It is left published, and
+        marked superseded, rather than rewritten, because a citable asset
+        should not change contents under a fixed name.
       </p>
       <p class="download-note">
         All PRISM-R outputs contain public sector information licensed under

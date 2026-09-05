@@ -10,6 +10,12 @@ Procedure when a manual source is refreshed locally: re-run the build, run
 this script, publish the release it prints, and note it in
 docs/data-sources.md. See README, "Reproducing the pipeline".
 
+Each cut is published as a new dated release. A published bundle is never
+rewritten in place: readers are asked to verify PRISM-R against its raw
+inputs, which they cannot do if a tag means different bytes on different
+days. Supersede an old release by editing its notes, leaving its asset
+alone.
+
 Usage: python pipeline/make_raw_bundle.py [output-dir]
 """
 
@@ -151,7 +157,11 @@ def write_bundle_doc(tag: str) -> int:
 
 def main() -> int:
     output_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else REPO_ROOT
-    tag = f"raw-data-{dt.date.today().strftime('%Y-%m')}"
+    # Date-stamped, not month-stamped. A bundle is a citable artefact: a
+    # second cut in the same month must be a new release rather than a
+    # rewrite of one that readers may already have downloaded and cited.
+    # A month-stamped tag collided the first time this happened.
+    tag = f"raw-data-{dt.date.today().strftime('%Y-%m-%d')}"
     count = write_bundle_doc(tag)
     print(f"RAW_BUNDLE.md written, {count} files listed")
 
