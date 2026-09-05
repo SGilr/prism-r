@@ -33,6 +33,7 @@ Coverage is disclosure-aware: source-suppressed cells (DfE 'c', StatsWales
 
 from __future__ import annotations
 
+import csv
 import json
 import sys
 from pathlib import Path
@@ -50,7 +51,7 @@ EXCLUSIONS_CSV = RAW_DFE / "exclusions_2024-25" / "data" / "exc_characteristics.
 EXCLUSION_YEARS = {"202324": (2024, "academic year 2023/24"),
                    "202425": (2025, "academic year 2024/25")}
 CLA_CSV = RAW_DFE / "cla_2025" / "data" / "la_cla_on_31_march_by_characteristics.csv"
-WELSH_CLA_JSON = RAW_WALES / "welsh_cla_by_la_ethnicity.json"
+WELSH_CLA_CSV = RAW_WALES / "welsh_cla_by_la_ethnicity.csv"
 WELSH_EXCL_ODS = RAW_WALES / "welsh_exclusions_2023-24.ods"
 GEO_CROSSWALK = PROCESSED_DIR / "geo_crosswalk.json"
 
@@ -424,14 +425,29 @@ def read_dfe_cla() -> list[dict]:
 # --------------------------------------------------------------------------
 # Wales: StatsWales children looked after (count)
 # --------------------------------------------------------------------------
+def _latest_welsh_year(rows: list[dict]) -> tuple[str, int, str]:
+    """The most recent year in the Welsh export.
+
+    Resolved from the file rather than hard-coded, so a StatsWales update
+    flows through without a code edit. The Welsh label is a financial year
+    such as "2024-25"; PRISM-R stores the year it ends in, 2025, and states
+    the reference period in full.
+    """
+    labels = {row["Year"] for row in rows if row.get("Year")}
+    latest = max(labels, key=lambda label: int(label.split("-")[0]))
+    ends = int(latest.split("-")[0]) + 1
+    return latest, ends, f"year ending 31 March {ends}"
+
+
 def read_welsh_cla() -> list[dict]:
     la_codes = _welsh_la_codes()
-    rows = json.loads(WELSH_CLA_JSON.read_text(encoding="utf-8"))
+    with WELSH_CLA_CSV.open(encoding="utf-8-sig", newline="") as handle:
+        rows = list(csv.DictReader(handle))
     source = "StatsWales, Children looked after on 31 March by ethnicity"
-    period = "year ending 31 March 2024"
+    latest_label, year, period = _latest_welsh_year(rows)
     records = []
     for row in rows:
-        if row.get("Year") != "2023-24":
+        if row.get("Year") != latest_label:
             continue
         code = _welsh_code(row.get("Local Authority"), la_codes)
         if code is None:
@@ -446,7 +462,7 @@ def read_welsh_cla() -> list[dict]:
         value, suppressed = _number(row.get("Data values"))
         records.append(
             _record(
-                code, 2024, "lac_count", breakdown, ethnicity,
+                code, year, "lac_count", breakdown, ethnicity,
                 value=None if suppressed else int(value), suppressed=suppressed,
                 source=source, reference_period=period, methodology_note=WELSH_CLA_NOTE,
             )
