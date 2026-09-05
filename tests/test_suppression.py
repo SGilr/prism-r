@@ -592,3 +592,71 @@ def test_the_tracker_does_not_republish_a_suppressed_custody_cell():
     assert not offenders, (
         f"{len(offenders)} custody cells suppressed upstream are republished "
         "in the tracker:\n" + "\n".join(offenders[:10]))
+
+
+def test_no_published_count_sits_below_the_primary_threshold():
+    """Rule 1, checked on the outputs rather than on synthetic cells.
+
+    The guard above asserts that a record marked suppressed retains nothing
+    a reader could recover the count from. This asserts the converse: that no
+    record left unmarked carries a count the rule says must be withheld.
+    Without it, an output that never reached the suppression stage passes
+    every disclosure test, because each record is internally consistent. It
+    is only wrong against the source data, which the tests do not read.
+
+    Found on 4 September 2026. Running the end-to-end smoke test with an
+    incomplete data/raw/ aborted the build at step 4 of 13. Suppression is a
+    stage after the ingest steps, so the three that had already succeeded had
+    written their pre-suppression output to data/processed/, leaving three
+    records in remand_outcomes.json with a count below six and suppressed
+    false, one of them a count of 5. The full suite passed in that state.
+    Nothing was committed and nothing was published, but the only thing
+    standing between an aborted build and a commit was that the build had
+    failed noisily.
+
+    A count of exactly 0 is a true zero, not a small number, and is left
+    alone: see the module docstring of pipeline/suppress.py.
+    """
+    def counts_in(record: dict):
+        """Every value in this record that is a count subject to rule 1.
+
+        Counts appear under a field named count or *_count, and in the
+        context layer as the value and numerator of an indicator whose code
+        names it a count, such as lac_count and arrest_count.
+        """
+        for key, value in record.items():
+            if key == "count" or key.endswith("_count"):
+                yield key, value
+        indicator = record.get("indicator")
+        if isinstance(indicator, str) and indicator.endswith("_count"):
+            for key in ("value", "numerator"):
+                if key in record:
+                    yield f"{indicator}.{key}", record[key]
+
+    offenders = []
+    checked = 0
+    for source, record in _processed_records():
+        suppressed = (record.get("suppressed") is True
+                      or record.get("disclosure_status") in
+                      ("suppressed", "source_suppressed"))
+        for field, value in counts_in(record):
+            if not isinstance(value, (int, float)) or isinstance(value, bool):
+                continue
+            checked += 1
+            if suppressed:
+                continue
+            if 0 < value < suppress.PRIMARY_THRESHOLD:
+                where = {k: record[k] for k in ("geo_id", "ethnicity", "year")
+                         if k in record}
+                offenders.append(f"{source}: {field}={value} {where}")
+
+    assert checked > 1000, (
+        f"only {checked} counts examined; the guard is not reading the "
+        "processed outputs it is meant to cover"
+    )
+    assert not offenders, (
+        f"{len(offenders)} published counts sit below the threshold of "
+        f"{suppress.PRIMARY_THRESHOLD} and are not marked suppressed. Run a "
+        "complete build: an aborted or narrowed one leaves pre-suppression "
+        "data in data/processed/.\n" + "\n".join(offenders[:10])
+    )
