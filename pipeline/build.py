@@ -43,6 +43,7 @@ CLI flags:
                     ycs, ons, dfe, home_office, imd, rri, target,
                     explorer_boundaries, explorer, csv_exports)
   --from STEP       start at STEP and run every step after it
+  --clean           remove every generated file in data/processed/ and exit
   --fetch           run the fetch layer (pipeline/fetch.py) first, so the
                     fast-refreshing raw sources are brought up to date before
                     ingest. Default behaviour stays offline, using the local
@@ -436,6 +437,42 @@ PROVENANCE: dict[str, list[dict]] = {
 # Files listed in the manifest: the seven step outputs plus the suppression
 # audit, which is written by the build's suppression stage, not by a step.
 MANIFEST_OUTPUTS: tuple[str, ...] = PROCESSED_OUTPUTS + ("suppression_audit.json",)
+
+# Everything the build writes into data/processed/, which is everything
+# --clean removes. Derived from the outputs above rather than listed again,
+# because a clean that misses a file leaves stale data behind that looks
+# freshly built: the subdirectories were missed for exactly that reason when
+# the explorer and CSV steps were added.
+GENERATED_FILES: tuple[str, ...] = MANIFEST_OUTPUTS + (
+    MANIFEST.name, MANIFEST_PARTIAL.name, BUILD_LOG.name)
+
+
+def clean_processed() -> int:
+    """Remove every file the build generates, and any directory left empty.
+
+    data/processed/.gitkeep is not generated and stays, so the directory
+    survives in a clone with no build in it.
+    """
+    removed = 0
+    for name in GENERATED_FILES:
+        path = PROCESSED_DIR / name
+        if path.exists():
+            path.unlink()
+            removed += 1
+    for directory in sorted(
+            (d for d in PROCESSED_DIR.rglob("*") if d.is_dir()),
+            key=lambda d: len(d.parts), reverse=True):
+        if not any(directory.iterdir()):
+            directory.rmdir()
+    leftover = sorted(
+        p.relative_to(PROCESSED_DIR).as_posix()
+        for p in PROCESSED_DIR.rglob("*")
+        if p.is_file() and p.name != ".gitkeep")
+    print(f"removed {removed} generated files from data/processed/")
+    if leftover:
+        print("left in place, not declared as generated: "
+              + ", ".join(leftover))
+    return 0
 
 
 # --------------------------------------------------------------------------
@@ -1034,12 +1071,18 @@ def main(argv: list[str] | None = None) -> int:
                         help="print the planned step order and exit")
     parser.add_argument("--fetch", action="store_true",
                         help="run the fetch layer first; default is offline")
+    parser.add_argument("--clean", action="store_true",
+                        help="remove every generated file in data/processed/ "
+                             "and exit; make clean-processed calls this")
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--only", metavar="STEP",
                        help="run only the named step")
     group.add_argument("--from", metavar="STEP", dest="from_step",
                        help="start at the named step and run every step after it")
     args = parser.parse_args(argv)
+
+    if args.clean:
+        return clean_processed()
 
     issues = dependency_issues()
     if issues:

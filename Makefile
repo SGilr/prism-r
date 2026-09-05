@@ -17,6 +17,8 @@ test:
 test-fast:
 	$(PYTHON) -m pytest -m "not slow"
 
-# Remove every generated file in data/processed/. Rebuild with make build.
+# Remove every generated file in data/processed/, including the boundaries,
+# explorer and csv subdirectories. build.py owns the list, so a new output
+# cannot be missed here the way the subdirectories were.
 clean-processed:
-	rm -f data/processed/*.json data/processed/build.log
+	$(PYTHON) pipeline/build.py --clean

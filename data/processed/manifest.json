@@ -1,10 +1,10 @@
 {
   "meta": {
-    "build_timestamp": "2026-09-05T08:45:23+00:00",
+    "build_timestamp": "2026-09-05T10:07:54+00:00",
     "dataset": "build_manifest",
     "generated_by": "pipeline/build.py",
     "git": {
-      "commit": "0a60e3bb6816c27f3ffcf62b951c27a7d997cd86",
+      "commit": "19bab093b66c76cc9634579fb510c764df926efa",
       "working_tree": "dirty"
     },
     "python_version": "3.14.2",
@@ -701,28 +701,28 @@
   ],
   "steps": [
     {
-      "duration_seconds": 21.19,
+      "duration_seconds": 21.28,
       "name": "yjb",
       "script": "pipeline/ingest_yjb.py",
       "status": "ok",
       "step": 1
     },
     {
-      "duration_seconds": 0.14,
+      "duration_seconds": 0.11,
       "name": "crosswalk",
       "script": "pipeline/build_crosswalk.py",
       "status": "ok",
       "step": 2
     },
     {
-      "duration_seconds": 0.22,
+      "duration_seconds": 0.2,
       "name": "boundaries",
       "script": "pipeline/build_force_boundaries.py",
       "status": "ok",
       "step": 3
     },
     {
-      "duration_seconds": 0.79,
+      "duration_seconds": 0.69,
       "name": "explorer_boundaries",
       "script": "pipeline/build_explorer_boundaries.py",
       "status": "ok",
@@ -736,21 +736,21 @@
       "step": 5
     },
     {
-      "duration_seconds": 0.25,
+      "duration_seconds": 0.26,
       "name": "ons",
       "script": "pipeline/ingest_ons.py",
       "status": "ok",
       "step": 6
     },
     {
-      "duration_seconds": 2.29,
+      "duration_seconds": 2.26,
       "name": "dfe",
       "script": "pipeline/ingest_dfe.py",
       "status": "ok",
       "step": 7
     },
     {
-      "duration_seconds": 72.43,
+      "duration_seconds": 73.96,
       "name": "home_office",
       "script": "pipeline/ingest_home_office.py",
       "status": "ok",
@@ -785,7 +785,7 @@
       "step": 12
     },
     {
-      "duration_seconds": 0.09,
+      "duration_seconds": 0.11,
       "name": "csv_exports",
       "script": "pipeline/build_csv_exports.py",
       "status": "ok",

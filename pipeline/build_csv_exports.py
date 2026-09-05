@@ -27,6 +27,9 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+from pipeline.build import PROVENANCE  # noqa: E402
 PROCESSED_DIR = REPO_ROOT / "data" / "processed"
 OUTPUT_DIR = PROCESSED_DIR / "csv"
 
@@ -43,6 +46,21 @@ PREAMBLE_TAIL = [
     "source_suppressed is a cell withheld under disclosure control; it is",
     "not a zero and must not be treated as one.",
 ]
+
+
+def _provenance(filename: str) -> tuple[str, str]:
+    """Source description and reference period for a processed output.
+
+    Read from build.py's PROVENANCE, the record the manifest is written
+    from, rather than from manifest.json itself. The manifest is written
+    after every step has run, so a step that reads it cannot work in a
+    from-scratch build: it only ever succeeded because a previous build had
+    left a manifest behind, or because the committed one was in the clone.
+    """
+    sources = PROVENANCE.get(filename) or []
+    if not sources:
+        return "", ""
+    return sources[0]["description"], sources[0]["reference_period"]
 
 
 def _load(name: str) -> dict:
@@ -124,15 +142,7 @@ def export_cascade() -> tuple[str, int]:
 def export_remand_outcomes() -> tuple[str, int]:
     """Remand counts by ethnicity, age band, sex and remand type."""
     records = _load("remand_outcomes.json")["records"]
-    manifest = _load("manifest.json")
-    source = next(
-        (s["description"] for output in manifest["outputs"]
-         if output["file"].endswith("remand_outcomes.json")
-         for s in output["sources"]), "YJB Youth Justice Statistics")
-    period = next(
-        (s["reference_period"] for output in manifest["outputs"]
-         if output["file"].endswith("remand_outcomes.json")
-         for s in output["sources"]), "")
+    source, period = _provenance("remand_outcomes.json")
     rows = [{
         "geo_id": r["geo_id"],
         "year": r["year"],

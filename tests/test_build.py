@@ -292,3 +292,73 @@ def test_smoke_full_build_is_idempotent():
     build_once()
     second = digests()
     assert first == second
+
+
+# --------------------------------------------------------------------------
+# Cleaning
+#
+# clean-processed removed only data/processed/*.json for a long time, so the
+# boundaries, explorer and csv subdirectories survived a "clean" rebuild.
+# Stale outputs that look freshly built are worse than missing ones, so the
+# generated list is derived from the outputs and held here.
+# --------------------------------------------------------------------------
+def test_generated_files_cover_every_manifest_output():
+    """Anything the manifest describes must also be something clean removes."""
+    assert set(build.MANIFEST_OUTPUTS) <= set(build.GENERATED_FILES)
+
+
+def test_generated_files_include_the_build_artefacts():
+    for name in ("manifest.json", "manifest.partial.json", "build.log"):
+        assert name in build.GENERATED_FILES, name
+
+
+def test_clean_would_remove_everything_present_in_a_built_tree():
+    """The real guard against drift: after a build, every file under
+    data/processed is either generated or the .gitkeep placeholder. A step
+    that starts writing something new and does not declare it fails here,
+    rather than quietly surviving the next clean."""
+    processed = REPO_ROOT / "data" / "processed"
+    present = {p.relative_to(processed).as_posix()
+               for p in processed.rglob("*") if p.is_file()}
+    undeclared = present - set(build.GENERATED_FILES) - {".gitkeep"}
+    assert not undeclared, (
+        f"these files survive a clean but nothing declares them: "
+        f"{sorted(undeclared)}")
+
+
+def test_generated_files_are_all_inside_the_processed_directory():
+    """A path escaping data/processed would have clean deleting elsewhere."""
+    for name in build.GENERATED_FILES:
+        resolved = (build.PROCESSED_DIR / name).resolve()
+        assert resolved.is_relative_to(build.PROCESSED_DIR.resolve()), name
+
+
+def test_no_step_reads_the_manifest():
+    """The manifest is written after every step, so a step that reads it
+    cannot work in a from-scratch build.
+
+    build_csv_exports.py did exactly that. It passed for weeks because a
+    previous build had always left a manifest behind, and on CI because the
+    manifest is committed and arrives with the checkout. It failed the first
+    time data/processed was genuinely empty. Provenance now comes from
+    build.PROVENANCE, the record the manifest itself is written from.
+    """
+    offenders = []
+    for step in build.STEPS:
+        source = (REPO_ROOT / "pipeline" / step.script).read_text("utf-8")
+        for line in source.splitlines():
+            stripped = line.strip()
+            if stripped.startswith("#") or "manifest.json" not in stripped:
+                continue
+            # A mention inside a docstring or comment is fine; a load is not.
+            if any(token in stripped for token in
+                   ("_load(", "open(", "read_text(", "json.load")):
+                offenders.append(f"{step.script}: {stripped}")
+    assert not offenders, (
+        "these steps read the manifest, which does not exist during a "
+        "from-scratch build:\n" + "\n".join(offenders))
+
+
+def test_manifest_is_not_a_declared_input_of_any_step():
+    for step in build.STEPS:
+        assert "manifest.json" not in step.reads, step.name
