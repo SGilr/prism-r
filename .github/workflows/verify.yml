@@ -1,0 +1,105 @@
+# Prove the published raw-data bundle reproduces the published figures.
+#
+# This is the reproducibility claim on the methods page, tested rather than
+# asserted: download the newest bundle exactly as a reader would, build from
+# it offline, and require the result to match the processed outputs committed
+# to the repository byte for byte.
+#
+# It exists because that claim was false for a day in September 2026. The
+# bundle was cut three hours before four ONS boundary files were retrieved, so
+# a build from it aborted part way, and nothing ran that would have noticed.
+# ci.yml runs the fast tests on every push but never builds; refresh.yml does
+# build, but monthly and with --fetch, so drift from the committed data is
+# expected there rather than an error.
+name: Verify reproducibility
+
+on:
+  schedule:
+    - cron: '0 5 * * 1'  # 05:00 UTC each Monday
+  release:
+    types: [published]   # a new raw-data bundle is checked within minutes
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Download the newest raw data bundle
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=$(gh release list --json tagName \
+            --jq '[.[] | select(.tagName | startswith("raw-data-"))][0].tagName')
+          echo "raw bundle: $tag"
+          echo "BUNDLE_TAG=$tag" >> "$GITHUB_ENV"
+          gh release download "$tag" --pattern '*.tar.gz' --output raw-bundle.tar.gz
+          tar xzf raw-bundle.tar.gz
+          rm raw-bundle.tar.gz
+          # The repository's tracked fetch manifest wins over the bundle copy.
+          git checkout -- data/raw/fetch_manifest.json
+          echo "raw files unpacked: $(find data/raw -type f | wc -l)"
+
+      - name: Build from the bundle, offline
+        run: python pipeline/build.py
+
+      - name: The build must reproduce the committed outputs
+        run: |
+          # manifest.json carries a build timestamp that changes every run, so
+          # it cannot be compared directly; its recorded checksums are checked
+          # in the next step instead.
+          changed=$(git status --porcelain data/processed/ \
+            | grep -v 'manifest.json' || true)
+          if [ -n "$changed" ]; then
+            echo "::error::Building from $BUNDLE_TAG did not reproduce the committed data/processed/."
+            echo "Either the bundle is stale against the repository, or the committed outputs are."
+            echo "$changed"
+            git diff --stat data/processed/ | tail -20
+            exit 1
+          fi
+          echo "Building from $BUNDLE_TAG reproduced every committed output exactly."
+
+      - name: The committed manifest must match the committed outputs
+        run: |
+          python - <<'PY'
+          import hashlib, json, pathlib, subprocess, sys
+          # Compare against the committed manifest, not the one just written.
+          committed = json.loads(subprocess.run(
+              ["git", "show", "HEAD:data/processed/manifest.json"],
+              capture_output=True, text=True, check=True).stdout)
+          bad = []
+          for output in committed["outputs"]:
+              path = pathlib.Path(output["file"])
+              if not path.exists():
+                  bad.append(f"{path}: named in the manifest but not built")
+                  continue
+              digest = hashlib.sha256(path.read_bytes()).hexdigest()
+              if digest != output["sha256"]:
+                  bad.append(f"{path}: manifest says {output['sha256'][:12]}, "
+                             f"rebuilt as {digest[:12]}")
+          if bad:
+              print("::error::The committed manifest does not describe the "
+                    "committed outputs.")
+              print("\n".join(bad))
+              sys.exit(1)
+          print(f"Manifest checksums match all {len(committed['outputs'])} outputs.")
+          PY
+
+      - name: Full test suite, including the idempotency smoke test
+        run: make test PYTHON=python

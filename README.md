@@ -53,6 +53,8 @@ The raw source files under `data/raw/` are not in the repository; they are publi
 
 The fast-moving sources refresh automatically: `python pipeline/build.py --fetch` brings the YCS monthly report, the DfE exclusions release and the annual Youth Justice Statistics up to date before building, and a scheduled workflow does the same on the 15th of each month, opening a pull request when the data changes. When a manual source (ONS Census, IMD, Home Office, StatsWales) is refreshed locally, the procedure is: re-run the build, run `python pipeline/make_raw_bundle.py` and publish the dated release it prints, then note the refresh in `docs/data-sources.md`. Each cut is a new release; a published bundle is never rewritten in place, because readers cite it to verify the pipeline against its inputs.
 
+Three workflows guard this. `ci.yml` runs the fast tests on every push and pull request. `verify.yml` runs weekly, and whenever a raw-data release is published, downloading the newest bundle and building from it offline: the result must reproduce the committed `data/processed/` byte for byte, which is the reproducibility claim tested rather than asserted. `refresh.yml` runs monthly, building with `--fetch` and opening a pull request when a source has published new data.
+
 Run the tests:
 
 ```
