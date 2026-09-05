@@ -77,3 +77,48 @@ def test_no_source_prefix_is_a_bare_directory_that_mixes_publishers():
     """
     prefixes = [prefix for prefix, _ in bundle.SOURCES]
     assert "geo/" not in prefixes
+
+
+# --------------------------------------------------------------------------
+# Tag allocation
+#
+# A published bundle is a citable artefact and is never rewritten in place,
+# so a second cut on the same day needs its own tag rather than colliding
+# with the first. That happened on 5 September 2026, the day date-stamping
+# was introduced, which is why this is held by a test.
+# --------------------------------------------------------------------------
+def test_a_free_tag_is_used_unchanged():
+    tag, warning = bundle.next_free_tag(
+        "raw-data-2026-09-06", {"raw-data-2026-09-05"})
+    assert tag == "raw-data-2026-09-06"
+    assert warning is None
+
+
+def test_a_taken_tag_gets_a_suffix():
+    tag, warning = bundle.next_free_tag(
+        "raw-data-2026-09-05", {"raw-data-2026-09", "raw-data-2026-09-05"})
+    assert tag == "raw-data-2026-09-05-2"
+    assert warning is None
+
+
+def test_suffixes_chain_rather_than_overwrite():
+    taken = {"raw-data-2026-09-05", "raw-data-2026-09-05-2",
+             "raw-data-2026-09-05-3"}
+    tag, _ = bundle.next_free_tag("raw-data-2026-09-05", taken)
+    assert tag == "raw-data-2026-09-05-4"
+
+
+def test_an_unknown_release_list_warns_rather_than_assuming():
+    """If the releases cannot be listed, the run must say so: silently
+    assuming a tag is free is how an asset gets overwritten."""
+    tag, warning = bundle.next_free_tag("raw-data-2026-09-05", None)
+    assert tag == "raw-data-2026-09-05"
+    assert warning and "collision" in warning
+
+
+def test_every_allocated_tag_still_matches_the_selection_glob():
+    """CI and refresh.yml select the newest tag starting with raw-data-, so
+    a suffixed tag must still be picked up."""
+    taken = {"raw-data-2026-09-05"}
+    tag, _ = bundle.next_free_tag("raw-data-2026-09-05", taken)
+    assert tag.startswith("raw-data-")

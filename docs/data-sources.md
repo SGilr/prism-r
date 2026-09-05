@@ -74,18 +74,28 @@ repository root, and run `python pipeline/build.py`.
 
 | release | files | note |
 |---|---|---|
-| `raw-data-2026-09-05` | 137 | current |
-| `raw-data-2026-09` | 133 | superseded, do not use |
+| `raw-data-2026-09-05-2` | 137 | current |
+| `raw-data-2026-09-05` | 137 | superseded: Welsh looked-after children reached only March 2024 |
+| `raw-data-2026-09` | 133 | superseded, will not build: missing the four ONS boundary files |
 
 `raw-data-2026-09` was cut at 09:40 UTC on 3 September 2026, three hours before
 the four ONS boundary files in `data/raw/geo/boundaries-2023/` were retrieved,
 so it does not contain them. A build from that bundle aborts at the
 `explorer_boundaries` step and nothing downstream runs, which made the
-reproducibility claim on the methods page false for anyone who tried it. The
-release is left published, with a note on it saying so, rather than having its
-asset replaced: it is a citable artefact, and a tag that means different bytes
-on different days cannot be verified against. Bundles are date-stamped from
-raw-data-2026-09-05 onward for the same reason.
+reproducibility claim on the methods page false for anyone who tried it.
+
+Superseded releases are left published, their assets untouched, with notes
+saying what replaced them and why. A release asset is a citable artefact: a
+tag that means one set of bytes today and another tomorrow cannot be verified
+against, which is the whole point of publishing the raw inputs.
+
+Bundles are date-stamped from `raw-data-2026-09-05` onward, and a second cut
+on the same day takes a numeric suffix. That is how `raw-data-2026-09-05-2`
+got its name: the Welsh looked-after children source was re-ingested hours
+after the first cut of the day. `pipeline/make_raw_bundle.py` allocates the
+tag by asking GitHub which are already published, falling back to local tags
+offline and warning when it cannot tell, so a collision cannot quietly
+overwrite an asset. `tests/test_raw_bundle.py` holds that behaviour.
 
 ## Release currency
 

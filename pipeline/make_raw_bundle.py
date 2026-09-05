@@ -155,13 +155,63 @@ def write_bundle_doc(tag: str) -> int:
     return len(files)
 
 
+def _published_tags() -> set[str] | None:
+    """Release tags already published.
+
+    GitHub is the authority: a release tag is created remotely and may not
+    exist in the local clone until someone fetches. Local git tags are the
+    fallback for an offline run, and None means neither source could answer,
+    so the caller warns rather than silently assuming a tag is free.
+    """
+    try:
+        result = subprocess.run(
+            ["gh", "release", "list", "--limit", "300", "--json", "tagName"],
+            cwd=REPO_ROOT, capture_output=True, text=True, timeout=30)
+        if result.returncode == 0 and result.stdout.strip():
+            return {entry["tagName"] for entry in json.loads(result.stdout)}
+    except (OSError, ValueError, subprocess.SubprocessError):
+        pass
+    try:
+        result = subprocess.run(["git", "tag", "--list", "raw-data-*"],
+                                cwd=REPO_ROOT, capture_output=True,
+                                text=True, timeout=30)
+        if result.returncode == 0:
+            return set(result.stdout.split())
+    except (OSError, subprocess.SubprocessError):
+        pass
+    return None
+
+
+def next_free_tag(base: str, taken: set[str] | None) -> tuple[str, str | None]:
+    """The first unused tag from base, base-2, base-3 and so on.
+
+    A second cut on the same day is a separate citable artefact, so it gets
+    its own tag rather than replacing the first. Returns the tag and a
+    warning, the warning being set only when the check could not run.
+    """
+    if taken is None:
+        return base, ("could not list existing releases, so this tag is "
+                      "unverified; check for a collision before publishing")
+    if base not in taken:
+        return base, None
+    suffix = 2
+    while f"{base}-{suffix}" in taken:
+        suffix += 1
+    return f"{base}-{suffix}", None
+
+
 def main() -> int:
     output_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else REPO_ROOT
     # Date-stamped, not month-stamped. A bundle is a citable artefact: a
     # second cut in the same month must be a new release rather than a
     # rewrite of one that readers may already have downloaded and cited.
     # A month-stamped tag collided the first time this happened.
-    tag = f"raw-data-{dt.date.today().strftime('%Y-%m-%d')}"
+    base = f"raw-data-{dt.date.today().strftime('%Y-%m-%d')}"
+    tag, warning = next_free_tag(base, _published_tags())
+    if tag != base:
+        print(f"{base} is already published; cutting {tag}")
+    if warning:
+        print(f"warning: {warning}")
     count = write_bundle_doc(tag)
     print(f"RAW_BUNDLE.md written, {count} files listed")
 
@@ -181,7 +231,7 @@ def main() -> int:
                             capture_output=True, text=True).stdout.strip()
     print("\nTo publish:")
     print(f"  gh release create {tag} {archive} \\")
-    print(f"    --title 'Raw data bundle, {tag[9:]}' \\")
+    print(f"    --title 'Raw data bundle, {tag.removeprefix('raw-data-')}' \\")
     print(f"    --notes 'Raw source files as listed in RAW_BUNDLE.md inside "
           f"the archive. Pipeline state: {commit[:12]}.'")
     return 0
