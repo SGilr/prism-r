@@ -443,6 +443,8 @@ export function renderForceChoropleth() {
 // binary ethnicity.
 // --------------------------------------------------------------------------
 const TRACKER_INK = "#1B3A5F";
+// The ethnicity palette's White tone, as used in the Lambeth panels.
+const ETHNICITY_WHITE = "#9aa7b4";
 const TRACKER_RAW = "#c3cdd8";
 const TRACKER_TARGET = "#1D9E75";
 const TRACKER_GREY = "#888780";
@@ -599,19 +601,34 @@ export function renderRemandDuration() {
   const years = [...new Set(rows.map((r) => r.year_ending_march))].sort();
 
   const W = 560, rowH = 30, PADL = 96, PADR = 40;
-  const H = 26 + years.length * rowH;
+  // A band above the axis for the key. Which dot is which group is otherwise
+  // carried by colour alone, and the two tones are close in value.
+  const LEGEND_H = 24;
+  const H = 26 + LEGEND_H + years.length * rowH;
   const xMax = 80;
   const x = (v) => PADL + (v / xMax) * (W - PADL - PADR);
 
+  const legend =
+    `<g transform="translate(0,10)" font-size="10.5" fill="#5f5e5a">` +
+    `<circle cx="4.5" cy="0" r="4.5" fill="${ETHNICITY_WHITE}"/>` +
+    `<text x="14" y="0" dominant-baseline="middle">White children</text>` +
+    `<circle cx="114.5" cy="0" r="4.5" fill="${TRACKER_INK}"/>` +
+    `<text x="124" y="0" dominant-baseline="middle">Children from ethnic ` +
+    `minority groups</text>` +
+    `<text x="${W - PADR}" y="0" dominant-baseline="middle" text-anchor="end" ` +
+    `fill="${TRACKER_GREY}">median nights</text>` +
+    `</g>`;
+
   let body = "";
   for (const value of [0, 20, 40, 60, 80]) {
-    body += `<line x1="${x(value).toFixed(1)}" y1="18" x2="${x(value).toFixed(1)}" ` +
+    body += `<line x1="${x(value).toFixed(1)}" y1="${18 + LEGEND_H}" ` +
+      `x2="${x(value).toFixed(1)}" ` +
       `y2="${H - 8}" stroke="#F1EFE8" stroke-width="0.5"/>` +
-      `<text x="${x(value).toFixed(1)}" y="12" text-anchor="middle" ` +
+      `<text x="${x(value).toFixed(1)}" y="${12 + LEGEND_H}" text-anchor="middle" ` +
       `font-size="9.5" fill="${TRACKER_GREY}">${value}</text>`;
   }
   years.forEach((year, i) => {
-    const cy = 30 + i * rowH;
+    const cy = 30 + LEGEND_H + i * rowH;
     const white = rows.find((r) => r.year_ending_march === year &&
       r.ethnicity_group === "white");
     const minority = rows.find((r) => r.year_ending_march === year &&
@@ -640,5 +657,6 @@ export function renderRemandDuration() {
   return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" ` +
     `aria-labelledby="duration-svg-title" style="font-family:${UI_FONT}">` +
     `<title id="duration-svg-title">Median remand nights by ethnicity group ` +
-    `and year: ethnic minority groups against White</title>` + body + `</svg>`;
+    `and year: ethnic minority groups against White</title>` +
+    legend + body + `</svg>`;
 }
