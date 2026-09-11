@@ -4,9 +4,13 @@ This page records how PRISM-R is built so that every figure can be traced to a p
 
 ## Independent review
 
-No part of PRISM-R has been independently reviewed. The methods described on this page, including the application of the Ministry of Justice's Relative Rate Index method to children, the Wald log-ratio confidence intervals, the three-year pooling of the child custodial sentencing series, the disclosure control rules and the definition used to track the 25% target, are the author's own and have not been checked by anyone outside the project. A reviewer with quantitative criminology or official statistics experience is being sought.
+The methods on this page were independently evaluated in September 2026 by Dr Hope Kent, Research Fellow at the University of Nottingham, whose doctorate is in advanced quantitative methods for the social sciences. The evaluation covered the methods as described here: the application of the Ministry of Justice's Relative Rate Index method to children, the construction of the confidence intervals, the three-year pooling of the child custodial sentencing series, the disclosure control rules and the definition used to track the 25% target.
 
-Until then, readers are asked to judge the work rather than take it on trust. Every figure is reproducible from public files: the pipeline, the tests and the raw data bundle are linked under [downloads](https://prism-r.howpreventionworks.com/methods#downloads), and the [corrections](#corrections) section below records the defects found so far, how each was found and when it was fixed. Correspondence pointing out errors is welcome at [admin@oxonadvisory.com](mailto:admin@oxonadvisory.com).
+Dr Kent raised one substantive point. The Wald interval then in use relies on a normal approximation that behaves poorly at small cell counts, of the kind the "Other" ethnic group produces, and she recommended an exact Poisson-based interval as more stable. That recommendation was adopted; see [Confidence interval methodology](#confidence-interval-methodology). The intervals widened by around 8% at the median, and two results that had narrowly excluded 1 no longer do, both in the child custodial sentencing series. The change is recorded under [Corrections](#corrections).
+
+What this is, and is not. One methodologist read the methods and commented on them. It is not journal peer review, it is not an audit of the underlying data or of the pipeline code, and it is not an endorsement of the conclusions drawn from the figures.
+
+Readers are still asked to judge the work rather than take it on trust. Every figure is reproducible from public files: the pipeline, the tests and the raw data bundle are linked under [downloads](https://prism-r.howpreventionworks.com/methods#downloads), and the [corrections](#corrections) section below records the defects found so far, how each was found and when it was fixed. Correspondence pointing out errors is welcome at [admin@oxonadvisory.com](mailto:admin@oxonadvisory.com).
 
 ## Source files
 
@@ -88,7 +92,7 @@ Spec section 6.2 frames the national picture as a cascade: stop and search, then
 
 The stop and search and arrest RRIs differ from the youth-justice RRIs in their denominator. Custodial sentencing and remand are rates within the justice system: the denominator is a count of children already at that stage, for example children sentenced. Stop and search and arrests have no such prior stage, so the denominator is the resident child population aged 10 to 17 from the 2021 Census. The RRI is then the population-based event rate for an ethnic group divided by that for White children. This is the same denominator basis the Home Office itself uses for its published stop and search disparity figures.
 
-The national event counts are summed from the by-ethnicity records in `context_indicators.json`; the population denominator is summed from `populations.json`. Because these counts run to thousands, the Wald confidence intervals are tight, narrower than those on the small-count youth-justice RRIs.
+The national event counts are summed from the by-ethnicity records in `context_indicators.json`; the population denominator is summed from `populations.json`. Because these counts run to thousands, the confidence intervals are tight, narrower than those on the small-count youth-justice RRIs.
 
 Spec section 4.6 will be revised after Task 3 to reflect what PRISM-R actually does: applying the MoJ-recommended methodology to youth-specific data and decision points, with explicit provenance labelling.
 
@@ -114,20 +118,32 @@ PRISM-R does not force one calendar onto the other. The adult `moj_published` ro
 
 ## Confidence interval methodology
 
-PRISM-R reports a 95% confidence interval for every `prism_r_derived` RRI. The interval is the Wald interval on the log of the rate ratio:
+PRISM-R reports a 95% confidence interval for every `prism_r_derived` RRI. The interval is exact rather than an approximation.
 
-    SE(ln RRI) = sqrt(1/a + 1/b - 1/A - 1/B)
-    95% CI     = exp( ln(RRI) plus or minus 1.96 x SE(ln RRI) )
+The exact interval for a single Poisson count is Garwood's (1936). For a ratio of two rates the exact analogue conditions on the total of the two counts, which makes the group count binomial, so Clopper-Pearson limits on that proportion transform into limits on the ratio:
 
-where a and A are the event count and total for the group, and b and B those for the White baseline. This is the standard interval for a ratio of rates in epidemiology and public health. It is cited to Altman, Machin, Bryant and Gardner, Statistics with Confidence, 2nd ed., BMJ Books, 2000.
+    p        = a / (a + b)
+    RRI      = (p / (1 - p)) x (B / A)
+
+where a and A are the event count and total for the group, and b and B those for the White baseline. The transformation is monotonic in p, so the limits carry through it. It is computed in `pipeline/exact_ci.py`, which carries its own implementation of the incomplete beta function rather than adding a SciPy dependency; `tests/test_exact_ci.py` checks it against published Clopper-Pearson limits.
+
+Exact intervals are conservative: coverage is at least 95% rather than approximately 95%, so they are wider than approximate intervals by construction. That is the intended trade.
+
+References: Clopper and Pearson (1934), Biometrika 26, 404-413; Garwood (1936), Biometrika 28, 437-442; Breslow and Day, Statistical Methods in Cancer Research, Volume II, IARC, 1987, for the conditional approach to a ratio of rates.
+
+### What changed in September 2026
+
+Until September 2026 the interval was the Wald interval on the log of the rate ratio, `SE(ln RRI) = sqrt(1/a + 1/b - 1/A - 1/B)`, exponentiated, cited to Altman, Machin, Bryant and Gardner, Statistics with Confidence, 2nd ed., BMJ Books, 2000. That is a standard choice and is reliable at large counts, but it rests on a normal approximation which is poor at the counts in the child custodial sentencing series, where the "Other" group runs to single figures. It was overstating precision there. The change followed the methods evaluation described under [Independent review](#independent-review).
+
+Recomputing all 28 intervals widened them by 7.5% at the median and 10.9% at most. The point estimates are unaffected: an RRI is a ratio of rates and does not depend on how its interval is constructed. At the thousands-scale stop and search counts the two methods agree to three decimal places; the difference is concentrated where it should be, at counts below about thirty.
 
 Two points of method:
 
 1. MoJ uses p-value-based significance flags rather than confidence intervals. PRISM-R adopts confidence intervals because they convey magnitude and uncertainty together in a single visual, whereas a p-value flag is binary. Both are valid; confidence intervals are the more informative choice for a public-facing tool. MoJ's flag is still carried, on the `moj_published` rows, in the `significance_flag` field.
 
-2. The Wald log-ratio interval is unreliable when any underlying count is small, below about 5. PRISM-R suppresses cells below 6, so this is largely a non-issue, but it is flagged honestly: intervals computed near the suppression boundary will be wide and may extend implausibly. Exact methods, such as the Wilson or Fisher interval, are deferred to v2.
+2. The exact interval is trustworthy at small counts, which is why it replaced the Wald interval. Intervals computed near the suppression threshold are still wide, and should be read as such: a wide interval is an honest statement that the data cannot resolve the question, not a defect.
 
-3. Ethnic groups with small underlying populations, the "Other" group in particular and at times "Mixed", carry wider confidence intervals as a structural feature of disaggregation, not a flaw in the analysis: a smaller denominator gives a larger standard error. Such results should be read as less precise, not less real. The pooled "Other" child custodial sentencing RRI is a case in point: 1.47 with a 95% interval of 1.01 to 2.14. Its lower bound sits just above 1, so it is significant but only marginally; it should be presented as such, not treated as equivalent to a tighter finding.
+3. Ethnic groups with small underlying populations, the "Other" group in particular and at times "Mixed", carry wider confidence intervals as a structural feature of disaggregation, not a flaw in the analysis: a smaller denominator gives a larger standard error. Such results should be read as less precise, not less real. The pooled "Other" child custodial sentencing RRI is a case in point: 1.47 with a 95% interval of 0.96 to 2.18. The interval includes 1, so the point estimate above 1 is not statistically significant and should not be reported as though it were. Under the Wald interval used before September 2026 the same figure read 1.01 to 2.14 and so excluded 1 by a whisker; the exact interval does not support that claim. The single-year Asian estimate for the same series moved the same way.
 
 This method has not been independently reviewed. See [Independent review](#independent-review).
 
@@ -213,6 +229,31 @@ See [disclosure-control.md](disclosure-control.md).
 ## Corrections
 
 Defects found in PRISM-R's own published figures or methods are recorded here, dated, whether or not anyone outside the project noticed them. An entry stays permanently.
+
+### 11 September 2026: two RRIs were reported as significant that are not
+
+**What the defect was.** The confidence intervals on the Relative Rate Indices used the Wald interval on the log rate ratio, which rests on a normal approximation. That approximation is poor at small counts, and the child custodial sentencing series has counts in single figures for the "Other" ethnic group. It was overstating precision: two intervals excluded 1, and so read as statistically significant, when an exact method shows they do not.
+
+This is not an arithmetic error. The Wald interval is a standard, published, correctly implemented choice, and it remains reliable at the larger counts elsewhere in PRISM-R. It was the wrong choice for this series, and the methods page had already flagged the result it produced as uncomfortably marginal without following that observation to its conclusion.
+
+**Which figures.** Two of the 28 PRISM-R-derived intervals, both child custodial sentencing:
+
+| series | RRI | was | now |
+|---|---|---|---|
+| Other, three-year pooled | 1.47 | 1.01 to 2.14, significant | 0.96 to 2.18, not significant |
+| Asian, year ending March 2024 | 1.52 | 1.01 to 2.29, significant | 0.94 to 2.34, not significant |
+
+The other 26 intervals widened by 7.5% at the median without changing what they support. No point estimate changed: an RRI does not depend on how its interval is constructed. The pooled "Other" figure was quoted in the methods page's own discussion of marginal results, and on no other page.
+
+**How long it was present.** From the first publication of the child RRIs to 11 September 2026.
+
+**How it was found.** By external review, and it is the first entry in this section found that way rather than by a test. Dr Hope Kent, Research Fellow at the University of Nottingham, evaluated the methods and observed that the Wald interval behaves unreliably at small cell counts, recommending an exact Poisson-based interval as a more stable drop-in. She was right, and the two affected intervals are the ones she predicted would be affected.
+
+**When it was fixed.** The same day, by replacing the interval with the exact conditional method described under [Confidence interval methodology](#confidence-interval-methodology).
+
+**What followed.** `pipeline/exact_ci.py` carries the exact interval, with its own implementation of the incomplete beta function rather than a new SciPy dependency, checked against published Clopper-Pearson limits in `tests/test_exact_ci.py`. The tests also hold the properties that matter: that the interval brackets the estimate, that it is wider than Wald at small counts and converges on it at large ones, and that a zero event count gives a lower limit of zero rather than the division by zero Wald produces.
+
+**Assessment.** Two claims of statistical significance were withdrawn. Both were marginal, both were in the smallest series PRISM-R publishes, and neither carried an argument on its own. The wider lesson is the one this section exists for: the methods page had noticed the problem, described it accurately as "significant but only marginally", and stopped there. Noticing is not the same as acting, and it took someone outside the project to close the gap.
 
 ### 3 September 2026: the explorer payloads republished 141 suppressed cells
 

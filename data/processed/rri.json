@@ -1,7 +1,7 @@
 {
   "meta": {
     "cascade": "The decision points trace the road-to-remand cascade of spec section 6.2: stop_search, arrest, charge, remand, custodial_sentence. charge is not available from open data, so four of the five stages are populated. stop_search and arrest rates use the Census child population as the denominator; remand and custodial sentencing use a count of children as the denominator.",
-    "confidence_interval": "95% Wald interval on the log of the rate ratio; SE(ln RRI) = sqrt(1/a + 1/b - 1/A - 1/B); exponentiated. Altman, Machin, Bryant and Gardner, Statistics with Confidence, 2nd ed., BMJ Books, 2000. Applied to prism_r_derived rows only.",
+    "confidence_interval": "95% exact interval for the rate ratio, conditioning on the total of the two counts so the group count is binomial and Clopper-Pearson limits on that proportion transform into the ratio. Exact intervals are conservative: coverage is at least 95%. Clopper and Pearson (1934); Breslow and Day (1987) for the conditional approach to a ratio of rates. Replaced the Wald log-ratio interval in September 2026 after a methods evaluation; see the corrections section of docs/methods.md. Applied to prism_r_derived rows only.",
     "counts": {
       "records": 45
     },
@@ -18,9 +18,9 @@
   },
   "records": [
     {
-      "ci_lower": 0.4983376554961943,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 0.5364672674781608,
+      "ci_lower": 0.49813163623934303,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 0.536533005916705,
       "decision_point": "arrest",
       "ethnicity": "Asian",
       "events": 3045,
@@ -38,9 +38,9 @@
       "year": 2025
     },
     {
-      "ci_lower": 1.7071798677792558,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 1.8084592153578296,
+      "ci_lower": 1.7064908506053174,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 1.8089019628765115,
       "decision_point": "arrest",
       "ethnicity": "Black",
       "events": 5200,
@@ -58,9 +58,9 @@
       "year": 2025
     },
     {
-      "ci_lower": 1.1891280222173333,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 1.2728323948299733,
+      "ci_lower": 1.18858559005759,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 1.273106054772255,
       "decision_point": "arrest",
       "ethnicity": "Mixed",
       "events": 3606,
@@ -78,9 +78,9 @@
       "year": 2025
     },
     {
-      "ci_lower": 0.6591735176810434,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 0.7516347291939506,
+      "ci_lower": 0.658318799399444,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 0.7518186583836719,
       "decision_point": "arrest",
       "ethnicity": "Other",
       "events": 908,
@@ -99,7 +99,7 @@
     },
     {
       "ci_lower": null,
-      "ci_method": "wald_log_ratio",
+      "ci_method": "exact_poisson_conditional",
       "ci_upper": null,
       "decision_point": "arrest",
       "ethnicity": "White",
@@ -218,9 +218,9 @@
       "year": 2024
     },
     {
-      "ci_lower": 1.0892671093716155,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 1.760068518652953,
+      "ci_lower": 1.0621414573520958,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 1.7797408947098958,
       "decision_point": "custodial_sentence",
       "ethnicity": "Asian",
       "events": 68,
@@ -238,9 +238,9 @@
       "year": 2025
     },
     {
-      "ci_lower": 1.3703008987360001,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 1.8542410473440054,
+      "ci_lower": 1.3542008287636487,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 1.869750957404749,
       "decision_point": "custodial_sentence",
       "ethnicity": "Black",
       "events": 202,
@@ -258,9 +258,9 @@
       "year": 2025
     },
     {
-      "ci_lower": 0.9491349268650424,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 1.4658061330023209,
+      "ci_lower": 0.9306492250686621,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 1.4790437682567246,
       "decision_point": "custodial_sentence",
       "ethnicity": "Mixed",
       "events": 86,
@@ -278,9 +278,9 @@
       "year": 2025
     },
     {
-      "ci_lower": 1.0124499952658683,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 2.1439409126270617,
+      "ci_lower": 0.9550466396505306,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 2.1789136705728778,
       "decision_point": "custodial_sentence",
       "ethnicity": "Other",
       "events": 26,
@@ -299,7 +299,7 @@
     },
     {
       "ci_lower": null,
-      "ci_method": "wald_log_ratio",
+      "ci_method": "exact_poisson_conditional",
       "ci_upper": null,
       "decision_point": "custodial_sentence",
       "ethnicity": "White",
@@ -318,9 +318,9 @@
       "year": 2025
     },
     {
-      "ci_lower": 0.7563002432764069,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 1.8343417467693075,
+      "ci_lower": 0.7049257843636869,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 1.8660265764728896,
       "decision_point": "custodial_sentence",
       "ethnicity": "Asian",
       "events": 20,
@@ -338,9 +338,9 @@
       "year": 2023
     },
     {
-      "ci_lower": 1.1838961085809818,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 1.9493115228536517,
+      "ci_lower": 1.1560610097692583,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 1.9789928886698032,
       "decision_point": "custodial_sentence",
       "ethnicity": "Black",
       "events": 78,
@@ -358,9 +358,9 @@
       "year": 2023
     },
     {
-      "ci_lower": 0.5101026096359798,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 1.2248264050315636,
+      "ci_lower": 0.47917854043710645,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 1.2400288260528332,
       "decision_point": "custodial_sentence",
       "ethnicity": "Mixed",
       "events": 21,
@@ -378,9 +378,9 @@
       "year": 2023
     },
     {
-      "ci_lower": 0.9748526679850474,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 3.4476037345180037,
+      "ci_lower": 0.8267675906580056,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 3.5473295449258107,
       "decision_point": "custodial_sentence",
       "ethnicity": "Other",
       "events": 9,
@@ -399,7 +399,7 @@
     },
     {
       "ci_lower": null,
-      "ci_method": "wald_log_ratio",
+      "ci_method": "exact_poisson_conditional",
       "ci_upper": null,
       "decision_point": "custodial_sentence",
       "ethnicity": "White",
@@ -418,9 +418,9 @@
       "year": 2023
     },
     {
-      "ci_lower": 1.006354255007798,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 2.287353334990772,
+      "ci_lower": 0.9417575908528394,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 2.3362499295924555,
       "decision_point": "custodial_sentence",
       "ethnicity": "Asian",
       "events": 23,
@@ -438,9 +438,9 @@
       "year": 2024
     },
     {
-      "ci_lower": 2.034844230180537,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 3.2445746928642563,
+      "ci_lower": 1.9781248051522917,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 3.3125109862421676,
       "decision_point": "custodial_sentence",
       "ethnicity": "Black",
       "events": 86,
@@ -458,9 +458,9 @@
       "year": 2024
     },
     {
-      "ci_lower": 1.0658288370202418,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 2.1464319173221984,
+      "ci_lower": 1.0155163215694742,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 2.18824245377539,
       "decision_point": "custodial_sentence",
       "ethnicity": "Mixed",
       "events": 33,
@@ -478,9 +478,9 @@
       "year": 2024
     },
     {
-      "ci_lower": 0.5527364247519899,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 2.364353330197158,
+      "ci_lower": 0.4542349638614538,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 2.3956547262933023,
       "decision_point": "custodial_sentence",
       "ethnicity": "Other",
       "events": 7,
@@ -499,7 +499,7 @@
     },
     {
       "ci_lower": null,
-      "ci_method": "wald_log_ratio",
+      "ci_method": "exact_poisson_conditional",
       "ci_upper": null,
       "decision_point": "custodial_sentence",
       "ethnicity": "White",
@@ -518,9 +518,9 @@
       "year": 2024
     },
     {
-      "ci_lower": 0.9933612788088371,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 2.1965156566120108,
+      "ci_lower": 0.9351449117576374,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 2.239874595647147,
       "decision_point": "custodial_sentence",
       "ethnicity": "Asian",
       "events": 25,
@@ -538,9 +538,9 @@
       "year": 2025
     },
     {
-      "ci_lower": 0.6522509200338551,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 1.2758280631644137,
+      "ci_lower": 0.6285175892709913,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 1.292217214484402,
       "decision_point": "custodial_sentence",
       "ethnicity": "Black",
       "events": 38,
@@ -558,9 +558,9 @@
       "year": 2025
     },
     {
-      "ci_lower": 0.9155450394981035,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 1.8714579358686982,
+      "ci_lower": 0.8735045022244049,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 1.9032191981725761,
       "decision_point": "custodial_sentence",
       "ethnicity": "Mixed",
       "events": 32,
@@ -578,9 +578,9 @@
       "year": 2025
     },
     {
-      "ci_lower": 0.8249302729510252,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 2.774221874720643,
+      "ci_lower": 0.7152760988935478,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 2.835991635739585,
       "decision_point": "custodial_sentence",
       "ethnicity": "Other",
       "events": 10,
@@ -599,7 +599,7 @@
     },
     {
       "ci_lower": null,
-      "ci_method": "wald_log_ratio",
+      "ci_method": "exact_poisson_conditional",
       "ci_upper": null,
       "decision_point": "custodial_sentence",
       "ethnicity": "White",
@@ -718,9 +718,9 @@
       "year": 2024
     },
     {
-      "ci_lower": 1.1559783712431273,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 1.9677697949702273,
+      "ci_lower": 1.1182539190311047,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 1.999228461269305,
       "decision_point": "remand",
       "ethnicity": "Asian",
       "events": 55,
@@ -738,9 +738,9 @@
       "year": 2025
     },
     {
-      "ci_lower": 1.6558418811867255,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 2.2174136119130776,
+      "ci_lower": 1.6351479180007156,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 2.2415324967305845,
       "decision_point": "remand",
       "ethnicity": "Black",
       "events": 252,
@@ -758,9 +758,9 @@
       "year": 2025
     },
     {
-      "ci_lower": 1.541301806984629,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 2.136631959510514,
+      "ci_lower": 1.5181265724537065,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 2.1619238859196535,
       "decision_point": "remand",
       "ethnicity": "Mixed",
       "events": 181,
@@ -778,9 +778,9 @@
       "year": 2025
     },
     {
-      "ci_lower": 1.5952374851147837,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 2.7480752972328832,
+      "ci_lower": 1.5305685179282382,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 2.809148443767508,
       "decision_point": "remand",
       "ethnicity": "Other",
       "events": 50,
@@ -799,7 +799,7 @@
     },
     {
       "ci_lower": null,
-      "ci_method": "wald_log_ratio",
+      "ci_method": "exact_poisson_conditional",
       "ci_upper": null,
       "decision_point": "remand",
       "ethnicity": "White",
@@ -818,9 +818,9 @@
       "year": 2025
     },
     {
-      "ci_lower": 0.5826852655523358,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 0.6169129209030559,
+      "ci_lower": 0.5825055144106729,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 0.6169985973594294,
       "decision_point": "stop_search",
       "ethnicity": "Asian",
       "events": 5125,
@@ -838,9 +838,9 @@
       "year": 2025
     },
     {
-      "ci_lower": 2.3544671670681314,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 2.4543174705158353,
+      "ci_lower": 2.353543967234654,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 2.455096366530818,
       "decision_point": "stop_search",
       "ethnicity": "Black",
       "events": 10326,
@@ -858,9 +858,9 @@
       "year": 2025
     },
     {
-      "ci_lower": 1.007289092458141,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 1.0705907935411887,
+      "ci_lower": 1.0068589264008692,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 1.0708341098752912,
       "decision_point": "stop_search",
       "ethnicity": "Mixed",
       "events": 4418,
@@ -878,9 +878,9 @@
       "year": 2025
     },
     {
-      "ci_lower": 0.7851898334961198,
-      "ci_method": "wald_log_ratio",
-      "ci_upper": 0.8682744622556242,
+      "ci_lower": 0.78447690046605,
+      "ci_method": "exact_poisson_conditional",
+      "ci_upper": 0.8685328449267028,
       "decision_point": "stop_search",
       "ethnicity": "Other",
       "events": 1546,
@@ -899,7 +899,7 @@
     },
     {
       "ci_lower": null,
-      "ci_method": "wald_log_ratio",
+      "ci_method": "exact_poisson_conditional",
       "ci_upper": null,
       "decision_point": "stop_search",
       "ethnicity": "White",

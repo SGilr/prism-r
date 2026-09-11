@@ -36,12 +36,17 @@ ethnic group. These national counts are summed from the by-ethnicity records
 in context_indicators.json, written by pipeline/ingest_home_office.py.
 
 The child RRIs are computed by PRISM-R from open data. No child-specific RRI
-exists in published official statistics. Confidence intervals use the Wald
-interval on the log of the rate ratio (Altman, Machin, Bryant and Gardner,
-Statistics with Confidence, 2nd ed., BMJ Books, 2000):
+exists in published official statistics. Confidence intervals are exact,
+conditioning on the two counts' total so the group count is binomial and a
+Clopper-Pearson interval on that proportion transforms into the rate ratio.
+See pipeline/exact_ci.py.
 
-    SE(ln RRI) = sqrt(1/a + 1/b - 1/A - 1/B)
-    95% CI     = exp( ln(RRI) +/- 1.96 * SE(ln RRI) )
+The Wald interval on the log rate ratio was used until September 2026. It
+relies on a normal approximation that is poor at the counts in the child
+custodial sentencing series, where the Other group runs to single figures,
+and it was overstating precision: two intervals excluded 1 under Wald that
+do not under the exact method. The change followed a methods evaluation by
+Dr Hope Kent, University of Nottingham. See docs/methods.md.
 
 Child custodial sentencing counts are small enough that a single year is
 statistically fragile, so the primary figure is a three-year pooled
@@ -67,6 +72,9 @@ import openpyxl
 import pandas as pd
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+from pipeline.exact_ci import exact_rate_ratio_interval  # noqa: E402
 PROCESSED_DIR = REPO_ROOT / "data" / "processed"
 
 MOJ_CH9 = REPO_ROOT / "data" / "raw" / "moj" / "ch9_offence_analysis_2024.ods"
@@ -78,7 +86,6 @@ POPULATIONS = PROCESSED_DIR / "populations.json"
 OUTPUT = PROCESSED_DIR / "rri.json"
 
 # 95% interval. The standard 1.96 multiplier, per the cited method.
-Z_95 = 1.96
 
 BASELINE = "White"
 GROUPS = ["Asian", "Black", "Mixed", "Other"]
@@ -117,10 +124,9 @@ _NOTE_RE = re.compile(r"\[note[^\]]*\]", re.IGNORECASE)
 # --------------------------------------------------------------------------
 @dataclass(frozen=True)
 class RRIResult:
-    """An RRI estimate with its 95% Wald log-ratio confidence interval."""
+    """An RRI estimate with its 95% exact confidence interval."""
 
     rri: float
-    se_ln: float
     ci_lower: float
     ci_upper: float
 
@@ -130,8 +136,10 @@ def relative_rate_index(
 ) -> RRIResult:
     """RRI of a group versus the White baseline, with a 95% confidence interval.
 
-    The interval is the Wald interval on the log of the rate ratio. It is
-    unreliable when any count is very small; see docs/methods.md.
+    The interval is exact rather than a normal approximation, so it stays
+    trustworthy at the small counts in the child custodial sentencing
+    series. It is conservative by construction, with coverage of at least
+    95% rather than approximately 95%. See pipeline/exact_ci.py.
     """
     if min(events, total, baseline_events, baseline_total) <= 0:
         raise ValueError("RRI requires positive event counts and totals")
@@ -141,16 +149,10 @@ def relative_rate_index(
     rate = events / total
     baseline_rate = baseline_events / baseline_total
     rri = rate / baseline_rate
-    se_ln = math.sqrt(
-        1 / events + 1 / baseline_events - 1 / total - 1 / baseline_total
+    ci_lower, ci_upper = exact_rate_ratio_interval(
+        events, total, baseline_events, baseline_total
     )
-    half_width = Z_95 * se_ln
-    return RRIResult(
-        rri=rri,
-        se_ln=se_ln,
-        ci_lower=math.exp(math.log(rri) - half_width),
-        ci_upper=math.exp(math.log(rri) + half_width),
-    )
+    return RRIResult(rri=rri, ci_lower=ci_lower, ci_upper=ci_upper)
 
 
 # --------------------------------------------------------------------------
@@ -395,7 +397,7 @@ def _child_block(
                 rri=rri,
                 ci_lower=ci_lower,
                 ci_upper=ci_upper,
-                ci_method="wald_log_ratio",
+                ci_method="exact_poisson_conditional",
                 significance_flag=None,
                 events=counts[ethnicity]["events"],
                 total=counts[ethnicity]["total"],
@@ -483,11 +485,15 @@ def write_rri() -> dict:
                 "Review (2017)."
             ),
             "confidence_interval": (
-                "95% Wald interval on the log of the rate ratio; "
-                "SE(ln RRI) = sqrt(1/a + 1/b - 1/A - 1/B); exponentiated. "
-                "Altman, Machin, Bryant and Gardner, Statistics with "
-                "Confidence, 2nd ed., BMJ Books, 2000. Applied to "
-                "prism_r_derived rows only."
+                "95% exact interval for the rate ratio, conditioning on the "
+                "total of the two counts so the group count is binomial and "
+                "Clopper-Pearson limits on that proportion transform into "
+                "the ratio. Exact intervals are conservative: coverage is at "
+                "least 95%. Clopper and Pearson (1934); Breslow and Day "
+                "(1987) for the conditional approach to a ratio of rates. "
+                "Replaced the Wald log-ratio interval in September 2026 "
+                "after a methods evaluation; see the corrections section of "
+                "docs/methods.md. Applied to prism_r_derived rows only."
             ),
             "pooling": (
                 "The child custodial sentencing RRI is presented as a "

@@ -1,10 +1,10 @@
 {
   "meta": {
-    "build_timestamp": "2026-09-05T08:45:23+00:00",
+    "build_timestamp": "2026-09-11T13:24:41+00:00",
     "dataset": "build_manifest",
     "generated_by": "pipeline/build.py",
     "git": {
-      "commit": "0a60e3bb6816c27f3ffcf62b951c27a7d997cd86",
+      "commit": "cfd4e3c52578bd2f970c174dbc1888f640b407bc",
       "working_tree": "dirty"
     },
     "python_version": "3.14.2",
@@ -300,12 +300,12 @@
       ]
     },
     {
-      "bytes": 34283,
+      "bytes": 34945,
       "file": "data/processed/rri.json",
       "generated_by": "pipeline/compute_rri.py",
       "records": 45,
       "schema_version": "1.0.0",
-      "sha256": "113ea1389834d62ecde66ad0b7b8695c1e19bde3310695545ff7c6f6c822e821",
+      "sha256": "bbf7a24a62ea6c1f0e27397191418a7d6e153b578f6b9d06e5ff3277193a301c",
       "sources": [
         {
           "description": "MoJ Statistics on Ethnicity and the Criminal Justice System 2024",
@@ -545,12 +545,12 @@
       ]
     },
     {
-      "bytes": 9548,
+      "bytes": 9927,
       "file": "data/processed/csv/road-to-remand-cascade.csv",
       "generated_by": "pipeline/build_csv_exports.py",
       "records": 45,
       "schema_version": "1.0.0",
-      "sha256": "682c9d857572b270c1c122be5b2c2c433c357cbe254d86136423775c05516279",
+      "sha256": "ab3bf2d920dd92a3fdf6713bd25a394082b20f153effc0580097ecc9046f1526",
       "sources": [
         {
           "description": "YJB and MoJ Youth Justice Statistics 2024 to 2025",
@@ -708,49 +708,49 @@
       "step": 1
     },
     {
-      "duration_seconds": 0.14,
+      "duration_seconds": 0.11,
       "name": "crosswalk",
       "script": "pipeline/build_crosswalk.py",
       "status": "ok",
       "step": 2
     },
     {
-      "duration_seconds": 0.22,
+      "duration_seconds": 0.2,
       "name": "boundaries",
       "script": "pipeline/build_force_boundaries.py",
       "status": "ok",
       "step": 3
     },
     {
-      "duration_seconds": 0.79,
+      "duration_seconds": 0.68,
       "name": "explorer_boundaries",
       "script": "pipeline/build_explorer_boundaries.py",
       "status": "ok",
       "step": 4
     },
     {
-      "duration_seconds": 0.81,
+      "duration_seconds": 0.82,
       "name": "ycs",
       "script": "pipeline/ingest_ycs.py",
       "status": "ok",
       "step": 5
     },
     {
-      "duration_seconds": 0.25,
+      "duration_seconds": 0.26,
       "name": "ons",
       "script": "pipeline/ingest_ons.py",
       "status": "ok",
       "step": 6
     },
     {
-      "duration_seconds": 2.29,
+      "duration_seconds": 2.25,
       "name": "dfe",
       "script": "pipeline/ingest_dfe.py",
       "status": "ok",
       "step": 7
     },
     {
-      "duration_seconds": 72.43,
+      "duration_seconds": 73.97,
       "name": "home_office",
       "script": "pipeline/ingest_home_office.py",
       "status": "ok",
@@ -764,7 +764,7 @@
       "step": 9
     },
     {
-      "duration_seconds": 0.73,
+      "duration_seconds": 0.83,
       "name": "rri",
       "script": "pipeline/compute_rri.py",
       "status": "ok",
@@ -785,7 +785,7 @@
       "step": 12
     },
     {
-      "duration_seconds": 0.09,
+      "duration_seconds": 0.11,
       "name": "csv_exports",
       "script": "pipeline/build_csv_exports.py",
       "status": "ok",

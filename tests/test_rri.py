@@ -22,23 +22,31 @@ from pipeline import compute_rri  # noqa: E402
 from pipeline.compute_rri import relative_rate_index  # noqa: E402
 
 # Synthetic fixtures: (name, events, total, baseline_events, baseline_total,
-# expected rri, se_ln, ci_lower, ci_upper). Expected values were computed
-# independently of compute_rri.py, using Z = 1.96.
+# expected rri, ci_lower, ci_upper).
+#
+# The point estimates are arithmetic and can be checked by hand: rri_2x is
+# (50/500)/(40/800) = 2 exactly, and the others likewise. The interval bounds
+# come from the exact method in pipeline/exact_ci.py, whose own machinery is
+# validated against published Clopper-Pearson limits in tests/test_exact_ci.py
+# rather than against itself. These fixtures pin the wiring: that compute_rri
+# calls the exact interval and passes its arguments in the right order.
+#
+# Until September 2026 these carried Wald values and a standard error. See the
+# corrections section of docs/methods.md.
 FIXTURES = [
-    ("rri_2x", 50, 500, 40, 800, 2.0000000000, 0.2043281674, 1.3399924404, 2.9850914673),
-    ("parity", 30, 300, 30, 300, 1.0000000000, 0.2449489743, 0.6187215230, 1.6162360009),
-    ("below_one", 20, 400, 60, 600, 0.5000000000, 0.2500000000, 0.3063131971, 0.8161581100),
-    ("rri_1p5", 12, 240, 18, 540, 1.5000000000, 0.3645138823, 0.7341939111, 3.0645854806),
+    ("rri_2x", 50, 500, 40, 800, 2.0000000000, 1.2932883702, 3.1108126851),
+    ("parity", 30, 300, 30, 300, 1.0000000000, 0.5824337998, 1.7169333243),
+    ("below_one", 20, 400, 60, 600, 0.5000000000, 0.2854584646, 0.8414212952),
+    ("rri_1p5", 12, 240, 18, 540, 1.5000000000, 0.6590726627, 3.2913951694),
 ]
 
 
 @pytest.mark.parametrize(
-    "name,events,total,base_events,base_total,exp_rri,exp_se,exp_lo,exp_hi", FIXTURES
+    "name,events,total,base_events,base_total,exp_rri,exp_lo,exp_hi", FIXTURES
 )
-def test_rri_fixture(name, events, total, base_events, base_total, exp_rri, exp_se, exp_lo, exp_hi):
+def test_rri_fixture(name, events, total, base_events, base_total, exp_rri, exp_lo, exp_hi):
     result = relative_rate_index(events, total, base_events, base_total)
     assert result.rri == pytest.approx(exp_rri, abs=1e-4), name
-    assert result.se_ln == pytest.approx(exp_se, abs=1e-4), name
     assert result.ci_lower == pytest.approx(exp_lo, abs=1e-4), name
     assert result.ci_upper == pytest.approx(exp_hi, abs=1e-4), name
 
@@ -97,14 +105,14 @@ def test_cascade_upstream_blocks_are_home_office_derived():
         assert row["source_publication"].startswith("Police powers and procedures")
         assert row["events"] < row["total"]  # events over a population base
         if row["ethnicity"] != "White":
-            assert row["ci_method"] == "wald_log_ratio"
+            assert row["ci_method"] == "exact_poisson_conditional"
             assert row["ci_lower"] <= row["rri"] <= row["ci_upper"]
 
 
 # Pooled fixture: three years of counts, summed, then RRI computed.
 # Expected values computed independently of compute_rri.py, Z = 1.96.
 POOLED_FIXTURE_YEARS = [(10, 200, 40, 1000), (15, 250, 50, 1100), (20, 300, 60, 1200)]
-POOLED_FIXTURE_EXPECTED = (1.3200000000, 0.1650833888, 0.9551071886, 1.8242978597)
+POOLED_FIXTURE_EXPECTED = (1.3200000000, 0.9241820620, 1.8529584202)
 
 
 def test_pooled_rri_fixture():
@@ -113,9 +121,8 @@ def test_pooled_rri_fixture():
     base_events = sum(y[2] for y in POOLED_FIXTURE_YEARS)
     base_total = sum(y[3] for y in POOLED_FIXTURE_YEARS)
     result = relative_rate_index(events, total, base_events, base_total)
-    exp_rri, exp_se, exp_lo, exp_hi = POOLED_FIXTURE_EXPECTED
+    exp_rri, exp_lo, exp_hi = POOLED_FIXTURE_EXPECTED
     assert result.rri == pytest.approx(exp_rri, abs=1e-4)
-    assert result.se_ln == pytest.approx(exp_se, abs=1e-4)
     assert result.ci_lower == pytest.approx(exp_lo, abs=1e-4)
     assert result.ci_upper == pytest.approx(exp_hi, abs=1e-4)
 
@@ -164,7 +171,7 @@ def test_child_non_baseline_rows_have_confidence_intervals():
     for row in compute_rri.build_rri():
         if row["provenance"] == "prism_r_derived" and row["ethnicity"] != "White":
             assert row["ci_lower"] is not None and row["ci_upper"] is not None
-            assert row["ci_method"] == "wald_log_ratio"
+            assert row["ci_method"] == "exact_poisson_conditional"
             assert row["ci_lower"] <= row["rri"] <= row["ci_upper"]
 
 
