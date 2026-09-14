@@ -27,9 +27,16 @@ thirty the exact interval is materially wider, which is the regime the
 approximation cannot be trusted in.
 
 No SciPy. The regularised incomplete beta is evaluated by the standard
-continued fraction and inverted by bisection, which is deterministic and
-so keeps the build byte-reproducible. tests/test_exact_ci.py checks the
-implementation against published Clopper-Pearson limits.
+continued fraction and inverted by bisection. The bisection is
+deterministic for a given maths library, so one machine reproduces its own
+results exactly. It is not identical across platforms: exp, lgamma, log
+and log1p are not required by IEEE 754 to be correctly rounded, and their
+last digits differ between maths libraries, so bounds computed on Linux
+and macOS can differ around the twelfth decimal place. This module
+therefore returns full-precision values and writes nothing; callers round
+what they serialise with pipeline.serialise.stable_float, which is where
+cross-platform reproducibility comes from. tests/test_exact_ci.py checks
+the implementation against published Clopper-Pearson limits.
 
 References:
   Clopper, C. J. and Pearson, E. S. (1934), "The use of confidence or

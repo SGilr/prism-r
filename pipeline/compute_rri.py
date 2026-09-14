@@ -75,6 +75,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 from pipeline.exact_ci import exact_rate_ratio_interval  # noqa: E402
+from pipeline.serialise import stable_float  # noqa: E402
 PROCESSED_DIR = REPO_ROOT / "data" / "processed"
 
 MOJ_CH9 = REPO_ROOT / "data" / "raw" / "moj" / "ch9_offence_analysis_2024.ods"
@@ -384,7 +385,13 @@ def _child_block(
                 baseline["events"],
                 baseline["total"],
             )
-            rri, ci_lower, ci_upper = result.rri, result.ci_lower, result.ci_upper
+            # The bounds come through exp, lgamma, log and log1p, which may
+            # differ between maths libraries in the last digits, so they are
+            # rounded for serialisation. The point estimate is exact division
+            # and is published at full precision. See pipeline/serialise.py.
+            rri = result.rri
+            ci_lower = stable_float(result.ci_lower)
+            ci_upper = stable_float(result.ci_upper)
         rows.append(
             _row(
                 geo_id="ew",

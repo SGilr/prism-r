@@ -978,8 +978,11 @@ def write_manifest(step_results: list[dict], *, complete: bool) -> dict:
                 "SHA-256 checksum, byte size, record count and source "
                 "provenance for every processed JSON file. build_timestamp "
                 "changes each run, so the manifest is not byte-identical "
-                "between builds; the processed outputs themselves are "
-                "deterministic and reproduce byte-for-byte."
+                "between builds. The processed outputs reproduce byte for "
+                "byte: each step is deterministic for a given maths "
+                "library, and the few values that depend on that library, "
+                "the confidence interval bounds, are rounded to six decimal "
+                "places at serialisation so they match across platforms."
             ),
         },
         "steps": [

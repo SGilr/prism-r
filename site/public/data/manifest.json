@@ -1,14 +1,14 @@
 {
   "meta": {
-    "build_timestamp": "2026-09-11T13:24:41+00:00",
+    "build_timestamp": "2026-09-14T10:58:52+00:00",
     "dataset": "build_manifest",
     "generated_by": "pipeline/build.py",
     "git": {
-      "commit": "cfd4e3c52578bd2f970c174dbc1888f640b407bc",
+      "commit": "d4150df4b053af814c6b594b7834d9239a56ca16",
       "working_tree": "dirty"
     },
     "python_version": "3.14.2",
-    "schema_note": "A provenance record of one pipeline build. steps lists each script run, in order, with its timing. outputs gives a SHA-256 checksum, byte size, record count and source provenance for every processed JSON file. build_timestamp changes each run, so the manifest is not byte-identical between builds; the processed outputs themselves are deterministic and reproduce byte-for-byte.",
+    "schema_note": "A provenance record of one pipeline build. steps lists each script run, in order, with its timing. outputs gives a SHA-256 checksum, byte size, record count and source provenance for every processed JSON file. build_timestamp changes each run, so the manifest is not byte-identical between builds. The processed outputs reproduce byte for byte: each step is deterministic for a given maths library, and the few values that depend on that library, the confidence interval bounds, are rounded to six decimal places at serialisation so they match across platforms.",
     "schema_version": "1.0.0"
   },
   "outputs": [
@@ -300,12 +300,12 @@
       ]
     },
     {
-      "bytes": 34945,
+      "bytes": 34398,
       "file": "data/processed/rri.json",
       "generated_by": "pipeline/compute_rri.py",
       "records": 45,
       "schema_version": "1.0.0",
-      "sha256": "bbf7a24a62ea6c1f0e27397191418a7d6e153b578f6b9d06e5ff3277193a301c",
+      "sha256": "9563da50b9d33405e8011c0804da868a878982a709e048ad5975e8400d903345",
       "sources": [
         {
           "description": "MoJ Statistics on Ethnicity and the Criminal Justice System 2024",
@@ -545,12 +545,12 @@
       ]
     },
     {
-      "bytes": 9927,
+      "bytes": 9380,
       "file": "data/processed/csv/road-to-remand-cascade.csv",
       "generated_by": "pipeline/build_csv_exports.py",
       "records": 45,
       "schema_version": "1.0.0",
-      "sha256": "ab3bf2d920dd92a3fdf6713bd25a394082b20f153effc0580097ecc9046f1526",
+      "sha256": "c6ecb2d9c4bcd0cb3c6e0778602413d21690a8e0525365f7beaa9e511b699061",
       "sources": [
         {
           "description": "YJB and MoJ Youth Justice Statistics 2024 to 2025",
@@ -701,91 +701,91 @@
   ],
   "steps": [
     {
-      "duration_seconds": 21.19,
+      "duration_seconds": 22.17,
       "name": "yjb",
       "script": "pipeline/ingest_yjb.py",
       "status": "ok",
       "step": 1
     },
     {
-      "duration_seconds": 0.11,
+      "duration_seconds": 0.17,
       "name": "crosswalk",
       "script": "pipeline/build_crosswalk.py",
       "status": "ok",
       "step": 2
     },
     {
-      "duration_seconds": 0.2,
+      "duration_seconds": 0.22,
       "name": "boundaries",
       "script": "pipeline/build_force_boundaries.py",
       "status": "ok",
       "step": 3
     },
     {
-      "duration_seconds": 0.68,
+      "duration_seconds": 0.87,
       "name": "explorer_boundaries",
       "script": "pipeline/build_explorer_boundaries.py",
       "status": "ok",
       "step": 4
     },
     {
-      "duration_seconds": 0.82,
+      "duration_seconds": 0.87,
       "name": "ycs",
       "script": "pipeline/ingest_ycs.py",
       "status": "ok",
       "step": 5
     },
     {
-      "duration_seconds": 0.26,
+      "duration_seconds": 0.27,
       "name": "ons",
       "script": "pipeline/ingest_ons.py",
       "status": "ok",
       "step": 6
     },
     {
-      "duration_seconds": 2.25,
+      "duration_seconds": 2.47,
       "name": "dfe",
       "script": "pipeline/ingest_dfe.py",
       "status": "ok",
       "step": 7
     },
     {
-      "duration_seconds": 73.97,
+      "duration_seconds": 75.29,
       "name": "home_office",
       "script": "pipeline/ingest_home_office.py",
       "status": "ok",
       "step": 8
     },
     {
-      "duration_seconds": 0.23,
+      "duration_seconds": 0.3,
       "name": "imd",
       "script": "pipeline/ingest_imd.py",
       "status": "ok",
       "step": 9
     },
     {
-      "duration_seconds": 0.83,
+      "duration_seconds": 0.96,
       "name": "rri",
       "script": "pipeline/compute_rri.py",
       "status": "ok",
       "step": 10
     },
     {
-      "duration_seconds": 0.03,
+      "duration_seconds": 0.04,
       "name": "target",
       "script": "pipeline/compute_target.py",
       "status": "ok",
       "step": 11
     },
     {
-      "duration_seconds": 0.1,
+      "duration_seconds": 0.12,
       "name": "explorer",
       "script": "pipeline/build_explorer.py",
       "status": "ok",
       "step": 12
     },
     {
-      "duration_seconds": 0.11,
+      "duration_seconds": 0.12,
       "name": "csv_exports",
       "script": "pipeline/build_csv_exports.py",
       "status": "ok",

@@ -129,6 +129,8 @@ where a and A are the event count and total for the group, and b and B those for
 
 Exact intervals are conservative: coverage is at least 95% rather than approximately 95%, so they are wider than approximate intervals by construction. That is the intended trade.
 
+Interval bounds are published to six decimal places, and the reason is reproducibility rather than presentation. The incomplete beta function depends on `exp`, `lgamma`, `log` and `log1p`, which the IEEE 754 floating-point standard does not require to give identical results on every platform, unlike addition, division and square root. The bisection is deterministic for a given maths library, but a build on Linux in September 2026 produced bounds differing from a macOS build in the last few significant digits, far below any precision the interval supports. Rounding at serialisation, in `pipeline/serialise.py`, makes the published bounds identical on every platform. Point estimates use only division and are published at full precision.
+
 References: Clopper and Pearson (1934), Biometrika 26, 404-413; Garwood (1936), Biometrika 28, 437-442; Breslow and Day, Statistical Methods in Cancer Research, Volume II, IARC, 1987, for the conditional approach to a ratio of rates.
 
 ### What changed in September 2026

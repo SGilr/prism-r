@@ -81,6 +81,7 @@ Never emit, infer, or reconstruct a suppressed value. Individual-level data is o
 
 - Ingest scripts read from `data/raw/`, may stage in `data/interim/`, and emit to `data/processed/`.
 - Scripts are idempotent: running twice produces byte-identical output.
+- A value computed with `exp`, `log`, `pow`, `lgamma` or another function IEEE 754 does not require to be correctly rounded is computed in a pure library that writes nothing, and rounded when serialised with `pipeline.serialise.stable_float`, because maths libraries differ in the last digits across platforms. Exact arithmetic, including `sqrt`, is not rounded. `tests/test_serialisation.py` enforces this.
 - Every pipeline output must reproduce the published source national totals to the nearest unit. This is an acceptance criterion, not a nicety.
 - JSON is written with sorted keys and a stable row order so diffs are meaningful.
 - Tests live in `tests/` and run with `.venv/bin/python -m pytest`.

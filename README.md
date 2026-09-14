@@ -40,7 +40,7 @@ python3.14 -m venv .venv
 make build              # or: .venv/bin/python pipeline/build.py
 ```
 
-This regenerates the seven JSON files in `data/processed/` and writes `data/processed/manifest.json`, a provenance record carrying, for each output, a SHA-256 checksum, byte size, record count, and the source description, URL, reference period and publication date. The processed outputs are deterministic: a second build reproduces them byte for byte.
+This regenerates the seven JSON files in `data/processed/` and writes `data/processed/manifest.json`, a provenance record carrying, for each output, a SHA-256 checksum, byte size, record count, and the source description, URL, reference period and publication date. A second build reproduces every output byte for byte, on the same machine or a different one: each step is deterministic for a given maths library, and the few values that depend on that library, the confidence interval bounds, are rounded to six decimal places at serialisation (see `pipeline/serialise.py`).
 
 `build.py` flags:
 

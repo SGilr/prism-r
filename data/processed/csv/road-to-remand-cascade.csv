@@ -9,48 +9,48 @@
 # source_suppressed is a cell withheld under disclosure control; it is
 # not a zero and must not be treated as one.
 decision_point,ethnicity,rri,ci_lower,ci_upper,ci_method,significance_flag,events,total,pooled,year,geo_id,source,reference_period,disclosure_status
-arrest,Asian,0.5170511003039413,0.49813163623934303,0.536533005916705,exact_poisson_conditional,,3045,663825,False,2025,ew,"Police powers and procedures: stop and search, arrests and mental health detentions, England and Wales, year ending 31 March 2025",year_ending_march_2025,released
-arrest,Black,1.7570899704223333,1.7064908506053174,1.8089019628765115,exact_poisson_conditional,,5200,333587,False,2025,ew,"Police powers and procedures: stop and search, arrests and mental health detentions, England and Wales, year ending 31 March 2025",year_ending_march_2025,released
-arrest,Mixed,1.2302685350273403,1.18858559005759,1.273106054772255,exact_poisson_conditional,,3606,330389,False,2025,ew,"Police powers and procedures: stop and search, arrests and mental health detentions, England and Wales, year ending 31 March 2025",year_ending_march_2025,released
-arrest,Other,0.7038875680490563,0.658318799399444,0.7518186583836719,exact_poisson_conditional,,908,145406,False,2025,ew,"Police powers and procedures: stop and search, arrests and mental health detentions, England and Wales, year ending 31 March 2025",year_ending_march_2025,released
+arrest,Asian,0.5170511003039413,0.498132,0.536533,exact_poisson_conditional,,3045,663825,False,2025,ew,"Police powers and procedures: stop and search, arrests and mental health detentions, England and Wales, year ending 31 March 2025",year_ending_march_2025,released
+arrest,Black,1.7570899704223333,1.706491,1.808902,exact_poisson_conditional,,5200,333587,False,2025,ew,"Police powers and procedures: stop and search, arrests and mental health detentions, England and Wales, year ending 31 March 2025",year_ending_march_2025,released
+arrest,Mixed,1.2302685350273403,1.188586,1.273106,exact_poisson_conditional,,3606,330389,False,2025,ew,"Police powers and procedures: stop and search, arrests and mental health detentions, England and Wales, year ending 31 March 2025",year_ending_march_2025,released
+arrest,Other,0.7038875680490563,0.658319,0.751819,exact_poisson_conditional,,908,145406,False,2025,ew,"Police powers and procedures: stop and search, arrests and mental health detentions, England and Wales, year ending 31 March 2025",year_ending_march_2025,released
 arrest,White,1.0,,,exact_poisson_conditional,,36923,4161949,False,2025,ew,"Police powers and procedures: stop and search, arrests and mental health detentions, England and Wales, year ending 31 March 2025",year_ending_march_2025,released
 custodial_sentence,Asian,1.09460081820296,,,not_published,*,,,False,2024,ew,Statistics on Ethnicity and the Criminal Justice System 2024,calendar_year_2024,released
-custodial_sentence,Asian,1.3846244066926898,1.0621414573520958,1.7797408947098958,exact_poisson_conditional,,68,846,True,2025,ew,Youth Justice Statistics 2024 to 2025,pooled_3y_ending_march_2025,released
-custodial_sentence,Asian,1.1778425655976679,0.7049257843636869,1.8660265764728896,exact_poisson_conditional,,20,294,False,2023,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2023,released
-custodial_sentence,Asian,1.5171973376506565,0.9417575908528394,2.3362499295924555,exact_poisson_conditional,,23,255,False,2024,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2024,released
-custodial_sentence,Asian,1.4771369610079288,0.9351449117576374,2.239874595647147,exact_poisson_conditional,,25,297,False,2025,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2025,released
+custodial_sentence,Asian,1.3846244066926898,1.062141,1.779741,exact_poisson_conditional,,68,846,True,2025,ew,Youth Justice Statistics 2024 to 2025,pooled_3y_ending_march_2025,released
+custodial_sentence,Asian,1.1778425655976679,0.704926,1.866027,exact_poisson_conditional,,20,294,False,2023,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2023,released
+custodial_sentence,Asian,1.5171973376506565,0.941758,2.33625,exact_poisson_conditional,,23,255,False,2024,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2024,released
+custodial_sentence,Asian,1.4771369610079288,0.935145,2.239875,exact_poisson_conditional,,25,297,False,2025,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2025,released
 custodial_sentence,Black,1.09820848289191,,,not_published,*,,,False,2024,ew,Statistics on Ethnicity and the Criminal Justice System 2024,calendar_year_2024,released
-custodial_sentence,Black,1.594010092078677,1.3542008287636487,1.869750957404749,exact_poisson_conditional,,202,2183,True,2025,ew,Youth Justice Statistics 2024 to 2025,pooled_3y_ending_march_2025,released
-custodial_sentence,Black,1.519138679093685,1.1560610097692583,1.9789928886698032,exact_poisson_conditional,,78,889,False,2023,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2023,released
-custodial_sentence,Black,2.56947545097528,1.9781248051522917,3.3125109862421676,exact_poisson_conditional,,86,563,False,2024,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2024,released
-custodial_sentence,Black,0.9122280570142536,0.6285175892709913,1.292217214484402,exact_poisson_conditional,,38,731,False,2025,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2025,released
+custodial_sentence,Black,1.594010092078677,1.354201,1.869751,exact_poisson_conditional,,202,2183,True,2025,ew,Youth Justice Statistics 2024 to 2025,pooled_3y_ending_march_2025,released
+custodial_sentence,Black,1.519138679093685,1.156061,1.978993,exact_poisson_conditional,,78,889,False,2023,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2023,released
+custodial_sentence,Black,2.56947545097528,1.978125,3.312511,exact_poisson_conditional,,86,563,False,2024,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2024,released
+custodial_sentence,Black,0.9122280570142536,0.628518,1.292217,exact_poisson_conditional,,38,731,False,2025,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2025,released
 custodial_sentence,Mixed,1.05803491009641,,,not_published,*,,,False,2024,ew,Statistics on Ethnicity and the Criminal Justice System 2024,calendar_year_2024,released
-custodial_sentence,Mixed,1.179511677282378,0.9306492250686621,1.4790437682567246,exact_poisson_conditional,,86,1256,True,2025,ew,Youth Justice Statistics 2024 to 2025,pooled_3y_ending_march_2025,released
-custodial_sentence,Mixed,0.7904347826086957,0.47917854043710645,1.2400288260528332,exact_poisson_conditional,,21,460,False,2023,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2023,released
-custodial_sentence,Mixed,1.5125240606954478,1.0155163215694742,2.18824245377539,exact_poisson_conditional,,33,367,False,2024,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2024,released
-custodial_sentence,Mixed,1.30897059929318,0.8735045022244049,1.9032191981725761,exact_poisson_conditional,,32,429,False,2025,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2025,released
+custodial_sentence,Mixed,1.179511677282378,0.930649,1.479044,exact_poisson_conditional,,86,1256,True,2025,ew,Youth Justice Statistics 2024 to 2025,pooled_3y_ending_march_2025,released
+custodial_sentence,Mixed,0.7904347826086957,0.479179,1.240029,exact_poisson_conditional,,21,460,False,2023,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2023,released
+custodial_sentence,Mixed,1.5125240606954478,1.015516,2.188242,exact_poisson_conditional,,33,367,False,2024,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2024,released
+custodial_sentence,Mixed,1.30897059929318,0.873505,1.903219,exact_poisson_conditional,,32,429,False,2025,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2025,released
 custodial_sentence,Other,1.16967332082325,,,not_published,*,,,False,2024,ew,Statistics on Ethnicity and the Criminal Justice System 2024,calendar_year_2024,released
-custodial_sentence,Other,1.4733068135454916,0.9550466396505306,2.1789136705728778,exact_poisson_conditional,,26,304,True,2025,ew,Youth Justice Statistics 2024 to 2025,pooled_3y_ending_march_2025,released
-custodial_sentence,Other,1.8332773109243699,0.8267675906580056,3.5473295449258107,exact_poisson_conditional,,9,85,False,2023,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2023,released
-custodial_sentence,Other,1.1431816157477508,0.4542349638614538,2.3956547262933023,exact_poisson_conditional,,7,103,False,2024,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2024,released
-custodial_sentence,Other,1.5127919911012238,0.7152760988935478,2.835991635739585,exact_poisson_conditional,,10,116,False,2025,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2025,released
+custodial_sentence,Other,1.4733068135454916,0.955047,2.178914,exact_poisson_conditional,,26,304,True,2025,ew,Youth Justice Statistics 2024 to 2025,pooled_3y_ending_march_2025,released
+custodial_sentence,Other,1.8332773109243699,0.826768,3.54733,exact_poisson_conditional,,9,85,False,2023,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2023,released
+custodial_sentence,Other,1.1431816157477508,0.454235,2.395655,exact_poisson_conditional,,7,103,False,2024,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2024,released
+custodial_sentence,Other,1.5127919911012238,0.715276,2.835992,exact_poisson_conditional,,10,116,False,2025,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2025,released
 custodial_sentence,White,1.0,,,not_published,,,,False,2024,ew,Statistics on Ethnicity and the Criminal Justice System 2024,calendar_year_2024,released
 custodial_sentence,White,1.0,,,exact_poisson_conditional,,645,11111,True,2025,ew,Youth Justice Statistics 2024 to 2025,pooled_3y_ending_march_2025,released
 custodial_sentence,White,1.0,,,exact_poisson_conditional,,210,3636,False,2023,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2023,released
 custodial_sentence,White,1.0,,,exact_poisson_conditional,,218,3667,False,2024,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2024,released
 custodial_sentence,White,1.0,,,exact_poisson_conditional,,217,3808,False,2025,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2025,released
 remand,Asian,1.18822843710716,,,not_published,*,,,False,2024,ew,Statistics on Ethnicity and the Criminal Justice System 2024,calendar_year_2024,released
-remand,Asian,1.5082106360091436,1.1182539190311047,1.999228461269305,exact_poisson_conditional,,55,536,False,2025,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2025,released
+remand,Asian,1.5082106360091436,1.118254,1.999228,exact_poisson_conditional,,55,536,False,2025,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2025,released
 remand,Black,1.28706176912464,,,not_published,*,,,False,2024,ew,Statistics on Ethnicity and the Criminal Justice System 2024,calendar_year_2024,released
-remand,Black,1.9161644831587923,1.6351479180007156,2.2415324967305845,exact_poisson_conditional,,252,1933,False,2025,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2025,released
+remand,Black,1.9161644831587923,1.635148,2.241532,exact_poisson_conditional,,252,1933,False,2025,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2025,released
 remand,Mixed,1.2191550163527,,,not_published,*,,,False,2024,ew,Statistics on Ethnicity and the Criminal Justice System 2024,calendar_year_2024,released
-remand,Mixed,1.8147161486179222,1.5181265724537065,2.1619238859196535,exact_poisson_conditional,,181,1466,False,2025,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2025,released
+remand,Mixed,1.8147161486179222,1.518127,2.161924,exact_poisson_conditional,,181,1466,False,2025,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2025,released
 remand,Other,1.32519218438967,,,not_published,*,,,False,2024,ew,Statistics on Ethnicity and the Criminal Justice System 2024,calendar_year_2024,released
-remand,Other,2.0937604270937604,1.5305685179282382,2.809148443767508,exact_poisson_conditional,,50,351,False,2025,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2025,released
+remand,Other,2.0937604270937604,1.530569,2.809148,exact_poisson_conditional,,50,351,False,2025,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2025,released
 remand,White,1.0,,,not_published,,,,False,2024,ew,Statistics on Ethnicity and the Criminal Justice System 2024,calendar_year_2024,released
 remand,White,1.0,,,exact_poisson_conditional,,444,6526,False,2025,ew,Youth Justice Statistics 2024 to 2025,year_ending_march_2025,released
-stop_search,Asian,0.5995548925153261,0.5825055144106729,0.6169985973594294,exact_poisson_conditional,,5125,663825,False,2025,ew,"Police powers and procedures: stop and search, arrests and mental health detentions, England and Wales, year ending 31 March 2025",year_ending_march_2025,released
-stop_search,Black,2.4038739363559065,2.353543967234654,2.455096366530818,exact_poisson_conditional,,10326,333587,False,2025,ew,"Police powers and procedures: stop and search, arrests and mental health detentions, England and Wales, year ending 31 March 2025",year_ending_march_2025,released
-stop_search,Mixed,1.0384577164334352,1.0068589264008692,1.0708341098752912,exact_poisson_conditional,,4418,330389,False,2025,ew,"Police powers and procedures: stop and search, arrests and mental health detentions, England and Wales, year ending 31 March 2025",year_ending_march_2025,released
-stop_search,Other,0.8256877620792418,0.78447690046605,0.8685328449267028,exact_poisson_conditional,,1546,145406,False,2025,ew,"Police powers and procedures: stop and search, arrests and mental health detentions, England and Wales, year ending 31 March 2025",year_ending_march_2025,released
+stop_search,Asian,0.5995548925153261,0.582506,0.616999,exact_poisson_conditional,,5125,663825,False,2025,ew,"Police powers and procedures: stop and search, arrests and mental health detentions, England and Wales, year ending 31 March 2025",year_ending_march_2025,released
+stop_search,Black,2.4038739363559065,2.353544,2.455096,exact_poisson_conditional,,10326,333587,False,2025,ew,"Police powers and procedures: stop and search, arrests and mental health detentions, England and Wales, year ending 31 March 2025",year_ending_march_2025,released
+stop_search,Mixed,1.0384577164334352,1.006859,1.070834,exact_poisson_conditional,,4418,330389,False,2025,ew,"Police powers and procedures: stop and search, arrests and mental health detentions, England and Wales, year ending 31 March 2025",year_ending_march_2025,released
+stop_search,Other,0.8256877620792418,0.784477,0.868533,exact_poisson_conditional,,1546,145406,False,2025,ew,"Police powers and procedures: stop and search, arrests and mental health detentions, England and Wales, year ending 31 March 2025",year_ending_march_2025,released
 stop_search,White,1.0,,,exact_poisson_conditional,,53593,4161949,False,2025,ew,"Police powers and procedures: stop and search, arrests and mental health detentions, England and Wales, year ending 31 March 2025",year_ending_march_2025,released

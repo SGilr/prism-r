@@ -357,8 +357,12 @@ const repoUrl = 'https://github.com/SGilr/prism-r';
       <p>
         The pipeline is one command. It runs every ingest and computation step
         in dependency order, applies disclosure control, and writes the
-        manifest. The processed outputs are deterministic and reproduce byte
-        for byte. The code and the processed data are public:
+        manifest. The processed outputs reproduce byte for byte on any
+        platform. Each step is deterministic for a given maths library, and
+        the few values that depend on that library, the confidence interval
+        bounds, are rounded to six decimal places when written, so that
+        differences in the last digits between machines cannot show. The
+        code and the processed data are public:
         <a href={repoUrl}>github.com/SGilr/prism-r</a>.
       </p>
     </section>
