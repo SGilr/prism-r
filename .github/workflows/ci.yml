@@ -8,8 +8,13 @@ on:
   # request opened with the workflow's own token raises no pull_request event
   # that other workflows can see, so without this the refresh PR would show
   # no check at all. workflow_dispatch is the documented exception to that
-  # rule.
+  # rule. A dispatched run's check does not attach to the pull request by
+  # itself, though, so the run also reports a commit status, which does.
   workflow_dispatch:
+
+permissions:
+  contents: read
+  statuses: write  # a dispatched run reports itself onto the commit
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -19,6 +24,18 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - name: Report pending to the commit
+        # Only a dispatched run needs this. A push or pull_request run already
+        # appears as a check; a status as well would show the job twice.
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api -X POST "repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}" \
+            -f state=pending -f context="CI (dispatched)" \
+            -f description="make test-fast, dispatched onto this branch" \
+            -f target_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
@@ -46,3 +63,19 @@ jobs:
 
       - name: Tests
         run: make test-fast PYTHON=python
+
+      - name: Report the result to the commit
+        if: always() && github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OUTCOME: ${{ job.status }}
+        run: |
+          case "$OUTCOME" in
+            success) state=success; text="make test-fast passed" ;;
+            cancelled) state=error; text="run cancelled" ;;
+            *) state=failure; text="make test-fast failed" ;;
+          esac
+          gh api -X POST "repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}" \
+            -f state="$state" -f context="CI (dispatched)" \
+            -f description="$text, dispatched onto this branch" \
+            -f target_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
