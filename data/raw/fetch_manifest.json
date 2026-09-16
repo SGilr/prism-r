@@ -9,7 +9,7 @@
       "bytes": 47008976,
       "download_url": "https://content.explore-education-statistics.service.gov.uk/api/releases/0e388e4d-3748-49a4-984c-08dece27c222/files?fromPage=ReleaseDownloads",
       "filename": "exclusions_2024-25_alldata.zip",
-      "last_checked": "2026-09-03T15:41:00+00:00",
+      "last_checked": "2026-09-16T15:02:13+00:00",
       "manual": false,
       "page_url": "https://explore-education-statistics.service.gov.uk/find-statistics/suspensions-and-permanent-exclusions-in-england",
       "path": "data/raw/dfe/exclusions_2024-25_alldata.zip",
@@ -47,17 +47,17 @@
       "note": "Welsh exclusions and children looked after; the stats.gov.wales platform needs a browser export"
     },
     "ycs": {
-      "bytes": 277907,
-      "download_url": "https://assets.publishing.service.gov.uk/media/6a7d80299cba0097fdd83254/youth-custody-population-june-2026.ods",
-      "filename": "youth-custody-population-june-2026.ods",
-      "last_checked": "2026-09-03T15:41:00+00:00",
+      "bytes": 278445,
+      "download_url": "https://assets.publishing.service.gov.uk/media/6aa11d6ac5796a7a179c64b6/Youth_Custody_Population_Report_-_Jul_-_26.ods",
+      "filename": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
+      "last_checked": "2026-09-16T15:02:12+00:00",
       "manual": false,
       "page_url": "https://www.gov.uk/government/publications/youth-custody-data",
-      "path": "data/raw/ycs/youth-custody-population-june-2026.ods",
-      "retrieved_at": "2026-09-03T09:26:56+00:00",
-      "sha256": "41d5f55ddc703acc590adc1cc6bb2fc5dd8935cae67a8bdaa6f2ff5050fb051b",
-      "source_publication_date": "2026-08-14T09:30:00+01:00",
-      "status": "unchanged"
+      "path": "data/raw/ycs/Youth_Custody_Population_Report_-_Jul_-_26.ods",
+      "retrieved_at": "2026-09-16T15:02:12+00:00",
+      "sha256": "0b1b2ad686c14c85355f736347dbc4d233cbd3f58196a3d1bbeed5e07786ff7f",
+      "source_publication_date": "2026-09-11T09:30:01+01:00",
+      "status": "downloaded"
     },
     "yjs": {
       "files": [
@@ -78,7 +78,7 @@
           "sha256": "6570ddb4240d8aa2cc32f6c20e99641289c3e3f2ec9f0a70a58b6b388740ae1e"
         }
       ],
-      "last_checked": "2026-09-03T15:41:01+00:00",
+      "last_checked": "2026-09-16T15:02:14+00:00",
       "manual": false,
       "page_url": "https://www.gov.uk/government/statistics/youth-justice-statistics-2024-to-2025",
       "publication_path": "/government/statistics/youth-justice-statistics-2024-to-2025",
