@@ -51,7 +51,8 @@ Every source feeding PRISM-R, with retrieval date and version. This file is the 
 | Home Office Police powers and procedures, year ending March 2025 | arrests-open-data-tables-mar25.ods | 2026-05-17 | OGL v3.0 | arrests by police force area, ethnicity and age band, sheet OD_5+1 |
 | MHCLG English Indices of Deprivation 2025 | iod2025_file10_la_lower.xlsx | 2026-05-17 | OGL v3.0 | File 10, lower-tier LA summaries; IDACI average score per LA |
 | ONS Open Geography portal, Police Force Areas Dec 2023 BGC | police_force_areas_dec2023_bgc.geojson | 2026-05-18 | OGL v3.0 | force boundary polygons for the static choropleth; simplified into force_boundaries.json |
-| MoJ Youth Custody Service, youth custody report June 2026 | youth-custody-population-june-2026.ods | 2026-09-03 | OGL v3.0 | monthly custody population by legal basis, age, ethnicity; annual episodes ending; feeds the target tracker |
+| MoJ Youth Custody Service, youth custody report June 2026 | youth-custody-population-june-2026.ods | 2026-09-03 | OGL v3.0 | superseded by the July 2026 edition; retained so the June figures as first published remain reproducible |
+| MoJ Youth Custody Service, youth custody report July 2026 | Youth_Custody_Population_Report_-_Jul_-_26.ods | 2026-09-16 | OGL v3.0 | monthly custody population by legal basis, age, ethnicity; annual episodes ending; feeds the target tracker. Published 11 September 2026 under a new filename convention; fetched by pipeline/fetch.py |
 | ONS Open Geography portal, December 2023 boundaries (BUC) | boundaries-2023/{LAD,CTYUA,PFA,RGN}_2023_BUC.geojson | 2026-09-03 | OGL v3.0 | ultra-generalised boundaries for the geographic explorer; built into TopoJSON by pipeline/build_explorer_boundaries.py |
 | Welsh Index of Multiple Deprivation 2019 | wimd2019_income_deprivation_by_age.json | 2026-05-17 | OGL v3.0 | income deprivation by age, LSOA and LA; child (0-15) income deprivation by LA. WIMD 2019 used pending WIMD 2025 LA indicator data |
 
@@ -74,7 +75,8 @@ repository root, and run `python pipeline/build.py`.
 
 | release | files | note |
 |---|---|---|
-| `raw-data-2026-09-05-2` | 137 | current |
+| `raw-data-2026-09-16` | 138 | current: adds the July 2026 youth custody report |
+| `raw-data-2026-09-05-2` | 137 | superseded: youth custody report reached only June 2026 |
 | `raw-data-2026-09-05` | 137 | superseded: Welsh looked-after children reached only March 2024 |
 | `raw-data-2026-09` | 133 | superseded, will not build: missing the four ONS boundary files |
 
@@ -88,6 +90,14 @@ Superseded releases are left published, their assets untouched, with notes
 saying what replaced them and why. A release asset is a citable artefact: a
 tag that means one set of bytes today and another tomorrow cannot be verified
 against, which is the whole point of publishing the raw inputs.
+
+A bundle must be cut whenever an automated source lands through the
+scheduled refresh, not only when a manual source changes. The verification
+job builds offline from the newest bundle and requires the result to match the
+committed outputs, so once a refresh pull request merges with a new youth
+custody edition the previous bundle can no longer reproduce the repository.
+`raw-data-2026-09-16` was cut for that reason on the day the July 2026 report
+merged.
 
 Bundles are date-stamped from `raw-data-2026-09-05` onward, and a second cut
 on the same day takes a numeric suffix. That is how `raw-data-2026-09-05-2`
@@ -108,10 +118,12 @@ Per the standing instruction, the most recent published release of each source i
 | StatsWales Welsh school exclusions | Sept 2023 to Aug 2024, provisional | November 2025 | academic year 2023/24 | revision or next year, to confirm |
 | StatsWales Welsh children looked after | data to 2024-25 | updated 16 July 2026 | year ending 31 March 2025 | December 2026 |
 | Home Office Police powers and procedures | Year ending March 2025 | 6 November 2025 | year ending 31 March 2025 | year ending March 2026, expected late 2026 |
-| MoJ YCS monthly youth custody report | June 2026 | 14 August 2026 | April 2000 to June 2026; latest month provisional | monthly; July 2026 edition expected September 2026 |
+| MoJ YCS monthly youth custody report | July 2026 | 11 September 2026 | April 2000 to July 2026; latest month provisional | monthly; the August 2026 edition is expected in October 2026, and the fetch layer checks the page on the 15th rather than relying on that |
 | MHCLG English Indices of Deprivation, IDACI | IoD2025 | 30 October 2025 | income data financial year 2022/23 | next indices, no fixed cycle |
 | Welsh Index of Multiple Deprivation, child income | WIMD 2019 (indicator data) | 2019 | income data financial year 2016/17 | see re-ingest flag below |
 | ONS Census 2021, RM032 | Census 2021 | 2023 | Census day, 21 March 2021 | next census, around 2031 |
+
+The YCS July 2026 edition was ingested on 16 September 2026. The scheduled refresh of 15 September had failed to fetch it: the publisher renamed the report from youth-custody-population-june-2026.ods to Youth_Custody_Population_Report_-_Jul_-_26.ods, and the fetcher matched on the old name. It now takes any ODS attachment on the publication page and the ingest checks the edition parsed from the filename against the latest month in the data. The July edition also revised two provisional June cells, DTO 84 to 85 and section 91/250 87 to 86; the June remand figure was unchanged.
 
 Re-ingest flags: the full 2024/25 DfE exclusions year was ingested on 3 September 2026, closing the earlier flag; termly releases remain out of scope. Welsh children looked after for the year ending March 2025 was ingested on 5 September 2026, closing that flag. It had been published on 16 July 2026 and was missed for seven weeks: the entry here said "expected June 2026" and nothing checked at source when June passed. StatsWales now gives December 2026 as the next update. The lesson is that an expected-date note is not a check; the standing rule is to verify at source rather than infer from cadence.
 
