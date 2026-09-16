@@ -7,8 +7,8 @@
     "generated_by": "pipeline/ingest_ycs.py",
     "schema_note": "Table 2.2: legal-basis episodes ending by ethnicity and legal basis, years ending March. ethnicity_basis is binary, ethnic minority groups against White including white minorities, as published; not mapped onto the YJB five groups. Episodes with unknown ethnicity or certain end types are excluded at source, so cells do not sum to Section 1 totals.",
     "source": "MoJ Youth Custody Service, monthly youth custody report",
-    "source_edition": "June 2026",
-    "source_publication_date": "2026-08-14"
+    "source_edition": "July 2026",
+    "source_publication_date": "2026-09-11"
   },
   "records": [
     {
@@ -17,7 +17,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "dto",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2019
     },
     {
@@ -26,7 +26,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "other",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2019
     },
     {
@@ -35,7 +35,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "remand",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2019
     },
     {
@@ -44,7 +44,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "dto",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2019
     },
     {
@@ -53,7 +53,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "other",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2019
     },
     {
@@ -62,7 +62,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "remand",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2019
     },
     {
@@ -71,7 +71,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "dto",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2020
     },
     {
@@ -80,7 +80,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "other",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2020
     },
     {
@@ -89,7 +89,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "remand",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2020
     },
     {
@@ -98,7 +98,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "dto",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2020
     },
     {
@@ -107,7 +107,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "other",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2020
     },
     {
@@ -116,7 +116,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "remand",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2020
     },
     {
@@ -125,7 +125,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "dto",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2021
     },
     {
@@ -134,7 +134,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "other",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2021
     },
     {
@@ -143,7 +143,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "remand",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2021
     },
     {
@@ -152,7 +152,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "dto",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2021
     },
     {
@@ -161,7 +161,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "other",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2021
     },
     {
@@ -170,7 +170,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "remand",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2021
     },
     {
@@ -179,7 +179,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "dto",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2022
     },
     {
@@ -188,7 +188,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "other",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2022
     },
     {
@@ -197,7 +197,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "remand",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2022
     },
     {
@@ -206,7 +206,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "dto",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2022
     },
     {
@@ -215,7 +215,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "other",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2022
     },
     {
@@ -224,7 +224,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "remand",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2022
     },
     {
@@ -233,7 +233,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "dto",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2023
     },
     {
@@ -242,7 +242,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "other",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2023
     },
     {
@@ -251,7 +251,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "remand",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2023
     },
     {
@@ -260,7 +260,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "dto",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2023
     },
     {
@@ -269,7 +269,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "other",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2023
     },
     {
@@ -278,7 +278,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "remand",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2023
     },
     {
@@ -287,7 +287,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "dto",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2024
     },
     {
@@ -296,7 +296,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "other",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2024
     },
     {
@@ -305,7 +305,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "remand",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2024
     },
     {
@@ -314,7 +314,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "dto",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2024
     },
     {
@@ -323,7 +323,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "other",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2024
     },
     {
@@ -332,7 +332,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "remand",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2024
     },
     {
@@ -341,7 +341,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "dto",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2025
     },
     {
@@ -350,7 +350,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "other",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2025
     },
     {
@@ -359,7 +359,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "remand",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2025
     },
     {
@@ -368,7 +368,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "dto",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2025
     },
     {
@@ -377,7 +377,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "other",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2025
     },
     {
@@ -386,7 +386,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "remand",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2025
     },
     {
@@ -395,7 +395,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "dto",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2026
     },
     {
@@ -404,7 +404,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "other",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2026
     },
     {
@@ -413,7 +413,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "ethnic_minority",
       "legal_basis": "remand",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2026
     },
     {
@@ -422,7 +422,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "dto",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2026
     },
     {
@@ -431,7 +431,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "other",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2026
     },
     {
@@ -440,7 +440,7 @@
       "ethnicity_basis": "binary",
       "ethnicity_group": "white",
       "legal_basis": "remand",
-      "source_file": "youth-custody-population-june-2026.ods",
+      "source_file": "Youth_Custody_Population_Report_-_Jul_-_26.ods",
       "year_ending_march": 2026
     }
   ]
