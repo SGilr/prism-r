@@ -27,6 +27,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write  # to dispatch ci.yml onto the pull request branch
 
 jobs:
   refresh:
@@ -123,6 +124,7 @@ jobs:
           echo "draft bundle $tag, $files files, stamped into the fetch manifest"
 
       - name: Open pull request
+        id: pr
         if: steps.changes.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
@@ -155,3 +157,15 @@ jobs:
             ```diff
             ${{ steps.changes.outputs.diff }}
             ```
+
+      - name: Run CI on the pull request branch
+        # The pull request above was opened with the workflow's own token, so
+        # GitHub raises no pull_request event for it and ci.yml would never
+        # run. Dispatching it directly is the documented exception, and the
+        # run's checks attach to the branch head the pull request points at.
+        if: steps.pr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run ci.yml --ref data-refresh
+          echo "dispatched ci.yml on data-refresh for pull request #${{ steps.pr.outputs.pull-request-number }}"

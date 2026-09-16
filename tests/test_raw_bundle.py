@@ -221,3 +221,16 @@ def test_save_manifest_adds_no_stamp_when_there_was_none(tmp_path, monkeypatch):
     monkeypatch.setattr(fetch, "FETCH_MANIFEST", path)
     fetch.save_manifest({})
     assert "bundle_release" not in json.loads(path.read_text("utf-8"))["meta"]
+
+
+def test_the_refresh_dispatches_ci_onto_its_pull_request():
+    """A pull request opened with the workflow's own token raises no
+    pull_request event other workflows can see, so ci.yml never ran on the
+    refresh branch and the pull request showed no check. The refresh must
+    dispatch it, ci.yml must accept a dispatch, and the job needs the
+    permission to do so."""
+    ci = (WORKFLOWS / "ci.yml").read_text("utf-8")
+    refresh = (WORKFLOWS / "refresh.yml").read_text("utf-8")
+    assert "workflow_dispatch:" in ci
+    assert "gh workflow run ci.yml --ref data-refresh" in refresh
+    assert "actions: write" in refresh

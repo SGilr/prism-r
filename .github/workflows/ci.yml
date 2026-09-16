@@ -4,6 +4,12 @@ on:
   push:
     branches: [main]
   pull_request:
+  # The refresh workflow dispatches this onto its pull request branch. A pull
+  # request opened with the workflow's own token raises no pull_request event
+  # that other workflows can see, so without this the refresh PR would show
+  # no check at all. workflow_dispatch is the documented exception to that
+  # rule.
+  workflow_dispatch:
 
 concurrency:
   group: ci-${{ github.ref }}
