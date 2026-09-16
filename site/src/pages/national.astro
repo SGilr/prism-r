@@ -6,7 +6,10 @@ import {
   renderRemandMix,
   renderForceChoropleth,
   renderRemandDuration,
+  custodyEdition,
 } from '../lib/charts.mjs';
+
+const edition = custodyEdition();
 
 const cascade = renderCascade();
 const disproportion = renderDisproportion();
@@ -209,7 +212,7 @@ const duration = renderRemandDuration();
         <span style="color:#1B3A5F; font-weight:600;">ethnic minority
         groups</span> against <span style="color:#5F5E5A;">White including
         white minorities</span>. PRISM-R analysis of YCS monthly youth custody
-        report table 3.4, June 2026 edition. Four caveats: ethnicity is the
+        report table 3.4, {edition} edition. Four caveats: ethnicity is the
         binary published split, not the YJB five groups; the measure counts
         episodes ending in the year, not children on remand; no adjustment is
         made for offence mix or court tier; the 2025-26 year (marked *) is

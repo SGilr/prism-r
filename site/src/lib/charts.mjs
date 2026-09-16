@@ -16,6 +16,16 @@ import { parseHTML } from "linkedom";
 
 const PROCESSED = new URL("../../../data/processed/", import.meta.url);
 
+/**
+ * The YCS edition the build ingested, for page copy that names it. Read
+ * from the processed data rather than typed into a page, because the report
+ * is monthly and fetched automatically: a literal went stale on the first
+ * refresh.
+ */
+export function custodyEdition() {
+  return load("custody_monthly.json").meta.source_edition;
+}
+
 function load(name) {
   return JSON.parse(readFileSync(new URL(name, PROCESSED), "utf-8"));
 }

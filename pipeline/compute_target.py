@@ -53,7 +53,12 @@ BASELINE_MONTHS = [f"2024-{m:02d}" for m in range(4, 13)] + [
     "2025-01", "2025-02", "2025-03"]
 ROLLING_WINDOW = 12
 TREND_FROM = "2025-03"   # the rolling month the baseline is anchored to
-TREND_TO = "2026-05"     # the last finalised month in the June 2026 edition
+# May 2026 is the month of the White Paper commitment (18 May 2026). The
+# pre-commitment trend is held to that endpoint on purpose: it measures what
+# was already happening before the commitment, so it must not extend into the
+# months the commitment is meant to change, and it does not move when a new
+# edition is ingested. The home page states the same window in words.
+TREND_TO = "2026-05"
 
 FLOW_BASELINE_YEAR = 2025  # year ending March 2025
 FLOW_BASELINE = 988        # YJS 2024-25, remands to YDA; validated below

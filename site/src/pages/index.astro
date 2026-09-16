@@ -4,8 +4,10 @@ import Wordmark from '../components/Wordmark.astro';
 import {
   renderTargetTracker,
   renderCustodyEthnicityCompanion,
+  custodyEdition,
 } from '../lib/charts.mjs';
 
+const edition = custodyEdition();
 const tracker = renderTargetTracker();
 const companion = renderCustodyEthnicityCompanion();
 
@@ -132,8 +134,8 @@ const headline = [
         unchanged is a volume success and a fairness failure.
       </p>
       <p class="mt-3 font-sans text-xs leading-relaxed text-neutral-500">
-        Sources: MoJ Youth Custody Service monthly youth custody report, June
-        2026 edition (latest month provisional); YJS 2024-25.
+        Sources: MoJ Youth Custody Service monthly youth custody report,
+        {edition} edition (latest month provisional); YJS 2024-25.
         <a href={metricUrl} class="underline underline-offset-2 hover:text-accent">
           Read the full metric definition</a>.
       </p>

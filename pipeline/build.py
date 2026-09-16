@@ -240,15 +240,52 @@ _YJS = {
     "publication_date": "2026-01-29",
     "retrieval_date": "2026-05-16",
 }
+# The YCS entry is refreshed from the build's own outputs before the manifest
+# is written, see _refresh_ycs_provenance: the report is monthly and fetched
+# automatically, so a literal edition here would go stale on the first
+# refresh and the manifest would describe a build that no longer existed.
 _YCS = {
-    "description": "MoJ Youth Custody Service, monthly youth custody report, "
-    "June 2026 edition",
+    "description": "MoJ Youth Custody Service, monthly youth custody report",
     "url": "https://www.gov.uk/government/publications/youth-custody-data",
-    "reference_period": "monthly, April 2000 to June 2026; the latest month "
-    "is provisional",
-    "publication_date": "2026-08-14",
-    "retrieval_date": "2026-09-03",
+    "reference_period": "monthly, April 2000 onward; the latest month is "
+    "provisional",
+    "publication_date": "",
+    "retrieval_date": "",
 }
+
+
+def _refresh_ycs_provenance() -> None:
+    """Fill the YCS provenance from custody_monthly.json and the fetch manifest.
+
+    Updated in place because the PROVENANCE table holds references to this
+    one dict for every output derived from the report. Falls back to the
+    generic wording if the files are absent, which only happens in a build
+    that failed before the ycs step and writes no complete manifest anyway.
+    """
+    try:
+        meta = json.loads((PROCESSED_DIR / "custody_monthly.json")
+                          .read_text(encoding="utf-8"))["meta"]
+    except (OSError, ValueError, KeyError):
+        return
+    edition = meta.get("source_edition") or ""
+    published = (meta.get("source_publication_date") or "")[:10]
+    retrieved = ""
+    try:
+        entry = json.loads((REPO_ROOT / "data" / "raw" / "fetch_manifest.json")
+                           .read_text(encoding="utf-8"))["sources"]["ycs"]
+        retrieved = (entry.get("retrieved_at") or "")[:10]
+    except (OSError, ValueError, KeyError):
+        pass
+    _YCS.update({
+        "description": "MoJ Youth Custody Service, monthly youth custody "
+                       f"report, {edition} edition" if edition else
+                       _YCS["description"],
+        "reference_period": f"monthly, April 2000 to {edition}; the latest "
+                            "month is provisional" if edition else
+                            _YCS["reference_period"],
+        "publication_date": published,
+        "retrieval_date": retrieved,
+    })
 _ONS_BOUNDARIES = {
     "description": "ONS Open Geography portal, December 2023 boundaries, "
     "ultra-generalised clipped (BUC)",
@@ -951,6 +988,7 @@ def manifest_destination(complete: bool) -> Path:
 
 
 def write_manifest(step_results: list[dict], *, complete: bool) -> dict:
+    _refresh_ycs_provenance()
     """Assemble and write the build manifest.
 
     A complete build writes data/processed/manifest.json, the committed

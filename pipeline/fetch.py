@@ -181,15 +181,45 @@ def _page_updated_at(html: str) -> str | None:
 # --------------------------------------------------------------------------
 # Fetchers
 # --------------------------------------------------------------------------
+def _choose_ycs_link(links: list[tuple[str, str]]) -> tuple[str, str]:
+    """The one youth custody report among the page's ODS attachments.
+
+    Prefers a filename naming the report, then one naming the population
+    table, and refuses to guess between the remainder: a wrong file would
+    ingest silently, whereas a clear failure names the candidates.
+    """
+    # gov.uk renders the same attachment link more than once on a page, so
+    # identical entries are one candidate, not a choice.
+    links = list(dict.fromkeys(links))
+    if not links:
+        raise ValueError("no ODS attachment found on the youth custody page")
+    def narrow(candidates, *words):
+        kept = [c for c in candidates
+                if all(w in c[1].lower() for w in words)]
+        return kept or candidates
+    candidates = narrow(links, "youth", "custody")
+    candidates = narrow(candidates, "population")
+    if len(candidates) > 1:
+        raise ValueError(
+            "more than one youth custody ODS on the publication page; "
+            "narrow the choice in _choose_ycs_link: "
+            + ", ".join(name for _, name in candidates))
+    return candidates[0]
+
+
 def fetch_ycs(previous: dict) -> dict:
     """The monthly youth custody report ODS, from the publication page."""
     html = _get(YCS_PAGE).decode("utf-8", "replace")
+    # Every ODS attachment on the page, whatever it is called. The filename
+    # is not a stable key: between the June and July 2026 editions the
+    # publisher renamed youth-custody-population-june-2026.ods to
+    # Youth_Custody_Population_Report_-_Jul_-_26.ods, and a pattern that
+    # assumed the old convention found nothing and failed the monthly
+    # refresh on 15 September 2026.
     links = re.findall(
         r'href="(https://assets\.publishing\.service\.gov\.uk/media/[a-f0-9]+/'
-        r'(youth-custody[^"]*?\.ods))"', html)
-    if not links:
-        raise ValueError("no youth custody ODS link found on the publication page")
-    url, filename = links[0]
+        r'([^"/]+?\.ods))"', html, flags=re.IGNORECASE)
+    url, filename = _choose_ycs_link(links)
     updated = _page_updated_at(html)
 
     if previous.get("filename") == filename:

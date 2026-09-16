@@ -41,6 +41,7 @@ anchored to 412, the figure cited to the Justice Committee on 18 May 2026.
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -70,15 +71,46 @@ def _resolve_source() -> tuple[str, str, str]:
         filename = entry.get("filename")
         publication_date = entry.get("source_publication_date") or ""
     if filename is None:
-        candidates = sorted(RAW_YCS.glob("youth-custody*.ods"),
+        candidates = sorted(RAW_YCS.glob("*.ods"),
                             key=lambda p: p.stat().st_mtime)
         if not candidates:
             raise FileNotFoundError(f"no youth custody ODS in {RAW_YCS}")
         filename = candidates[-1].name
+    return filename, edition_from_filename(filename), publication_date[:10]
+
+
+_MONTHS = ("january", "february", "march", "april", "may", "june", "july",
+           "august", "september", "october", "november", "december")
+
+
+def _edition_as_month(edition: str) -> str:
+    """"July 2026" -> "2026-07", the form latest_month takes."""
+    name, year = edition.split()
+    return f"{year}-{_MONTHS.index(name.lower()) + 1:02d}"
+
+
+def edition_from_filename(filename: str) -> str:
+    """The edition label, such as "July 2026", from a YCS filename.
+
+    The publisher does not keep a naming convention. The June 2026 edition
+    was youth-custody-population-june-2026.ods; July was
+    Youth_Custody_Population_Report_-_Jul_-_26.ods. So this takes any month
+    name or three-letter abbreviation, in any case, and a four-digit or
+    two-digit year, separated by hyphens, underscores or spaces. main()
+    checks the result against the latest month actually in the data, so a
+    misparse fails the build rather than mislabelling an edition.
+    """
     stem = filename.rsplit(".", 1)[0]
-    month, year = stem.split("-")[-2:]
-    edition = f"{month.capitalize()} {year}"
-    return filename, edition, publication_date[:10]
+    tokens = re.split(r"[\s_\-]+", stem.lower())
+    month = next((name.capitalize() for token in tokens for name in _MONTHS
+                  if token and name.startswith(token[:3]) and
+                  name.startswith(token)), None)
+    years4 = [t for t in tokens if re.fullmatch(r"20\d{2}", t)]
+    years2 = [t for t in tokens if re.fullmatch(r"\d{2}", t)]
+    year = years4[-1] if years4 else (f"20{years2[-1]}" if years2 else None)
+    if month is None or year is None:
+        raise ValueError(f"cannot read an edition month and year from {filename!r}")
+    return f"{month} {year}"
 
 
 SOURCE_FILE, SOURCE_EDITION_RESOLVED, SOURCE_PUBLICATION_RESOLVED = _resolve_source()
@@ -362,6 +394,14 @@ def main() -> int:
 
     monthly, latest = read_monthly(workbook)
     findings = validate_monthly(monthly)
+    # The edition label is parsed from a filename the publisher renames at
+    # will. The data is the authority: the file called "July 2026" must run
+    # to 2026-07, or the label is wrong and the build says so.
+    expected = _edition_as_month(SOURCE_EDITION)
+    if expected != latest:
+        findings.append(
+            f"edition {SOURCE_EDITION!r} parsed from {SOURCE_FILE!r} implies "
+            f"latest month {expected}, but the data runs to {latest}")
     if findings:
         for finding in findings:
             print(f"VALIDATION FAILED: {finding}", file=sys.stderr)
