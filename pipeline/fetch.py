@@ -125,6 +125,17 @@ def load_manifest() -> dict:
 
 
 def save_manifest(sources: dict) -> None:
+    # The refresh workflow stamps the manifest with the draft bundle it cut,
+    # and the publish workflow reads that stamp after the merge. A fetch run
+    # in between must not wipe it.
+    bundle_release = None
+    if FETCH_MANIFEST.exists():
+        try:
+            bundle_release = json.loads(
+                FETCH_MANIFEST.read_text(encoding="utf-8")
+            ).get("meta", {}).get("bundle_release")
+        except (OSError, ValueError):
+            bundle_release = None
     payload = {
         "meta": {
             "dataset": "fetch_manifest",
@@ -135,8 +146,11 @@ def save_manifest(sources: dict) -> None:
                 "publication date; status is downloaded or unchanged, and "
                 "last_checked is stamped on every run. Manual sources carry "
                 "manual: true and their last retrieval date. The manifest is "
-                "the machine-readable arm of docs/data-sources.md."
+                "the machine-readable arm of docs/data-sources.md. "
+                "bundle_release names the raw-data release cut from this "
+                "manifest's state by the refresh workflow."
             ),
+            **({"bundle_release": bundle_release} if bundle_release else {}),
         },
         "sources": sources,
     }

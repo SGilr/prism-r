@@ -152,3 +152,72 @@ def test_the_current_youth_custody_report_carries_its_own_retrieval_date():
                        .read_text("utf-8"))["sources"]["ycs"]
     relative = entry["path"].removeprefix("data/raw/")
     assert bundle._source_for(relative)[2] == entry["retrieved_at"][:10]
+
+
+# --------------------------------------------------------------------------
+# The automated cut: drafts under review, published on merge
+# --------------------------------------------------------------------------
+WORKFLOWS = REPO_ROOT / ".github" / "workflows"
+
+
+def test_every_workflow_selects_only_published_bundles():
+    """refresh.yml cuts a bundle as a draft while its pull request is under
+    review. A draft carries data not yet on main, so any workflow that
+    picked it as the newest bundle would fail, or worse build against it.
+    Every selection must exclude drafts."""
+    seen = 0
+    for name in ("ci.yml", "refresh.yml", "verify.yml", "publish-bundle.yml"):
+        for line in (WORKFLOWS / name).read_text("utf-8").splitlines():
+            if 'startswith("raw-data-")' in line:
+                seen += 1
+                assert "isDraft | not" in line, f"{name}: {line.strip()}"
+    assert seen >= 4
+
+
+def test_the_refresh_cuts_a_draft_and_the_merge_publishes_it():
+    refresh = (WORKFLOWS / "refresh.yml").read_text("utf-8")
+    publish = (WORKFLOWS / "publish-bundle.yml").read_text("utf-8")
+    assert "gh release create" in refresh and "--draft" in refresh
+    assert "bundle_release" in refresh, "the refresh must stamp the manifest"
+    assert "data/raw/fetch_manifest.json" in publish
+    assert "--draft=false" in publish
+    assert '--target "$GITHUB_SHA"' in publish, (
+        "the published tag must name the merge commit it reproduces")
+
+
+def test_verify_always_checks_out_main():
+    """On a release event the default ref is the tag. The question verify
+    answers is whether the newest bundle reproduces main."""
+    text = (WORKFLOWS / "verify.yml").read_text("utf-8")
+    assert "ref: main" in text
+
+
+def test_the_bundle_script_prints_its_tag_for_the_workflow():
+    source = (REPO_ROOT / "pipeline" / "make_raw_bundle.py").read_text("utf-8")
+    for key in ("tag=", "archive=", "files="):
+        assert f'print(f"{key}' in source, key
+
+
+def test_save_manifest_keeps_the_bundle_stamp(tmp_path, monkeypatch):
+    """A fetch run between the refresh stamping the manifest and the merge
+    publishing from it must not wipe the stamp."""
+    import json
+    from pipeline import fetch
+    path = tmp_path / "fetch_manifest.json"
+    monkeypatch.setattr(fetch, "FETCH_MANIFEST", path)
+    path.write_text(json.dumps(
+        {"meta": {"bundle_release": "raw-data-2026-09-16"}, "sources": {}}),
+        encoding="utf-8")
+    fetch.save_manifest({"ycs": {"manual": False}})
+    saved = json.loads(path.read_text("utf-8"))
+    assert saved["meta"]["bundle_release"] == "raw-data-2026-09-16"
+    assert saved["sources"] == {"ycs": {"manual": False}}
+
+
+def test_save_manifest_adds_no_stamp_when_there_was_none(tmp_path, monkeypatch):
+    import json
+    from pipeline import fetch
+    path = tmp_path / "fetch_manifest.json"
+    monkeypatch.setattr(fetch, "FETCH_MANIFEST", path)
+    fetch.save_manifest({})
+    assert "bundle_release" not in json.loads(path.read_text("utf-8"))["meta"]

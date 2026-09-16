@@ -32,6 +32,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Always verify main. On a release event the default ref is the
+          # tag, and the question this job answers is whether the newest
+          # published bundle reproduces the repository as it stands.
+          ref: main
 
       - uses: actions/setup-python@v5
         with:
@@ -45,8 +50,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          tag=$(gh release list --json tagName \
-            --jq '[.[] | select(.tagName | startswith("raw-data-"))][0].tagName')
+          # Drafts are bundles cut for pull requests still under review and
+          # must not be selected.
+          tag=$(gh release list --json tagName,isDraft \
+            --jq '[.[] | select((.tagName | startswith("raw-data-")) and (.isDraft | not))][0].tagName')
           echo "raw bundle: $tag"
           echo "BUNDLE_TAG=$tag" >> "$GITHUB_ENV"
           gh release download "$tag" --pattern '*.tar.gz' --output raw-bundle.tar.gz

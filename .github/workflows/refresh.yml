@@ -1,9 +1,28 @@
+# Bring the fast-moving sources up to date and propose the result.
+#
+# Runs on the 15th of each month and on demand. It downloads the newest
+# published raw-data bundle, fetches anything newer from the publishers,
+# builds, tests, and if any processed output changed opens a pull request
+# for review. No auto-merge.
+#
+# When it opens a pull request it also cuts a raw-data bundle matching the
+# data in that pull request, as a *draft* release. The draft is published by
+# .github/workflows/publish-bundle.yml when the pull request merges, and
+# never selected before then: the verification job builds offline from the
+# newest published bundle and requires it to reproduce main, which a bundle
+# carrying unmerged data cannot. If the pull request is closed unmerged, the
+# draft should be deleted: gh release delete <tag> --yes.
 name: Data refresh
 
 on:
   schedule:
     - cron: '0 6 15 * *'  # 06:00 UTC on the 15th of each month
   workflow_dispatch:
+    inputs:
+      force_bundle:
+        description: Cut a draft bundle from the current raw files even if nothing changed (no pull request)
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -23,12 +42,14 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Download the raw data bundle
+      - name: Download the newest published raw data bundle
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          tag=$(gh release list --json tagName \
-            --jq '[.[] | select(.tagName | startswith("raw-data-"))][0].tagName')
+          # Drafts are bundles cut for pull requests still under review and
+          # must not be selected.
+          tag=$(gh release list --json tagName,isDraft \
+            --jq '[.[] | select((.tagName | startswith("raw-data-")) and (.isDraft | not))][0].tagName')
           echo "raw bundle: $tag"
           gh release download "$tag" --pattern '*.tar.gz' --output raw-bundle.tar.gz
           tar xzf raw-bundle.tar.gz
@@ -64,6 +85,43 @@ jobs:
             echo "No processed output changed: the fetched sources carry no new data. No pull request needed."
           fi
 
+      - name: Cut the raw data bundle as a draft release
+        id: bundle
+        if: steps.changes.outputs.changed == 'true' || inputs.force_bundle == true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCES: ${{ steps.changes.outputs.sources }}
+          MONTH: ${{ steps.changes.outputs.month }}
+        run: |
+          out=$(python pipeline/make_raw_bundle.py "$RUNNER_TEMP")
+          echo "$out"
+          tag=$(echo "$out" | sed -n 's/^tag=//p')
+          archive=$(echo "$out" | sed -n 's/^archive=//p')
+          files=$(echo "$out" | sed -n 's/^files=//p')
+          if [ -n "$SOURCES" ]; then
+            what="Carries the refresh of ${SOURCES}, with the youth custody series to ${MONTH}."
+          else
+            what="Cut on demand from the current raw files; no source had changed."
+          fi
+          gh release create "$tag" "$archive" --draft \
+            --title "Raw data bundle, ${tag#raw-data-}" \
+            --notes "$(printf '%s\n\n%s\n\n%s\n\n%s' \
+              "Raw source files for the PRISM-R pipeline, as listed in RAW_BUNDLE.md inside the archive. ${files} files. All content is public sector information under the Open Government Licence v3.0." \
+              "Unpack at the repository root, which expands into data/raw/, then run \`python pipeline/build.py\`." \
+              "$what" \
+              "Cut by the scheduled refresh as a draft. It is published automatically when the matching pull request merges, and the verification job then rebuilds the repository from it. While it is a draft it describes data not yet on main, and it is not selected by any workflow.")"
+          TAG="$tag" python - <<'PY'
+          import json, os
+          path = "data/raw/fetch_manifest.json"
+          manifest = json.load(open(path, encoding="utf-8"))
+          manifest.setdefault("meta", {})["bundle_release"] = os.environ["TAG"]
+          with open(path, "w", encoding="utf-8") as handle:
+              json.dump(manifest, handle, ensure_ascii=False, indent=2, sort_keys=True)
+              handle.write("\n")
+          PY
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "draft bundle $tag, $files files, stamped into the fetch manifest"
+
       - name: Open pull request
         if: steps.changes.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v7
@@ -87,6 +145,12 @@ jobs:
             The build ran `pipeline/build.py --fetch` over the raw bundle
             plus freshly fetched sources; `make test-fast` passed. Review the
             manifest diff below, then merge to publish. No auto-merge.
+
+            A raw data bundle matching this data was cut as draft release
+            `${{ steps.bundle.outputs.tag }}`. Merging publishes it and the
+            verification job then rebuilds the repository from it. If this
+            pull request is closed unmerged, delete the draft:
+            `gh release delete ${{ steps.bundle.outputs.tag }} --yes`.
 
             ```diff
             ${{ steps.changes.outputs.diff }}

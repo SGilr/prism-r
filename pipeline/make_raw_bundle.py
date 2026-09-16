@@ -244,6 +244,7 @@ def main() -> int:
     count = write_bundle_doc(tag)
     print(f"RAW_BUNDLE.md written, {count} files listed")
 
+    output_dir.mkdir(parents=True, exist_ok=True)
     archive = output_dir / f"{tag}.tar.gz"
     with tarfile.open(archive, "w:gz") as tar:
         tar.add(RAW_DIR, arcname="data/raw", filter=lambda info:
@@ -263,6 +264,11 @@ def main() -> int:
     print(f"    --title 'Raw data bundle, {tag.removeprefix('raw-data-')}' \\")
     print(f"    --notes 'Raw source files as listed in RAW_BUNDLE.md inside "
           f"the archive. Pipeline state: {commit[:12]}.'")
+    # Machine-readable tail, read by .github/workflows/refresh.yml, which
+    # cuts the bundle itself and publishes it when the refresh merges.
+    print(f"tag={tag}")
+    print(f"archive={archive}")
+    print(f"files={count}")
     return 0
 
 

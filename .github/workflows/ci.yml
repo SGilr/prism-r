@@ -27,8 +27,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          tag=$(gh release list --json tagName \
-            --jq '[.[] | select(.tagName | startswith("raw-data-"))][0].tagName')
+          # Drafts are bundles cut for pull requests still under review and
+          # must not be selected.
+          tag=$(gh release list --json tagName,isDraft \
+            --jq '[.[] | select((.tagName | startswith("raw-data-")) and (.isDraft | not))][0].tagName')
           echo "raw bundle: $tag"
           gh release download "$tag" --pattern '*.tar.gz' --output raw-bundle.tar.gz
           tar xzf raw-bundle.tar.gz

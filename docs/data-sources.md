@@ -97,7 +97,14 @@ job builds offline from the newest bundle and requires the result to match the
 committed outputs, so once a refresh pull request merges with a new youth
 custody edition the previous bundle can no longer reproduce the repository.
 `raw-data-2026-09-16` was cut for that reason on the day the July 2026 report
-merged.
+merged, by hand. From 16 September 2026 the refresh workflow does it: when it
+opens a pull request it cuts the matching bundle as a draft release, stamps
+the draft's tag into `data/raw/fetch_manifest.json` inside that pull request,
+and `publish-bundle.yml` publishes the draft when the merge lands on `main`,
+pointing the tag at the merge commit and marking the previous bundle
+superseded. No workflow selects a draft, so a bundle under review cannot be
+mistaken for the current one. A pull request closed without merging leaves a
+draft to delete by hand. Manual sources are still bundled by hand.
 
 Bundles are date-stamped from `raw-data-2026-09-05` onward, and a second cut
 on the same day takes a numeric suffix. That is how `raw-data-2026-09-05-2`
