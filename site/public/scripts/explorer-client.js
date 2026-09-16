@@ -16,6 +16,15 @@ import { toCsv, downloadCsv, exportValue, exportStatus, slug }
   from "/scripts/csv.mjs";
 
 const SUPPRESSED_LABEL = "<6, suppressed for disclosure control";
+
+// The summary panel shows every group for every indicator, in the order the
+// Lambeth worked example uses, so that page can be reproduced for any area.
+const PANEL_GROUPS = [
+  ["overall", "All children"], ["White", "White"], ["Black", "Black"],
+  ["Asian", "Asian"], ["Mixed", "Mixed"], ["Other", "Other"],
+];
+// Areas with a written worked example on the site.
+const WORKED_EXAMPLES = { E09000022: "/example-lambeth" };
 const RATE_HIDDEN_LABEL = "rate not shown, population too small";
 
 // Sequential ramp, light to the wordmark slate. Deliberately not a red-green
@@ -292,6 +301,8 @@ export function initExplorer(root, index) {
   function select(geoId) {
     state.selected = geoId;
     renderPanel(geoId);
+    // A selected area is a linkable view: /explore?area=E09000022 reopens it.
+    history.replaceState(null, "", `?area=${encodeURIComponent(geoId)}`);
     root.querySelectorAll("#explorer-map path").forEach((path) => {
       const isSelected = path.dataset.geo === geoId;
       path.setAttribute("stroke", isSelected ? "#161512" : "#ffffff");
@@ -309,7 +320,10 @@ export function initExplorer(root, index) {
     if (!geography) return;
     const panel = el("explorer-panel");
 
-    // Every indicator for this place, each at its own level: an indicator
+    // Every indicator for this place, each at its own level, and within each
+    // indicator every ethnic group against the national figure. The map's
+    // ethnicity filter does not narrow this: the panel is the area read
+    // together, which is what the Lambeth worked example shows. An indicator
     // published for a different geography is named as unavailable here, with
     // the geography that does hold it, rather than borrowing its value.
     const blocks = [];
@@ -323,35 +337,58 @@ export function initExplorer(root, index) {
       const servedLevel = state.level === "rgn" && spec.level === "utla"
         ? "rgn"
         : (byId.has(`${spec.level}|${geoId}`) ? spec.level : null);
-      let record = null;
-      if (servedLevel) {
-        const records = await load("records", servedLevel);
-        const years = yearsFor(indicator, records);
-        record = cellsFor(records, indicator, years[0], state.ethnicity)
-          .get(geoId) || null;
-      }
-      const formatted = servedLevel ? formatValue(record, indicator) : {
-        text: unavailableNote(indicator, spec, geography), muted: true,
-      };
-      const scope = (record && record.national_scope) || spec.national_scope;
-      const national = record && record.national_value != null
-        ? `${spec.value_type === "count"
-            ? record.national_value.toLocaleString("en-GB")
-            : record.national_value.toFixed(2)} (${scope})`
-        : "";
-      const source = record ? index.sources[record.source_key] : null;
-      blocks.push(
-        `<div class="panel-row">` +
-        `<dt>${escape(spec.label)}` +
+      const head =
+        `<dt>${escape(spec.label)}<span class="unit">${escape(spec.unit)}</span>` +
         `<a class="methods-link" href="/methods#${spec.methods_anchor}" ` +
-        `title="How this indicator is built">methods</a></dt>` +
-        `<dd class="${formatted.muted ? "muted" : ""}">${escape(formatted.text)}` +
-        (national ? `<span class="national">National: ${escape(national)}</span>` : "") +
+        `title="How this indicator is built">methods</a></dt>`;
+      if (!servedLevel) {
+        // Never borrow the parent's figure as if it were local, but make it
+        // one click away: the Lambeth worked example shows the Met's stop
+        // and search figures labelled as the force's, and this is how the
+        // explorer reproduces that.
+        const holder = { pfa: geography.parent_force, utla: geography.parent_utla }[spec.level];
+        const open = holder
+          ? ` <a class="open-holder" href="?area=${encodeURIComponent(holder)}">open it</a>`
+          : "";
+        blocks.push(`<div class="panel-row">${head}<dd class="muted">${
+          escape(unavailableNote(indicator, spec, geography))}${open}</dd></div>`);
+        continue;
+      }
+      const records = await load("records", servedLevel);
+      const year = yearsFor(indicator, records)[0];
+      const byGroup = PANEL_GROUPS.map(([key, label]) => [
+        label, cellsFor(records, indicator, year, key).get(geoId) || null]);
+      const present = byGroup.filter(([, r]) => r);
+      if (!present.length) {
+        blocks.push(`<div class="panel-row">${head}<dd class="muted">no data published</dd></div>`);
+        continue;
+      }
+      const first = present[0][1];
+      const scope = first.national_scope || spec.national_scope;
+      const source = index.sources[first.source_key];
+      const fmt = (r) => formatValue(r, indicator);
+      const nat = (r) => r && r.national_value != null
+        ? (spec.value_type === "count"
+            ? r.national_value.toLocaleString("en-GB")
+            : r.national_value.toFixed(spec.value_field === "rate_per_1000" ? 1 : 2))
+        : "";
+      const rows = byGroup
+        .filter(([, r]) => r || spec.single_vintage === false)
+        .map(([label, r]) => {
+          const f = fmt(r);
+          const cell = f.muted ? `<td class="muted">${escape(f.text)}</td>`
+                               : `<td>${escape(f.text.replace(` ${spec.unit}`, ""))}</td>`;
+          return `<tr><th scope="row">${escape(label)}</th>${cell}` +
+                 `<td class="national">${escape(nat(r))}</td></tr>`;
+        }).join("");
+      blocks.push(
+        `<div class="panel-row">${head}<dd>` +
+        `<table class="groups"><thead><tr><th scope="col"></th>` +
+        `<th scope="col">${escape(geography.geo_name)}</th>` +
+        `<th scope="col" class="national">${escape(scope)}</th></tr></thead>` +
+        `<tbody>${rows}</tbody></table>` +
         (source ? `<span class="prov">${escape(source.reference_period)}. ${
           escape(source.source)}</span>` : "") +
-        (record && (record.suppressed ||
-          record.disclosure_status === "source_suppressed")
-          ? `<span class="prov">Suppressed under PRISM-R disclosure control.</span>` : "") +
         `</dd></div>`);
     }
 
@@ -369,6 +406,10 @@ export function initExplorer(root, index) {
         escape(geography.nation || "its nation")}: ${
         geography.imd_decile_in_nation} of 10`);
     }
+    const example = WORKED_EXAMPLES[geoId]
+      ? `<p class="panel-example">This authority has a written worked example: ` +
+        `<a href="${WORKED_EXAMPLES[geoId]}">PRISM-R in ${escape(geography.geo_name)}</a>.</p>`
+      : "";
 
     panel.innerHTML =
       `<h3>${escape(geography.geo_name)}</h3>` +
@@ -380,6 +421,7 @@ export function initExplorer(root, index) {
       (parents.length ? `<p class="panel-parents">${parents.join(". ")}.</p>` : "") +
       (populationTotal ? `<p class="panel-parents">Child population aged 10 to 17: ${
         populationTotal.toLocaleString("en-GB")}.</p>` : "") +
+      example +
       `<dl>${blocks.join("")}</dl>` +
       `<p class="panel-actions"><button type="button" id="explorer-export-panel">` +
       `Download this summary (CSV)</button></p>` +
@@ -502,41 +544,48 @@ export function initExplorer(root, index) {
       const servedLevel = state.level === "rgn" && spec.level === "utla"
         ? "rgn"
         : (byId.has(`${spec.level}|${geoId}`) ? spec.level : null);
-      let record = null;
-      if (servedLevel) {
-        const records = await load("records", servedLevel);
-        const years = yearsFor(indicator, records);
-        record = cellsFor(records, indicator, years[0], state.ethnicity)
-          .get(geoId) || null;
-      }
-      const source = record ? index.sources[record.source_key] : null;
-      rows.push({
-        geo_id: geoId,
-        geo_name: geography.geo_name,
-        indicator,
-        indicator_label: spec.label,
+      if (!servedLevel) {
         // Names the geography that holds the figure when it is not this one,
         // so a reader of the CSV alone cannot mistake a gap for a zero.
-        published_at_level: servedLevel
-          ? index.meta.levels[servedLevel].label
-          : `not published at this level; published at ${
-              index.meta.levels[spec.level].label.toLowerCase()} level`,
-        year: record?.year ?? "",
-        ethnicity: state.ethnicity,
-        value: servedLevel ? exportValue(record) : "",
-        unit: spec.unit,
-        national_value: record?.national_value ?? "",
-        national_scope: record?.national_scope || spec.national_scope,
-        source: source?.source ?? "",
-        reference_period: source?.reference_period ?? "",
-        disclosure_status: servedLevel
-          ? (record ? exportStatus(record) : "not published")
-          : "not published at this level",
-      });
+        rows.push({
+          geo_id: geoId, geo_name: geography.geo_name, indicator,
+          indicator_label: spec.label,
+          published_at_level: `not published at this level; published at ${
+            index.meta.levels[spec.level].label.toLowerCase()} level`,
+          year: "", ethnicity: "", value: "", unit: spec.unit,
+          national_value: "", national_scope: spec.national_scope,
+          source: "", reference_period: "",
+          disclosure_status: "not published at this level",
+        });
+        continue;
+      }
+      const records = await load("records", servedLevel);
+      const year = yearsFor(indicator, records)[0];
+      for (const [key] of PANEL_GROUPS) {
+        const record = cellsFor(records, indicator, year, key).get(geoId) || null;
+        if (!record && spec.single_vintage) continue;  // one figure, no groups
+        const source = record ? index.sources[record.source_key] : null;
+        rows.push({
+          geo_id: geoId,
+          geo_name: geography.geo_name,
+          indicator,
+          indicator_label: spec.label,
+          published_at_level: index.meta.levels[servedLevel].label,
+          year: record?.year ?? "",
+          ethnicity: key,
+          value: exportValue(record),
+          unit: spec.unit,
+          national_value: record?.national_value ?? "",
+          national_scope: record?.national_scope || spec.national_scope,
+          source: source?.source ?? "",
+          reference_period: source?.reference_period ?? "",
+          disclosure_status: record ? exportStatus(record) : "not published",
+        });
+      }
     }
     downloadCsv(`prism-r-${slug(geography.geo_name)}-summary.csv`,
       toCsv(columns, rows, {
-        title: `PRISM-R: ${geography.geo_name}, every available indicator`,
+        title: `PRISM-R: ${geography.geo_name}, every available indicator by ethnic group`,
         note: "Remand is not included: the Youth Justice Board does not "
             + "publish it below England and Wales level.",
       }));
@@ -545,8 +594,6 @@ export function initExplorer(root, index) {
   // ------------------------------------------------------------- controls
   el("explorer-indicator").addEventListener("change", (event) => {
     state.indicator = event.target.value;
-    state.selected = null;
-    el("explorer-panel").hidden = true;
     render();
   });
   el("explorer-ethnicity").addEventListener("change", (event) => {
@@ -567,7 +614,29 @@ export function initExplorer(root, index) {
     });
   });
 
-  render().catch((error) => {
+  // Open straight onto an area when linked to one. If the area does not
+  // exist at the default indicator's level, for example a shire district
+  // linked while an upper-tier indicator is selected, switch to the first
+  // indicator whose level does hold it.
+  const wanted = new URLSearchParams(location.search).get("area");
+  if (wanted && geographies.some((g) => g.geo_id === wanted)) {
+    const current = catalogue[state.indicator].level;
+    if (!byId.has(`${current}|${wanted}`)) {
+      const fallback = Object.entries(catalogue).find(([, spec]) =>
+        byId.has(`${spec.level}|${wanted}`));
+      if (fallback) {
+        state.indicator = fallback[0];
+        el("explorer-indicator").value = fallback[0];
+      }
+    }
+  }
+
+  render().then(() => {
+    if (wanted && byId.has(`${state.level}|${wanted}`)) {
+      select(wanted);
+      el("explorer-panel").scrollIntoView({ block: "start", behavior: "smooth" });
+    }
+  }).catch((error) => {
     el("explorer-status").textContent =
       "The map data could not be loaded. The figures remain available in the " +
       "downloads on the methods page.";
