@@ -234,3 +234,8 @@ def test_the_refresh_dispatches_ci_onto_its_pull_request():
     assert "workflow_dispatch:" in ci
     assert "gh workflow run ci.yml --ref data-refresh" in refresh
     assert "actions: write" in refresh
+    # A dispatched run's check does not attach to a pull request by itself;
+    # a commit status posted by the run does. Probed, not assumed.
+    assert "statuses: write" in ci
+    assert ci.count('context="CI (dispatched)"') == 2, "pending and result"
+    assert "github.event_name == 'workflow_dispatch'" in ci

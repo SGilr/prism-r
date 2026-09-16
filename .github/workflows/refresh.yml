@@ -161,8 +161,10 @@ jobs:
       - name: Run CI on the pull request branch
         # The pull request above was opened with the workflow's own token, so
         # GitHub raises no pull_request event for it and ci.yml would never
-        # run. Dispatching it directly is the documented exception, and the
-        # run's checks attach to the branch head the pull request points at.
+        # run. Dispatching it directly is the documented exception. A
+        # dispatched run's own check does not attach to the pull request,
+        # which was probed rather than assumed, so ci.yml reports a commit
+        # status from dispatched runs, and that does.
         if: steps.pr.outputs.pull-request-number != ''
         env:
           GH_TOKEN: ${{ github.token }}
