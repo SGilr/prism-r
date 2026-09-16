@@ -25,6 +25,78 @@ const PANEL_GROUPS = [
 ];
 // Areas with a written worked example on the site.
 const WORKED_EXAMPLES = { E09000022: "/example-lambeth" };
+
+// The ethnicity palette the Lambeth worked example uses, so the panel's
+// charts read as the same charts. "All children" takes a neutral slate that
+// none of the five groups uses. The national bar is a light grey.
+const GROUP_COLOUR = {
+  overall: "#3f5570", White: "#9aa7b4", Black: "#534AB7",
+  Asian: "#1D9E75", Mixed: "#D85A30", Other: "#888780",
+};
+const NATIONAL_COLOUR = "#cdd5db";
+const UI_FONT = "Inter, system-ui, sans-serif";
+
+function escape(value) {
+  return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+/**
+ * A paired horizontal bar chart: for each group, this area's value in the
+ * group's colour and the national value in grey, as an inline SVG. Ported
+ * from the Lambeth page's build-time chart so the explorer reproduces it.
+ * Suppressed or missing cells show their text in place of the bar and never
+ * a bar of zero length, which would read as a measurement.
+ */
+function groupBarChart(items, title, { nationalBars, width }) {
+  // Drawn at the panel's measured width so text keeps its size on a phone;
+  // only the bars get shorter. Without national bars the national figure
+  // sits in a fixed column to the right of the longest value label, or on
+  // its own line when the panel is too narrow for a column.
+  const W = width, labelW = 76, barX = labelW + 6;
+  const stacked = nationalBars || W < 440;
+  const rowH = stacked ? 40 : 26;
+  const barMax = W - barX - (nationalBars || stacked ? 64 : 200);
+  const nationalX = barX + barMax + 60;
+  const H = 8 + items.length * rowH;
+  const max = Math.max(0, ...items.flatMap((d) =>
+    nationalBars ? [d.value ?? 0, d.national ?? 0] : [d.value ?? 0]));
+  const scale = (v) => max > 0 ? Math.max(1, (v / max) * barMax) : 1;
+  let body = "";
+  items.forEach((d, i) => {
+    const top = 8 + i * rowH;
+    body += `<text x="0" y="${top + (stacked ? 18 : 9)}" dominant-baseline="middle" ` +
+      `font-size="11.5" fill="#444441">${escape(d.label)}</text>`;
+    if (d.value == null) {
+      body += `<text x="${barX}" y="${top + 9.5}" dominant-baseline="middle" ` +
+        `font-size="10" font-style="italic" fill="#888780">${escape(d.text)}</text>`;
+    } else {
+      const w = scale(d.value);
+      body += `<rect x="${barX}" y="${top + 2}" width="${w.toFixed(1)}" height="13" ` +
+        `rx="1.5" fill="${d.colour}"/>` +
+        `<text x="${(barX + w + 6).toFixed(1)}" y="${top + 9}" dominant-baseline="middle" ` +
+        `font-size="11" font-weight="600" fill="#1a1a1a">${escape(d.text)}</text>`;
+    }
+    if (!nationalBars) {
+      if (d.national != null) {
+        const [x, y] = stacked ? [barX, top + 26] : [nationalX, top + 9];
+        body += `<text x="${x}" y="${y}" dominant-baseline="middle" ` +
+          `font-size="10.5" fill="#5f5e5a">${escape(d.nationalText)} nationally</text>`;
+      }
+      return;
+    }
+    if (d.national != null) {
+      const w = scale(d.national);
+      body += `<rect x="${barX}" y="${top + 19}" width="${w.toFixed(1)}" height="13" ` +
+        `rx="1.5" fill="${NATIONAL_COLOUR}"/>` +
+        `<text x="${(barX + w + 6).toFixed(1)}" y="${top + 26}" dominant-baseline="middle" ` +
+        `font-size="10.5" fill="#5f5e5a">${escape(d.nationalText)}</text>`;
+    }
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" ` +
+    `aria-label="${escape(title)}" style="font-family:${UI_FONT}">` +
+    `<title>${escape(title)}</title>${body}</svg>`;
+}
 const RATE_HIDDEN_LABEL = "rate not shown, population too small";
 
 // Sequential ramp, light to the wordmark slate. Deliberately not a red-green
@@ -319,6 +391,11 @@ export function initExplorer(root, index) {
       geographies.find((g) => g.geo_id === geoId);
     if (!geography) return;
     const panel = el("explorer-panel");
+    // Chart width from the panel's box, less its padding, clamped to the
+    // range the layout was designed for. A hidden panel has no box, so it
+    // is shown before measuring; it is about to be filled anyway.
+    panel.hidden = false;
+    const chartWidth = Math.max(280, Math.min(520, (panel.clientWidth || 568) - 48));
 
     // Every indicator for this place, each at its own level, and within each
     // indicator every ethnic group against the national figure. The map's
@@ -372,23 +449,42 @@ export function initExplorer(root, index) {
             ? r.national_value.toLocaleString("en-GB")
             : r.national_value.toFixed(spec.value_field === "rate_per_1000" ? 1 : 2))
         : "";
-      const rows = byGroup
-        .filter(([, r]) => r || spec.single_vintage === false)
-        .map(([label, r]) => {
+      const groups = byGroup.filter(([, r]) => r || spec.single_vintage === false);
+      let figure;
+      if (groups.length === 1) {
+        // One figure per area, as with the deprivation index: a number, as
+        // the Lambeth page shows it, not a lone bar.
+        const [, r] = groups[0];
+        const f = fmt(r);
+        figure = `<p class="single${f.muted ? " muted" : ""}">` +
+          `<span class="figure">${escape(f.muted ? f.text : f.text.replace(` ${spec.unit}`, ""))}</span>` +
+          (nat(r) ? ` <span class="against">against ${escape(nat(r))}, ${escape(scope)}</span>` : "") +
+          `</p>`;
+      } else {
+        const items = groups.map(([label, r]) => {
           const f = fmt(r);
-          const cell = f.muted ? `<td class="muted">${escape(f.text)}</td>`
-                               : `<td>${escape(f.text.replace(` ${spec.unit}`, ""))}</td>`;
-          return `<tr><th scope="row">${escape(label)}</th>${cell}` +
-                 `<td class="national">${escape(nat(r))}</td></tr>`;
-        }).join("");
+          const key = PANEL_GROUPS.find(([, l]) => l === label)[0];
+          return {
+            label: key === "overall" ? "All" : label,
+            value: f.muted ? null : r.value,
+            text: f.muted ? f.text : f.text.replace(` ${spec.unit}`, ""),
+            colour: GROUP_COLOUR[key],
+            national: r && r.national_value != null ? r.national_value : null,
+            nationalText: nat(r),
+          };
+        });
+        figure = groupBarChart(items,
+          `${spec.label} for ${geography.geo_name} by ethnic group, ` +
+          `coloured bars, against the ${scope} figure in grey`,
+          { nationalBars: spec.value_type !== "count", width: chartWidth });
+      }
+      const nationalNote = groups.length === 1 ? ""
+        : spec.value_type === "count" ? `National figures in grey: ${escape(scope)}. `
+        : `Grey bars: ${escape(scope)}. `;
       blocks.push(
-        `<div class="panel-row">${head}<dd>` +
-        `<table class="groups"><thead><tr><th scope="col"></th>` +
-        `<th scope="col">${escape(geography.geo_name)}</th>` +
-        `<th scope="col" class="national">${escape(scope)}</th></tr></thead>` +
-        `<tbody>${rows}</tbody></table>` +
-        (source ? `<span class="prov">${escape(source.reference_period)}. ${
-          escape(source.source)}</span>` : "") +
+        `<div class="panel-row">${head}<dd>${figure}` +
+        `<span class="prov">${nationalNote}${source
+          ? `${escape(source.reference_period)}. ${escape(source.source)}` : ""}</span>` +
         `</dd></div>`);
     }
 
@@ -422,6 +518,9 @@ export function initExplorer(root, index) {
       (populationTotal ? `<p class="panel-parents">Child population aged 10 to 17: ${
         populationTotal.toLocaleString("en-GB")}.</p>` : "") +
       example +
+      `<p class="panel-key">Coloured bars: this area, by ethnic group. ` +
+      `<span class="sw" style="background:${NATIONAL_COLOUR}"></span> Grey: the national ` +
+      `figure, its scope named under each chart. Every value is written out.</p>` +
       `<dl>${blocks.join("")}</dl>` +
       `<p class="panel-actions"><button type="button" id="explorer-export-panel">` +
       `Download this summary (CSV)</button></p>` +
@@ -443,11 +542,6 @@ export function initExplorer(root, index) {
       rgn: "region",
     }[spec.level];
     return `not published at this level; published for ${holder}`;
-  }
-
-  function escape(value) {
-    return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
 
   // --------------------------------------------------------------- export
