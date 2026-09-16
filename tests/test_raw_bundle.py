@@ -122,3 +122,33 @@ def test_every_allocated_tag_still_matches_the_selection_glob():
     taken = {"raw-data-2026-09-05"}
     tag, _ = bundle.next_free_tag("raw-data-2026-09-05", taken)
     assert tag.startswith("raw-data-")
+
+
+
+# --------------------------------------------------------------------------
+# Retrieval dates for automated files
+# --------------------------------------------------------------------------
+def test_an_automated_file_is_dated_by_the_fetch_manifest(monkeypatch):
+    """The fetch manifest knows when the fetch layer retrieved a file; a
+    per-directory SOURCES date cannot, once a directory holds two editions."""
+    monkeypatch.setattr(bundle, "FETCHED_DATES",
+                        {"ycs/some-report.ods": "2026-09-16"})
+    assert bundle._source_for("ycs/some-report.ods")[2] == "2026-09-16"
+
+
+def test_a_file_the_manifest_does_not_name_keeps_the_sources_date(monkeypatch):
+    """A superseded edition drops out of the manifest but stays in the
+    bundle, and must keep the date it was actually retrieved."""
+    monkeypatch.setattr(bundle, "FETCHED_DATES", {})
+    ycs_date = dict(bundle.SOURCES)["ycs/"][2]
+    assert bundle._source_for("ycs/youth-custody-population-june-2026.ods")[2] == ycs_date
+
+
+def test_the_current_youth_custody_report_carries_its_own_retrieval_date():
+    """Against the real, tracked fetch manifest: whichever edition it names
+    is dated by it, whatever month this runs in."""
+    import json
+    entry = json.loads((REPO_ROOT / "data" / "raw" / "fetch_manifest.json")
+                       .read_text("utf-8"))["sources"]["ycs"]
+    relative = entry["path"].removeprefix("data/raw/")
+    assert bundle._source_for(relative)[2] == entry["retrieved_at"][:10]

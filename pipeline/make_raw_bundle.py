@@ -113,6 +113,34 @@ SOURCES: list[tuple[str, tuple[str, str, str, str]]] = [
 ]
 
 
+def _fetched_dates() -> dict[str, str]:
+    """Retrieval dates for automated files, keyed by path under data/raw.
+
+    The fetch layer re-downloads these and records exactly when, so the
+    fetch manifest is the authority for their dates. A SOURCES date is per
+    directory and cannot be right for two editions of one report retrieved
+    thirteen days apart, as the June and July 2026 youth custody reports
+    were. Files the manifest does not name, including superseded editions
+    it no longer lists, keep the SOURCES date.
+    """
+    manifest = RAW_DIR / "fetch_manifest.json"
+    if not manifest.exists():
+        return {}
+    dates: dict[str, str] = {}
+    sources = json.loads(manifest.read_text(encoding="utf-8")).get("sources", {})
+    for entry in sources.values():
+        fallback = (entry.get("retrieved_at") or "")[:10]
+        for item in [entry, *entry.get("files", [])]:
+            path = item.get("path") or ""
+            when = (item.get("retrieved_at") or fallback)[:10]
+            if path.startswith("data/raw/") and when:
+                dates[path[len("data/raw/"):]] = when
+    return dates
+
+
+FETCHED_DATES = _fetched_dates()
+
+
 def _source_for(relative: str) -> tuple[str, str, str, str]:
     best = None
     for prefix, meta in SOURCES:
@@ -120,7 +148,8 @@ def _source_for(relative: str) -> tuple[str, str, str, str]:
             best = (prefix, meta)
     if best is None:
         return ("unattributed; add a SOURCES entry", "", "unknown", OGL)
-    return best[1]
+    description, url, retrieved, licence = best[1]
+    return description, url, FETCHED_DATES.get(relative, retrieved), licence
 
 
 def write_bundle_doc(tag: str) -> int:
