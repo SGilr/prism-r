@@ -24,6 +24,16 @@ Every source feeding PRISM-R, with retrieval date and version. This file is the 
 - gov.uk youth justice services contact directory, used to confirm youth justice service structure. https://www.gov.uk/government/collections/youth-offending-team-contact-details
 - ONS Open Geography portal, Police Force Areas (December 2023) generalised clipped boundaries (BGC), used for the static force-level choropleth. Simplified by `pipeline/build_force_boundaries.py` into `data/processed/force_boundaries.json`. https://geoportal.statistics.gov.uk/
 
+## Quoted, not ingested
+
+Sources the site quotes in prose or in a table, without any figure passing through the pipeline. They are not held in `data/raw/` and are not part of the raw data bundle, because no processed output depends on them; the checksum lets a reader confirm the file quoted.
+
+| source | file | retrieved | licence | SHA-256 | quoted where |
+|---|---|---|---|---|---|
+| HM Inspectorate of Prisons, Children in custody 2025-26, published 22 September 2026. https://hmiprisons.justiceinspectorates.gov.uk/hmipris_reports/children-in-custody-2025-26/ | Children-in-custody-2025-26-web.pdf | 2026-09-22 | OGL v3.0 | 2539cbcb1555052454a9c560cb80608baf2aff08b11798b9d5d16937527d7357 | national picture, Who is held on remand: paragraphs 2.7 and 2.8, appendix I, appendix II |
+| HM Inspectorate of Prisons, Children in custody 2025-26, survey results for all children | 2025-26-ANNUAL-REPORT-ALL-CHILDREN-ANALYSIS-WORKBOOK_QA.xlsx | 2026-09-22 | OGL v3.0 | 8c7f8793ecb9a84a20de6f3118f9c778d9aa85b0835d44b9e931c20eab6b7b2b | national picture, Who is held on remand: tabs 1, 4 and 6. The publisher's page labels the workbook 2024-25; the file is the 2025-26 edition |
+| HM Inspectorate of Prisons, Children on short-term remand, thematic review, May 2026. https://hmiprisons.justiceinspectorates.gov.uk/hmipris_reports/children-on-short-term-remand/ | not held | 2026-05 | OGL v3.0 | | national picture, How remand decisions divide; methods, Remand duration |
+
 ## Retrieval log
 
 | source | file | retrieved | licence | notes |
