@@ -4,7 +4,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node tools/sync-public.mjs",
     "dev": "astro dev",
+    "prebuild": "node tools/sync-public.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"

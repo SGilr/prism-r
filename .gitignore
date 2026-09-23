@@ -36,3 +36,9 @@ data/raw/ons-census-2021/*
 # Editor
 .vscode/
 .idea/
+
+# Site files copied from their sources on every build by
+# site/tools/sync-public.mjs: data from data/processed/, scripts from
+# site/src/lib/. Committed copies drifted; generated ones cannot.
+site/public/data/
+site/public/scripts/
