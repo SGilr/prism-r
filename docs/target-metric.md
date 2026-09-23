@@ -24,4 +24,4 @@ The share of the custody population on remand (44% in 2024-25), which is a ratio
 
 Assessed at both the last full year of the Parliament (year ending March 2029) and the latest published month before dissolution.
 
-Decided 3 September 2026. This definition is the author's own and has not been independently reviewed; see the "Independent review" section of [methods.md](methods.md#independent-review).
+Decided 3 September 2026. This definition is the author's own. It was among the methods independently evaluated by Dr Hope Kent in September 2026, which raised no substantive point on it; see the "Independent review" section of [methods.md](methods.md#independent-review).

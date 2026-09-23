@@ -141,15 +141,13 @@ Until September 2026 the interval was the Wald interval on the log of the rate r
 
 Recomputing all 28 intervals widened them by 7.5% at the median and 10.9% at most. The point estimates are unaffected: an RRI is a ratio of rates and does not depend on how its interval is constructed. At the thousands-scale stop and search counts the two methods agree to three decimal places; the difference is concentrated where it should be, at counts below about thirty.
 
-Two points of method:
+Three points of method:
 
 1. MoJ uses p-value-based significance flags rather than confidence intervals. PRISM-R adopts confidence intervals because they convey magnitude and uncertainty together in a single visual, whereas a p-value flag is binary. Both are valid; confidence intervals are the more informative choice for a public-facing tool. MoJ's flag is still carried, on the `moj_published` rows, in the `significance_flag` field.
 
 2. The exact interval is trustworthy at small counts, which is why it replaced the Wald interval. Intervals computed near the suppression threshold are still wide, and should be read as such: a wide interval is an honest statement that the data cannot resolve the question, not a defect.
 
 3. Ethnic groups with small underlying populations, the "Other" group in particular and at times "Mixed", carry wider confidence intervals as a structural feature of disaggregation, not a flaw in the analysis: a smaller denominator gives a larger standard error. Such results should be read as less precise, not less real. The pooled "Other" child custodial sentencing RRI is a case in point: 1.47 with a 95% interval of 0.96 to 2.18. The interval includes 1, so the point estimate above 1 is not statistically significant and should not be reported as though it were. Under the Wald interval used before September 2026 the same figure read 1.01 to 2.14 and so excluded 1 by a whisker; the exact interval does not support that claim. The single-year Asian estimate for the same series moved the same way.
-
-This method has not been independently reviewed. See [Independent review](#independent-review).
 
 ## Reproducibility of MoJ-published RRIs
 
@@ -198,7 +196,7 @@ English DfE exclusion rates are per 100 pupils; Welsh rates are per 1,000. Every
 - **No LA by ethnicity for Welsh exclusions**: DfE publishes English exclusions crossed by local authority and ethnicity. StatsWales publishes Welsh exclusions by local authority and by ethnicity in two separate tables, with no cross-tabulation. Welsh exclusion rows are therefore either local-authority level for all ethnicities (`breakdown: overall`) or all-Wales by ethnicity (`geo_id: rgn-wales`, `breakdown: by_ethnicity`). There is no Welsh LA by ethnicity exclusion figure. This is a documented gap, not an omission.
 - **Welsh "Chinese"**: Welsh exclusion statistics report Chinese separately from Asian. The ONS and YJB schemes place Chinese within Asian, but the Welsh exclusion table is a rate table with no pupil denominator, so the two cannot be exactly recombined. The Welsh all-Wales Asian exclusion rate is the Welsh "Asian" category alone; Chinese, a small group, is not folded in.
 - **Welsh looked-after rounding**: Welsh looked-after counts are rounded to the nearest 5, with counts below 5 suppressed. English counts are not rounded this way.
-- **Reference year**: Welsh looked-after data is a year behind England, year ending March 2024 against England's March 2025.
+- **Reference year**: Welsh and English looked-after data are both for the year ending March 2025. The Welsh figures were re-ingested on 5 September 2026 from the full StatsWales export; until then they were a year behind England, for the year ending March 2024.
 
 ### Children looked after: counts rather than rates
 

@@ -23,7 +23,7 @@ data/raw/        public source files as downloaded, grouped by release
 data/interim/    pipeline working files, not committed
 data/processed/  emitted JSON consumed by the site
 pipeline/        Python ingest and build scripts
-site/            Astro static site (built in later sprints)
+site/            Astro static site, live at prism-r.howpreventionworks.com
 docs/            methods, data sources, disclosure control
 tests/           pytest suite
 ```
@@ -111,4 +111,4 @@ The front-end is not started until the pipeline reproduces published national to
 
 `pipeline/build.py` is the canonical entry point for a data refresh. It runs every ingest and compute step in dependency order, validates each output, and writes `data/processed/manifest.json`, the provenance record. Run it with `make build`. For a full refresh use the orchestrator, not the ingest scripts ad hoc, so the manifest stays current. `make test`, `make test-fast` and `make clean-processed` are the other entry points.
 
-Sprints 1 and 2 are complete: the data pipeline is built, reproducible and manifest-backed. Current sprint: 3, the Astro site shell.
+The pipeline is built, reproducible and manifest-backed, and the site is live at https://prism-r.howpreventionworks.com with six pages: home, national picture, explore your area, the Lambeth worked example, methods and about. It is deployed to Cloudflare Pages by direct upload from `site/dist`, not from git, so every change that should reach the site is built and deployed by hand after it is pushed: `cd site && npm run build && npx --yes wrangler pages deploy dist --project-name=prism-r --branch=main --commit-dirty=true`. The build's prebuild step copies `data/processed` and the client scripts in `site/src/lib` into `site/public`. Monthly refreshes, on the 15th at 06:00 UTC, arrive as pull requests from `refresh.yml` and are merged by hand. The latest handover in `docs/` records current state and the watch list.
