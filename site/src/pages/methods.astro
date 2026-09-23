@@ -295,18 +295,27 @@ const repoUrl = 'https://github.com/SGilr/prism-r';
       <p>
         The full audit trail is published, one record per decision, so a reader
         can see the rule applied and not only its effect:
-        <a href="/data/suppression_audit.json">suppression audit</a>.
+        <a href="/data/suppression_audit.json">suppression audit</a>. Each
+        entry names the cell, the rule and the reason; it never records the
+        value that was suppressed.
       </p>
       <p class="correction-note">
         Defects found in PRISM-R's own figures or methods are recorded, dated
         and kept permanently, whether or not anyone outside the project
-        noticed them. Two are recorded so far, both from 3 September 2026 and
-        both instances of a suppression being lost between the file where it
-        was applied and a figure derived from it: suppressed counts that
-        could be recovered from their published rates, and 141 suppressed
-        cells republished in the explorer payloads because a derived step ran
-        before the suppression stage. Each is written up in full, with the
-        affected cells, how long they were exposed and the guard added
+        noticed them. Four are recorded so far. On 23 September 2026 the
+        suppression audit itself was found to carry the value of every cell
+        it recorded as suppressed, 203 values at the time of the fix and
+        served from this site since 18 May 2026; every one is also published
+        in the source releases PRISM-R draws on, where PRISM-R suppresses as
+        an additional layer. On 11 September 2026 two confidence intervals
+        that had read as statistically significant were withdrawn when the
+        interval method changed. On 3 September 2026 suppressed stop and
+        search counts were found to be recoverable from their published
+        rates, and 141 suppressed cells were republished in the explorer
+        payloads because a derived step ran before the suppression stage.
+        Three of the four are the same failure, a suppression lost in a file
+        derived from the one where it was applied. Each is written up in full,
+        with the affected figures, how long they were exposed and what changed
         afterwards, in the corrections section of
         <a href="https://github.com/SGilr/prism-r/blob/main/docs/methods.md#corrections">the
         methods record</a>.
