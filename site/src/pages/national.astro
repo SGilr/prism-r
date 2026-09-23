@@ -287,21 +287,25 @@ const survey = {
                 <th scope="row">{row.q}</th>
                 <td>{row.r}%</td>
                 <td>{row.s}%</td>
-                <td class={row.worse ? "flag" : "noflag"}>{row.worse ? "significantly worse for remanded children" : "not flagged"}</td>
+                <td class={row.worse ? "flag" : "noflag"}>{row.worse ? "statistically significant: worse for remanded children" : "not flagged"}</td>
               </tr>)}
         </tbody>
       </table>
       <p class="caption font-sans">
         HM Inspectorate of Prisons, Children in custody 2025-26, all-children
-        analysis workbook, tab 4, published 22 September 2026. HMIP tests each
-        difference at the 1% level and shades those it finds; "not flagged"
-        means the difference may have occurred by chance. The sentenced group
+        analysis workbook, tab 4, published 22 September 2026. HMIP tests
+        each difference for statistical significance at the 1% level and
+        shades those it finds: the flag says the difference is unlikely to be
+        chance, not that it is large. "Not flagged" is HMIP's wording for a
+        difference that may have occurred by chance; the interventions row,
+        8% against 18%, falls just outside its threshold. The sentenced group
         is older: 25% aged 18 or over against 12%, which HMIP flags as a
         demographic difference. Retrieved 22 September 2026.
       </p>
       <div class="mt-6 space-y-4 leading-relaxed">
         <p>
-          Three differences survive HMIP's test, and all three are about what
+          Three differences are statistically significant on HMIP's test, and
+          all three are about what
           is planned for a child whose stay may end at the next hearing:
           remanded children were less likely to say somebody was helping them
           prepare to leave, less likely to find a nurse easy to see, and less
