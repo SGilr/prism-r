@@ -4,7 +4,7 @@
     {
       "name": "prism-r",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "preview", "--prefix", "site"],
+      "runtimeArgs": ["run", "dev", "--prefix", "site", "--", "--port", "4321"],
       "port": 4321
     }
   ]
