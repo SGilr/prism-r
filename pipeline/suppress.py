@@ -86,10 +86,12 @@ def apply_suppression(cells: list[Cell]) -> SuppressionResult:
     def _suppress(
         cell_id: str,
         rule: str,
-        original: int | None,
         detail: str,
         reason: str | None = None,
     ) -> None:
+        # The audit is published. It records that a cell was suppressed and
+        # by which rule, never the value it held: an audit entry carrying
+        # the count would publish the very figure the suppression hides.
         cell_state = state[cell_id]
         cell_state["suppressed"] = True
         cell_state["rule"] = rule
@@ -100,7 +102,7 @@ def apply_suppression(cells: list[Cell]) -> SuppressionResult:
                 "group": cell_state["group"],
                 "rule": rule,
                 "reason": reason,
-                "original_count": original,
+                "original_count": None,
                 "resulting_state": "suppressed",
                 "detail": detail,
             }
@@ -112,7 +114,6 @@ def apply_suppression(cells: list[Cell]) -> SuppressionResult:
             _suppress(
                 cell.cell_id,
                 "inherited",
-                cell.count,
                 "value already suppressed in source data",
             )
 
@@ -125,8 +126,7 @@ def apply_suppression(cells: list[Cell]) -> SuppressionResult:
             _suppress(
                 cell.cell_id,
                 "primary",
-                cell.count,
-                f"count {cell.count} below threshold {PRIMARY_THRESHOLD}",
+                f"count between 1 and {PRIMARY_THRESHOLD - 1}, below threshold {PRIMARY_THRESHOLD}",
             )
 
     # Rule 2: secondary suppression, per group.
@@ -174,7 +174,7 @@ def apply_suppression(cells: list[Cell]) -> SuppressionResult:
                 f"every remaining cell in group {group!r} is a true zero; a "
                 f"zero is suppressed to preserve the primary suppressed cell"
             )
-        _suppress(target.cell_id, "secondary", target.count, detail, reason=reason)
+        _suppress(target.cell_id, "secondary", detail, reason=reason)
 
     # Rule 3: rate threshold.
     for cell in ordered:
@@ -186,7 +186,9 @@ def apply_suppression(cells: list[Cell]) -> SuppressionResult:
                     "group": cell.group,
                     "rule": "rate-threshold",
                     "reason": None,
-                    "original_count": cell.count,
+                    # The count stands unless the cell is also suppressed.
+                    "original_count": (
+                        None if state[cell.cell_id]["suppressed"] else cell.count),
                     "resulting_state": "rate not shown",
                     "detail": f"denominator {cell.denominator} below {RATE_MIN_DENOMINATOR}",
                 }

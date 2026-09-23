@@ -6,6 +6,7 @@ back-calculation protection that secondary suppression provides.
 """
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -660,3 +661,52 @@ def test_no_published_count_sits_below_the_primary_threshold():
         "complete build: an aborted or narrowed one leaves pre-suppression "
         "data in data/processed/.\n" + "\n".join(offenders[:10])
     )
+
+
+def test_the_audit_never_carries_a_suppressed_value():
+    """The audit is published. Until September 2026 it recorded each
+    suppressed cell's original count, which published every figure the
+    suppression hid. An entry for a suppressed cell may say which rule
+    applied, never what the cell held."""
+    result = apply_suppression(
+        [
+            Cell("inh", "g1", 44, source_suppressed=True),
+            Cell("inh_partner", "g1", 23),
+            Cell("pri", "g2", 3),
+            Cell("pri_partner", "g2", 37),
+            Cell("rate", "g3", 80, denominator=20),
+        ]
+    )
+    hidden = {44, 23, 3, 37}
+    suppressed = [a for a in result.audit if a["resulting_state"] == "suppressed"]
+    assert len(suppressed) == 4
+    for entry in suppressed:
+        assert entry["original_count"] is None, entry
+        numbers = {int(n) for n in re.findall(r"\d+", entry["detail"])}
+        assert not numbers & hidden, entry
+    # A rate-threshold entry hides the rate, not the count, so its released
+    # count may stand.
+    rate = next(a for a in result.audit if a["rule"] == "rate-threshold")
+    assert rate["original_count"] == 80
+
+
+def test_the_published_audit_carries_no_suppressed_value():
+    """The same guard against the committed output itself."""
+    path = REPO_ROOT / "data" / "processed" / "suppression_audit.json"
+    records = json.loads(path.read_text("utf-8"))["records"]
+    leaking = [
+        r["cell_id"] for r in records
+        if r["resulting_state"] == "suppressed" and r["original_count"] is not None
+    ]
+    assert leaking == []
+    for r in records:
+        if r["rule"] == "primary":
+            assert "count between 1 and 5" in r["detail"], r
+
+
+def test_a_rate_threshold_entry_on_a_suppressed_cell_carries_no_count():
+    result = apply_suppression(
+        [Cell("small", "g", 4, denominator=40), Cell("partner", "g", 12)])
+    entries = [a for a in result.audit if a["cell_id"] == "small"]
+    assert {a["rule"] for a in entries} == {"primary", "rate-threshold"}
+    assert all(a["original_count"] is None for a in entries)
