@@ -239,3 +239,17 @@ def test_the_refresh_dispatches_ci_onto_its_pull_request():
     assert "statuses: write" in ci
     assert ci.count('context="CI (dispatched)"') == 2, "pending and result"
     assert "github.event_name == 'workflow_dispatch'" in ci
+
+
+def test_publishing_a_bundle_dispatches_verification():
+    """publish-bundle.yml publishes with the workflow's own token, and a
+    release published that way starts no other workflow, so verify.yml's
+    release trigger never fires for an automated publish. Only a dispatch
+    does. Found from GitHub's documentation before the path first ran."""
+    publish = (WORKFLOWS / "publish-bundle.yml").read_text("utf-8")
+    verify = (WORKFLOWS / "verify.yml").read_text("utf-8")
+    assert "workflow_dispatch:" in verify
+    assert "gh workflow run verify.yml --ref main" in publish
+    assert "actions: write" in publish
+    assert "!cancelled() && steps.publish.outputs.published != ''" in publish
+    assert 'echo "published=$tag" >> "$GITHUB_OUTPUT"' in publish

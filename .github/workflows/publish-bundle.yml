@@ -5,7 +5,12 @@
 # which travels in that pull request. When the pull request merges, this
 # job reads the stamp from main, points the release at the merge commit so
 # the tag names the exact repository state it reproduces, and publishes it.
-# Publishing fires verify.yml, which rebuilds main from the bundle.
+# It then dispatches verify.yml, which rebuilds main from the bundle.
+#
+# The release event does not do that by itself here. A release published
+# with the workflow's own token raises no event that starts another
+# workflow; GitHub makes an exception only for dispatches. verify.yml's
+# release trigger still fires for a bundle published by hand.
 #
 # It also runs on any other push that touches the fetch manifest and does
 # nothing unless the stamped release is a draft, so it is safe to run twice.
@@ -19,6 +24,7 @@ on:
 
 permissions:
   contents: write
+  actions: write  # to dispatch verify.yml once the bundle is published
 
 jobs:
   publish:
@@ -27,6 +33,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Publish the draft named by the fetch manifest
+        id: publish
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -50,6 +57,7 @@ jobs:
 
           gh release edit "$tag" --target "$GITHUB_SHA" --draft=false
           echo "published $tag at $GITHUB_SHA"
+          echo "published=$tag" >> "$GITHUB_OUTPUT"
 
           # Leave the previous bundle standing with its asset untouched, and
           # say what replaced it. A published bundle is never rewritten.
@@ -60,3 +68,14 @@ jobs:
             gh release edit "$previous" --title "$name" --notes "$(printf '**Superseded by [%s](https://github.com/%s/releases/tag/%s). Take that one.**\n\nReplaced when the refresh carrying newer data merged. The asset is left exactly as published: a release asset is a citable artefact, and a tag that means different bytes on different days cannot be verified against.\n\n%s' "$tag" "$GITHUB_REPOSITORY" "$tag" "$body")"
             echo "marked $previous superseded"
           fi
+
+      - name: Verify main against the bundle just published
+        # Only when this run published something; a run that found the
+        # bundle already published has nothing new to verify. Still runs if
+        # marking the previous bundle superseded failed after publishing.
+        if: ${{ !cancelled() && steps.publish.outputs.published != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run verify.yml --ref main
+          echo "dispatched verify.yml on main for ${{ steps.publish.outputs.published }}"
