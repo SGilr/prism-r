@@ -1,7 +1,7 @@
 {
   "meta": {
     "counts": {
-      "records": 973
+      "records": 980
     },
     "dataset": "target_tracker",
     "definition": "docs/target-metric.md",
@@ -30,10 +30,10 @@
     "stock": {
       "baseline": 215.75,
       "baseline_period": "the twelve months April 2024 to March 2025",
-      "change_from_baseline_pct": -17.84,
-      "latest_month": "2026-07",
+      "change_from_baseline_pct": -18.35,
+      "latest_month": "2026-08",
       "latest_provisional": true,
-      "latest_rolling_avg": 177.25,
+      "latest_rolling_avg": 176.17,
       "pre_commitment_trend": -16.11,
       "pre_commitment_trend_period": "rolling average, 2025-03 to 2026-05",
       "rolling_window_months": 12,
@@ -1126,9 +1126,17 @@
       "age_basis": "all_ages_youth_estate",
       "block": "stock_monthly",
       "month": "2026-07",
-      "provisional": true,
+      "provisional": false,
       "remand": 172,
       "rolling_avg_12m": 177.25
+    },
+    {
+      "age_basis": "all_ages_youth_estate",
+      "block": "stock_monthly",
+      "month": "2026-08",
+      "provisional": true,
+      "remand": 184,
+      "rolling_avg_12m": 176.17
     },
     {
       "block": "flow_annual",
@@ -9409,7 +9417,7 @@
       "category": "asian",
       "count": 54,
       "month": "2026-07",
-      "provisional": true,
+      "provisional": false,
       "scope": "whole_custody",
       "share": 0.1304,
       "suppressed": false
@@ -9417,11 +9425,11 @@
     {
       "block": "whole_custody_ethnicity_monthly",
       "category": "black",
-      "count": 75,
+      "count": 76,
       "month": "2026-07",
-      "provisional": true,
+      "provisional": false,
       "scope": "whole_custody",
-      "share": 0.1812,
+      "share": 0.1836,
       "suppressed": false
     },
     {
@@ -9429,7 +9437,7 @@
       "category": "mixed",
       "count": 74,
       "month": "2026-07",
-      "provisional": true,
+      "provisional": false,
       "scope": "whole_custody",
       "share": 0.1787,
       "suppressed": false
@@ -9437,11 +9445,11 @@
     {
       "block": "whole_custody_ethnicity_monthly",
       "category": "not_known",
-      "count": 11,
+      "count": 10,
       "month": "2026-07",
-      "provisional": true,
+      "provisional": false,
       "scope": "whole_custody",
-      "share": 0.0266,
+      "share": 0.0242,
       "suppressed": false
     },
     {
@@ -9449,7 +9457,7 @@
       "category": "other",
       "count": 22,
       "month": "2026-07",
-      "provisional": true,
+      "provisional": false,
       "scope": "whole_custody",
       "share": 0.0531,
       "suppressed": false
@@ -9459,9 +9467,69 @@
       "category": "white",
       "count": 178,
       "month": "2026-07",
-      "provisional": true,
+      "provisional": false,
       "scope": "whole_custody",
       "share": 0.43,
+      "suppressed": false
+    },
+    {
+      "block": "whole_custody_ethnicity_monthly",
+      "category": "asian",
+      "count": 57,
+      "month": "2026-08",
+      "provisional": true,
+      "scope": "whole_custody",
+      "share": 0.139,
+      "suppressed": false
+    },
+    {
+      "block": "whole_custody_ethnicity_monthly",
+      "category": "black",
+      "count": 68,
+      "month": "2026-08",
+      "provisional": true,
+      "scope": "whole_custody",
+      "share": 0.1659,
+      "suppressed": false
+    },
+    {
+      "block": "whole_custody_ethnicity_monthly",
+      "category": "mixed",
+      "count": 78,
+      "month": "2026-08",
+      "provisional": true,
+      "scope": "whole_custody",
+      "share": 0.1902,
+      "suppressed": false
+    },
+    {
+      "block": "whole_custody_ethnicity_monthly",
+      "category": "not_known",
+      "count": 10,
+      "month": "2026-08",
+      "provisional": true,
+      "scope": "whole_custody",
+      "share": 0.0244,
+      "suppressed": false
+    },
+    {
+      "block": "whole_custody_ethnicity_monthly",
+      "category": "other",
+      "count": 25,
+      "month": "2026-08",
+      "provisional": true,
+      "scope": "whole_custody",
+      "share": 0.061,
+      "suppressed": false
+    },
+    {
+      "block": "whole_custody_ethnicity_monthly",
+      "category": "white",
+      "count": 172,
+      "month": "2026-08",
+      "provisional": true,
+      "scope": "whole_custody",
+      "share": 0.4195,
       "suppressed": false
     }
   ]
