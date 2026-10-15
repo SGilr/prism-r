@@ -1,13 +1,13 @@
 {
   "meta": {
-    "build_timestamp": "2026-09-23T17:16:26+00:00",
+    "build_timestamp": "2026-10-15T10:35:29+00:00",
     "dataset": "build_manifest",
     "generated_by": "pipeline/build.py",
     "git": {
-      "commit": "0b131ee8fc0138ebd9fa85ac0bc697141505acea",
+      "commit": "cfbf161b32a52a954e85b422d709a0ad62ad70c1",
       "working_tree": "dirty"
     },
-    "python_version": "3.14.7",
+    "python_version": "3.14.8",
     "schema_note": "A provenance record of one pipeline build. steps lists each script run, in order, with its timing. outputs gives a SHA-256 checksum, byte size, record count and source provenance for every processed JSON file. build_timestamp changes each run, so the manifest is not byte-identical between builds. The processed outputs reproduce byte for byte: each step is deterministic for a given maths library, and the few values that depend on that library, the confidence interval bounds, are rounded to six decimal places at serialisation so they match across platforms.",
     "schema_version": "1.0.0"
   },
@@ -132,52 +132,52 @@
       ]
     },
     {
-      "bytes": 857631,
+      "bytes": 863077,
       "file": "data/processed/custody_monthly.json",
       "generated_by": "pipeline/ingest_ycs.py",
-      "records": 2672,
+      "records": 2689,
       "schema_version": "1.0.0",
-      "sha256": "6103f8c6ee79a6b894055b8f57cee3ab4f0b99f61ad5ee3599350a27004d5293",
+      "sha256": "6bf11e7098bf7d8e12312b21c0f9f1164d803402422760c68adfb31e34aaa252",
       "sources": [
         {
-          "description": "MoJ Youth Custody Service, monthly youth custody report, July 2026 edition",
-          "publication_date": "2026-09-11",
-          "reference_period": "monthly, April 2000 to July 2026; the latest month is provisional",
-          "retrieval_date": "2026-09-16",
+          "description": "MoJ Youth Custody Service, monthly youth custody report, August 2026 edition",
+          "publication_date": "2026-10-09",
+          "reference_period": "monthly, April 2000 to August 2026; the latest month is provisional",
+          "retrieval_date": "2026-10-15",
           "url": "https://www.gov.uk/government/publications/youth-custody-data"
         }
       ]
     },
     {
-      "bytes": 14068,
+      "bytes": 14070,
       "file": "data/processed/custody_episodes_ending.json",
       "generated_by": "pipeline/ingest_ycs.py",
       "records": 48,
       "schema_version": "1.0.0",
-      "sha256": "835583cbe9bd3dbdfb28e7c9721de27dafccb3472293b0c0ee4bb93547e07047",
+      "sha256": "c86c65d4091833e2513a29d05a778c81b64d74a4a223f6e8d355c6051c2e6f30",
       "sources": [
         {
-          "description": "MoJ Youth Custody Service, monthly youth custody report, July 2026 edition",
-          "publication_date": "2026-09-11",
-          "reference_period": "monthly, April 2000 to July 2026; the latest month is provisional",
-          "retrieval_date": "2026-09-16",
+          "description": "MoJ Youth Custody Service, monthly youth custody report, August 2026 edition",
+          "publication_date": "2026-10-09",
+          "reference_period": "monthly, April 2000 to August 2026; the latest month is provisional",
+          "retrieval_date": "2026-10-15",
           "url": "https://www.gov.uk/government/publications/youth-custody-data"
         }
       ]
     },
     {
-      "bytes": 83842,
+      "bytes": 83844,
       "file": "data/processed/custody_episode_length.json",
       "generated_by": "pipeline/ingest_ycs.py",
       "records": 240,
       "schema_version": "1.0.0",
-      "sha256": "d3247566255440c1eb53f6483fdc434e38c5e922a8038b7ad13bdd970a25da7d",
+      "sha256": "eb62217e8be565a76f8006ad8e767d65b1104561be5f0e673993e8832f0e93c6",
       "sources": [
         {
-          "description": "MoJ Youth Custody Service, monthly youth custody report, July 2026 edition",
-          "publication_date": "2026-09-11",
-          "reference_period": "monthly, April 2000 to July 2026; the latest month is provisional",
-          "retrieval_date": "2026-09-16",
+          "description": "MoJ Youth Custody Service, monthly youth custody report, August 2026 edition",
+          "publication_date": "2026-10-09",
+          "reference_period": "monthly, April 2000 to August 2026; the latest month is provisional",
+          "retrieval_date": "2026-10-15",
           "url": "https://www.gov.uk/government/publications/youth-custody-data"
         }
       ]
@@ -331,18 +331,18 @@
       ]
     },
     {
-      "bytes": 233187,
+      "bytes": 234850,
       "file": "data/processed/target_tracker.json",
       "generated_by": "pipeline/compute_target.py",
-      "records": 973,
+      "records": 980,
       "schema_version": "1.0.0",
-      "sha256": "66fdbf2da96d5c117ef769ce6c8a9c517ad27ae0480fb212099af2525f566b9d",
+      "sha256": "9cdaadf57986d01912b7b8f6f4456d4f038a4ee24020c4a1de9a1aba35a6b30e",
       "sources": [
         {
-          "description": "MoJ Youth Custody Service, monthly youth custody report, July 2026 edition",
-          "publication_date": "2026-09-11",
-          "reference_period": "monthly, April 2000 to July 2026; the latest month is provisional",
-          "retrieval_date": "2026-09-16",
+          "description": "MoJ Youth Custody Service, monthly youth custody report, August 2026 edition",
+          "publication_date": "2026-10-09",
+          "reference_period": "monthly, April 2000 to August 2026; the latest month is provisional",
+          "retrieval_date": "2026-10-15",
           "url": "https://www.gov.uk/government/publications/youth-custody-data"
         },
         {
@@ -593,18 +593,18 @@
       ]
     },
     {
-      "bytes": 116857,
+      "bytes": 117695,
       "file": "data/processed/csv/remand-target-tracker.csv",
       "generated_by": "pipeline/build_csv_exports.py",
-      "records": 973,
+      "records": 980,
       "schema_version": "1.0.0",
-      "sha256": "ed762c13b0ffb7f395cf0332474596d3a0e24f7c83706b911c3168f83389d54b",
+      "sha256": "3e66a5eb1cc84527b4c4252dd17f47d57d9a396f20b56bb9dc53fc1bd5748289",
       "sources": [
         {
-          "description": "MoJ Youth Custody Service, monthly youth custody report, July 2026 edition",
-          "publication_date": "2026-09-11",
-          "reference_period": "monthly, April 2000 to July 2026; the latest month is provisional",
-          "retrieval_date": "2026-09-16",
+          "description": "MoJ Youth Custody Service, monthly youth custody report, August 2026 edition",
+          "publication_date": "2026-10-09",
+          "reference_period": "monthly, April 2000 to August 2026; the latest month is provisional",
+          "retrieval_date": "2026-10-15",
           "url": "https://www.gov.uk/government/publications/youth-custody-data"
         }
       ]
@@ -618,10 +618,10 @@
       "sha256": "c3e5ba5bf5ff2bbf511ff4ebe233efd6e5e4b9cb61d113e4d97375cecd9a244b",
       "sources": [
         {
-          "description": "MoJ Youth Custody Service, monthly youth custody report, July 2026 edition",
-          "publication_date": "2026-09-11",
-          "reference_period": "monthly, April 2000 to July 2026; the latest month is provisional",
-          "retrieval_date": "2026-09-16",
+          "description": "MoJ Youth Custody Service, monthly youth custody report, August 2026 edition",
+          "publication_date": "2026-10-09",
+          "reference_period": "monthly, April 2000 to August 2026; the latest month is provisional",
+          "retrieval_date": "2026-10-15",
           "url": "https://www.gov.uk/government/publications/youth-custody-data"
         }
       ]
@@ -701,91 +701,91 @@
   ],
   "steps": [
     {
-      "duration_seconds": 19.17,
+      "duration_seconds": 61.54,
       "name": "yjb",
       "script": "pipeline/ingest_yjb.py",
       "status": "ok",
       "step": 1
     },
     {
-      "duration_seconds": 0.11,
+      "duration_seconds": 0.29,
       "name": "crosswalk",
       "script": "pipeline/build_crosswalk.py",
       "status": "ok",
       "step": 2
     },
     {
-      "duration_seconds": 0.24,
+      "duration_seconds": 0.51,
       "name": "boundaries",
       "script": "pipeline/build_force_boundaries.py",
       "status": "ok",
       "step": 3
     },
     {
-      "duration_seconds": 0.67,
+      "duration_seconds": 1.72,
       "name": "explorer_boundaries",
       "script": "pipeline/build_explorer_boundaries.py",
       "status": "ok",
       "step": 4
     },
     {
-      "duration_seconds": 0.74,
+      "duration_seconds": 2.35,
       "name": "ycs",
       "script": "pipeline/ingest_ycs.py",
       "status": "ok",
       "step": 5
     },
     {
-      "duration_seconds": 0.25,
+      "duration_seconds": 0.51,
       "name": "ons",
       "script": "pipeline/ingest_ons.py",
       "status": "ok",
       "step": 6
     },
     {
-      "duration_seconds": 2.27,
+      "duration_seconds": 5.71,
       "name": "dfe",
       "script": "pipeline/ingest_dfe.py",
       "status": "ok",
       "step": 7
     },
     {
-      "duration_seconds": 56.6,
+      "duration_seconds": 164.13,
       "name": "home_office",
       "script": "pipeline/ingest_home_office.py",
       "status": "ok",
       "step": 8
     },
     {
-      "duration_seconds": 0.3,
+      "duration_seconds": 0.58,
       "name": "imd",
       "script": "pipeline/ingest_imd.py",
       "status": "ok",
       "step": 9
     },
     {
-      "duration_seconds": 0.75,
+      "duration_seconds": 2.4,
       "name": "rri",
       "script": "pipeline/compute_rri.py",
       "status": "ok",
       "step": 10
     },
     {
-      "duration_seconds": 0.03,
+      "duration_seconds": 0.05,
       "name": "target",
       "script": "pipeline/compute_target.py",
       "status": "ok",
       "step": 11
     },
     {
-      "duration_seconds": 0.12,
+      "duration_seconds": 0.21,
       "name": "explorer",
       "script": "pipeline/build_explorer.py",
       "status": "ok",
       "step": 12
     },
     {
-      "duration_seconds": 0.15,
+      "duration_seconds": 0.27,
       "name": "csv_exports",
       "script": "pipeline/build_csv_exports.py",
       "status": "ok",
